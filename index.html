@@ -1,211 +1,154 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar" data-theme="dark">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ballon TV - Shaka Player</title>
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-  
-  <!-- مكتبات Shaka Player -->
-  <link rel="stylesheet" type="text/css" href="https://shaka-player-demo.appspot.com/dist/controls.css">
-  <script src="https://shaka-player-demo.appspot.com/dist/shaka-player.ui.js"></script>
-
-  <style>
-    /* CSS يبقى كما هو */
-    :root {
-      --font-family: 'Tajawal', sans-serif;
-      --bg-light: #f5f5f7; --surface-light: #ffffff; --text-primary-light: #1d1d1f; --text-secondary-light: #6e6e73; --accent-light: #0071e3; --border-light: #d2d2d7;
-      --bg-dark: #121212; --surface-dark: #1e1e1e; --text-primary-dark: #f5f5f7; --text-secondary-dark: #a1a1a6; --accent-dark: #0a84ff; --border-dark: #3a3a3c;
-    }
-    [data-theme="light"] {
-      --bg-color: var(--bg-light); --surface-color: var(--surface-light); --text-primary: var(--text-primary-light); --text-secondary: var(--text-secondary-light); --accent-color: var(--accent-light); --border-color: var(--border-light); --shadow-color: rgba(0, 0, 0, 0.08); --shadow-color-hover: rgba(0, 0, 0, 0.15);
-    }
-    [data-theme="dark"] {
-      --bg-color: var(--bg-dark); --surface-color: var(--surface-dark); --text-primary: var(--text-primary-dark); --text-secondary: var(--text-secondary-dark); --accent-color: var(--accent-dark); --border-color: var(--border-dark); --shadow-color: rgba(0, 0, 0, 0.2); --shadow-color-hover: rgba(0, 0, 0, 0.4);
-    }
-    body { margin: 0; padding: 0; font-family: var(--font-family); background-color: var(--bg-color); color: var(--text-primary); user-select: none; transition: background-color 0.3s, color 0.3s; }
-    a { text-decoration: none; color: inherit; }
-    .header-container { position: sticky; top: 0; z-index: 1000; background-color: var(--surface-color); padding: 15px 20px; box-shadow: 0 2px 10px var(--shadow-color); }
-    header { display: flex; justify-content: space-between; align-items: center; }
-    header h1 { margin: 0; font-size: 22px; font-weight: 700; color: var(--accent-color); }
-    .header-icon { font-size: 24px; cursor: pointer; color: var(--text-secondary); transition: color 0.3s; }
-    .header-icon:hover { color: var(--accent-color); }
-    .sidenav { height: 100%; width: 0; position: fixed; top: 0; right: 0; background-color: var(--surface-color); overflow-x: hidden; transition: 0.3s ease-out; z-index: 1002; box-shadow: -5px 0 15px rgba(0,0,0,0.2); }
-    .sidenav a { padding: 15px 20px 15px 32px; text-decoration: none; font-size: 18px; font-weight: 500; color: var(--text-primary); display: block; transition: 0.3s; }
-    .sidenav a:hover { background-color: color-mix(in srgb, var(--accent-color) 10%, transparent); color: var(--accent-color); }
-    .sidenav .close-btn { position: absolute; top: 15px; left: 15px; font-size: 30px; }
-    main { padding: 20px; }
-    .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
-    .channel-card {
-      background-color: var(--surface-color); border-radius: 12px; overflow: hidden;
-      box-shadow: 0 4px 10px var(--shadow-color); transition: transform 0.2s ease, box-shadow 0.2s ease;
-      cursor: pointer; display: flex; flex-direction: column;
-    }
-    .channel-card:hover { transform: scale(1.05); box-shadow: 0 8px 20px var(--shadow-color-hover); z-index: 10; }
-    .channel-card .card-image { width: 100%; padding-bottom: 75%; background-size: cover; background-position: center; background-color: var(--border-color); }
-    .channel-card .card-title {
-      height: 40px; display: flex; align-items: center; justify-content: center; text-align: center;
-      font-size: 12px; font-weight: 700; padding: 0 5px; color: var(--text-primary);
-    }
-    .player-modal {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.85);
-      z-index: 2000; display: none; justify-content: center; align-items: center;
-      backdrop-filter: blur(5px);
-    }
-    .player-modal-content {
-      width: 90%; max-width: 960px; height: auto;
-      background-color: #000; position: relative;
-      border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;
-    }
-    #channel-name-modal {
-        background-color: var(--surface-color); color: var(--text-primary);
-        font-size: 16px; padding: 10px 15px; margin: 0; text-align: center;
-    }
-    .player-modal .close-player-btn {
-      position: absolute; top: -35px; right: 0; font-size: 30px;
-      color: white; cursor: pointer; background: none; border: none; z-index: 2001;
-    }
-    .player-modal video {
-        width: 100%; height: auto; aspect-ratio: 16 / 9; background-color: #000;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع البث الرياضي الاحترافي - الرئيسية</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Fonts - يمكنك استخدام Google Fonts أو أي خط آخر -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <!-- أيقونات - مثال Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-
 <body>
-  <div class="header-container">
-    <header>
-      <i class="fa-solid fa-bars header-icon" onclick="openNav()"></i>
-      <h1>Ballon TV</h1>
-      <i class="fa-solid fa-circle-half-stroke header-icon" id="theme-toggle-btn"></i>
+    <!-- شريط علوي (Header) -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html"><img src="images/logo.png" alt="شعار الموقع"></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html" class="active">الرئيسية</a></li>
+                    <li><a href="schedule.html">جدول المباريات</a></li>
+                    <li><a href="news.html">الأخبار</a></li>
+                    <li><a href="#">اشترك الآن</a></li>
+                </ul>
+            </nav>
+            <div class="user-area">
+                <a href="#" class="btn btn-primary">تسجيل الدخول</a>
+            </div>
+            <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+        </div>
     </header>
-  </div>
 
-  <main>
-    <section id="live-channels">
-      <div id="items-grid" class="items-grid">
-        <!-- رسالة الانتظار الأولية -->
-        <p id="loading-message">جاري تهيئة المشغل...</p>
-      </div>
+    <!-- بانر إعلاني علوي (Top Banner Ad) -->
+    <section class="top-ad-banner container">
+        <!-- كود الإعلان هنا، مثال: Google AdSense Display Ad -->
+        <div class="ad-placeholder" style="height: 90px; background-color: #333; color: #eee; display: flex; align-items: center; justify-content: center;">
+            إعلان بانر علوي (970x90)
+            <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:970px;height:90px"
+                 data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
+                 data-ad-slot="xxxxxxxxxx"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
+        </div>
     </section>
-  </main>
 
-  <div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">×</a> 
-    <a href="#">الرئيسية</a>
-    <a href="#">سياسة الخصوصية</a>
-  </div>
+    <!-- القسم الرئيسي (Hero Section) - المباراة الأبرز -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1>شاهد قمة الأسبوع: ريال مدريد ضد برشلونة</h1>
+                <p>مباراة الكلاسيكو المنتظرة مباشرة وحصرياً. لا تفوت المتعة!</p>
+                <a href="match-details.html" class="btn btn-hero">شاهد الآن <i class="fas fa-play-circle"></i></a>
+            </div>
+        </div>
+    </section>
 
-  <div id="shakaPlayerModal" class="player-modal">
-    <div class="player-modal-content">
-        <button class="close-player-btn" onclick="closeShakaPlayer()">×</button>
-        <h2 id="channel-name-modal"></h2>
-        <video autoplay data-shaka-player id="shaka-video-player"></video>
-    </div>
-  </div>
-  
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <main class="main-content container">
+        <div class="content-grid">
+            <!-- المحتوى الرئيسي (المباريات المباشرة والقادمة) -->
+            <div class="main-column">
+                <section class="live-matches">
+                    <h2><i class="fas fa-satellite-dish"></i> تبث الآن</h2>
+                    <div class="match-cards">
+                        <!-- مثال على بطاقة مباراة مباشرة -->
+                        <div class="match-card live">
+                            <img src="images/team1.png" alt="فريق 1" class="team-logo">
+                            <span class="vs">ضد</span>
+                            <img src="images/team2.png" alt="فريق 2" class="team-logo">
+                            <h3>الأهلي vs الزمالك</h3>
+                            <p class="league">الدوري المصري الممتاز</p>
+                            <p class="status live-status"><i class="fas fa-circle"></i> مباشر</p>
+                            <a href="match-details.html" class="btn btn-watch">شاهد الآن</a>
+                        </div>
+                        <!-- يمكنك تكرار البطاقة لمباريات أخرى تبث الآن -->
+                    </div>
+                </section>
 
-  <script>
-    // --- التحكم في الواجهة والقائمة ---
-    function openNav() { document.getElementById("mySidenav").style.width = "250px"; }
-    function closeNav() { document.getElementById("mySidenav").style.width = "0"; }
-    
-    document.addEventListener('DOMContentLoaded', function() {
-      const themeToggleBtn = document.getElementById('theme-toggle-btn');
-      if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', () => { 
-            document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); 
-        });
-      }
-    });
+                <section class="upcoming-matches">
+                    <h2><i class="fas fa-calendar-alt"></i> المباريات القادمة</h2>
+                    <div class="match-list">
+                        <!-- مثال على عنصر قائمة مباراة قادمة -->
+                        <div class="match-item">
+                            <div class="match-info">
+                                <img src="images/team3.png" alt="فريق 3" class="team-logo-sm">
+                                <span>مانشستر يونايتد</span>
+                                <span class="vs-text">ضد</span>
+                                <span>ليفربول</span>
+                                <img src="images/team4.png" alt="فريق 4" class="team-logo-sm">
+                            </div>
+                            <div class="match-details">
+                                <span class="league">الدوري الإنجليزي</span>
+                                <span class="time"><i class="far fa-clock"></i> 20:00 بتوقيت مكة</span>
+                                <span class="date"><i class="far fa-calendar-alt"></i> 15 أبريل 2024</span>
+                            </div>
+                            <a href="#" class="btn btn-remind">ذكرني</a>
+                        </div>
+                        <!-- يمكنك تكرار لعرض المزيد من المباريات القادمة -->
+                    </div>
+                </section>
+            </div>
 
-    // --- منطق مشغل Shaka Player ---
-    const shakaModal = document.getElementById('shakaPlayerModal');
-    const channelNameTitle = document.getElementById('channel-name-modal');
-    let shakaPlayer;
+            <!-- الشريط الجانبي (Sidebar) - للإعلانات والأخبار العاجلة -->
+            <aside class="sidebar-column">
+                <div class="ad-sidebar">
+                    <!-- كود إعلان جانبي (300x600) -->
+                    <div class="ad-placeholder" style="height: 600px; background-color: #333; color: #eee; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                        إعلان جانبي (300x600)<br>
+                        <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <ins class="adsbygoogle"
+                             style="display:inline-block;width:300px;height:600px"
+                             data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
+                             data-ad-slot="xxxxxxxxxx"></ins>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
+                    </div>
+                </div>
 
-    // **التغيير الجوهري هنا**
-    // لن نقوم بتحميل القنوات إلا بعد أن يصبح المشغل جاهزًا
-    document.addEventListener('shaka-ui-loaded', initApp);
+                <div class="latest-news-sidebar">
+                    <h2><i class="fas fa-newspaper"></i> آخر الأخبار</h2>
+                    <ul>
+                        <li><a href="#">برشلونة يقترب من ضم نجم جديد.</a></li>
+                        <li><a href="#">إصابة مؤثرة تضرب صفوف ريال مدريد.</a></li>
+                        <li><a href="#">تحليل: لماذا تعثر ليفربول في الجولة الأخيرة؟</a></li>
+                        <li><a href="#">مواعيد مباريات دوري أبطال أوروبا.</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </main>
 
-    function initApp() {
-        // الخطوة 1: تهيئة مشغل Shaka
-        const videoElement = document.getElementById('shaka-video-player');
-        const ui = videoElement['ui'];
-        shakaPlayer = ui.getPlayer();
-      
-        ui.configure({
-            'controlPanelElements': ['rewind', 'play_pause', 'fast_forward', 'time_and_duration', 'spacer', 'volume', 'fullscreen', 'overflow_menu'],
-            'overflowMenuButtons': ['quality', 'language', 'picture_in_picture', 'playback_rate'],
-        });
+    <!-- تذييل الصفحة (Footer) -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">من نحن</a>
+                <a href="#">اتصل بنا</a>
+                <a href="#">سياسة الخصوصية</a>
+                <a href="#">شروط الخدمة</a>
+            </div>
+            <div class="social-media">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p>&copy; 2024 جميع الحقوق محفوظة لموقع البث الرياضي.</p>
+        </div>
+    </footer>
 
-        shakaPlayer.addEventListener("error", (e) => {
-            console.error('Shaka Player Error:', e.detail);
-            // لا نعرض تنبيهًا هنا، يمكن أن يكون الخطأ بسيطًا والمستخدم يستطيع المحاولة مرة أخرى
-        });
-        
-        // الخطوة 2: الآن بعد أن أصبح المشغل جاهزًا، نقوم بتحميل وعرض القنوات
-        loadAndDisplayChannels();
-    }
-
-    // دالة لتشغيل القناة المحددة
-    function playInShaka(streamUrl, channelName) {
-      channelNameTitle.textContent = channelName;
-      shakaModal.style.display = 'flex';
-      
-      shakaPlayer.load(streamUrl).catch((e) => {
-        console.error('Error loading stream:', e);
-        alert("فشل تشغيل القناة. قد يكون الرابط لا يعمل.");
-        closeShakaPlayer();
-      });
-    }
-
-    // دالة لإغلاق المشغل
-    function closeShakaPlayer() {
-      shakaModal.style.display = 'none';
-      if (shakaPlayer) {
-        shakaPlayer.unload(); // مهم: إيقاف تحميل الفيديو لتوفير الموارد
-      }
-    }
-
-    // --- دالة جلب وعرض القنوات من ملف M3U ---
-    function loadAndDisplayChannels() {
-      const grid = $('#items-grid');
-      const loadingMessage = $('#loading-message');
-      loadingMessage.text('جاري تحميل القنوات...'); // تحديث الرسالة
-      const playlistUrl = "playlist.m3u";
-
-      $.get(playlistUrl, function(data) {
-        loadingMessage.hide();
-        const lines = data.split('\n');
-        
-        for (let i = 0; i < lines.length; i++) {
-          if (lines[i].startsWith('#EXTINF:')) {
-            const infoLine = lines[i];
-            const streamUrl = lines[i + 1] ? lines[i + 1].trim() : null;
-
-            if (streamUrl && streamUrl.startsWith('http')) {
-              let name = infoLine.split(',').pop();
-              const safeName = name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-              let logoMatch = infoLine.match(/tvg-logo="([^"]+)"/);
-              let logoUrl = logoMatch ? logoMatch[1] : 'https://via.placeholder.com/200x150/1e1e1e/f5f5f7?text=TV';
-
-              const channelCard = `
-                <div class="channel-card" onclick="playInShaka('${streamUrl}', '${safeName}')">
-                  <div class="card-image" style="background-image: url('${logoUrl}')" onerror="this.style.backgroundImage='url(https://via.placeholder.com/200x150/1e1e1e/f5f5f7?text=TV)'"></div>
-                  <div class="card-title">${name}</div>
-                </div>`;
-              grid.append(channelCard);
-            }
-          }
-        }
-      }).fail(function() {
-        loadingMessage.text('فشل تحميل ملف playlist.m3u. تأكد من وجوده في نفس المجلد.');
-      });
-    }
-  </script>
+    <script src="js/script.js"></script>
 </body>
 </html>
