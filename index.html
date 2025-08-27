@@ -1,154 +1,196 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع البث الرياضي الاحترافي - الرئيسية</title>
-    <link rel="stylesheet" href="css/style.css">
-    <!-- Fonts - يمكنك استخدام Google Fonts أو أي خط آخر -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <!-- أيقونات - مثال Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>BallonTV - بث مباريات اليوم</title>
+    <style>
+        /* أنماط CSS الأساسية للجسم */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            direction: rtl; /* لجعل التخطيط من اليمين لليسار للعربية */
+            text-align: right;
+        }
+
+        /* أنماط CSS لرأس الصفحة */
+        header {
+            background-color: #4CAF50; /* لون أخضر جميل */
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* ظل خفيف */
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        header p {
+            margin: 5px 0 0;
+            font-size: 1.2em;
+        }
+
+        /* أنماط CSS لشريط التنقل */
+        nav {
+            background-color: #333; /* لون رمادي داكن */
+            overflow: hidden; /* لإزالة أي تجاوزات */
+            text-align: center;
+        }
+        nav a {
+            display: inline-block; /* لعرض الروابط بجانب بعضها البعض */
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none; /* إزالة الخط السفلي من الروابط */
+            font-weight: bold;
+        }
+        nav a:hover {
+            background-color: #ddd; /* لون رمادي فاتح عند التمرير */
+            color: black;
+        }
+
+        /* أنماط CSS للحاوية الرئيسية */
+        .container {
+            max-width: 960px; /* أقصى عرض للحاوية */
+            margin: 20px auto; /* توسيط الحاوية مع مسافة علوية وسفلية */
+            padding: 0 20px; /* مسافة داخلية من الجانبين */
+        }
+
+        /* أنماط CSS لبطاقة المباراة */
+        .match-card {
+            background-color: white;
+            border-radius: 8px; /* حواف دائرية */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* ظل خفيف */
+            margin-bottom: 20px; /* مسافة أسفل كل بطاقة */
+            padding: 20px;
+            text-align: right;
+        }
+        .match-card h2 {
+            color: #4CAF50; /* لون أخضر لعنوان المباراة */
+            margin-top: 0;
+            border-bottom: 2px solid #eee; /* خط سفلي خفيف */
+            padding-bottom: 10px;
+        }
+        .match-card ul {
+            list-style: none; /* إزالة نقاط القائمة الافتراضية */
+            padding: 0;
+            margin-top: 15px;
+        }
+        .match-card ul li {
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+        .match-card ul li a {
+            color: #007bff; /* لون أزرق للروابط */
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease; /* تأثير انتقال ناعم للون */
+        }
+        .match-card ul li a:hover {
+            text-decoration: underline; /* خط سفلي عند التمرير */
+            color: #0056b3; /* لون أزرق أغمق عند التمرير */
+        }
+        .match-card p {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 20px;
+            border-top: 1px dashed #eee;
+            padding-top: 10px;
+        }
+
+        /* أنماط CSS لتذييل الصفحة */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 30px;
+        }
+        footer p {
+            margin: 0;
+        }
+
+        /* أنماط CSS للاستجابة (Responsive Design) */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            header p {
+                font-size: 1em;
+            }
+            nav a {
+                padding: 10px 12px;
+                font-size: 0.9em;
+            }
+            .container {
+                margin: 15px auto;
+                padding: 0 15px;
+            }
+            .match-card {
+                padding: 15px;
+            }
+            .match-card h2 {
+                font-size: 1.5em;
+            }
+            .match-card ul li {
+                font-size: 1em;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- شريط علوي (Header) -->
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <a href="index.html"><img src="images/logo.png" alt="شعار الموقع"></a>
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="index.html" class="active">الرئيسية</a></li>
-                    <li><a href="schedule.html">جدول المباريات</a></li>
-                    <li><a href="news.html">الأخبار</a></li>
-                    <li><a href="#">اشترك الآن</a></li>
-                </ul>
-            </nav>
-            <div class="user-area">
-                <a href="#" class="btn btn-primary">تسجيل الدخول</a>
-            </div>
-            <button class="menu-toggle"><i class="fas fa-bars"></i></button>
-        </div>
+    <header>
+        <h1>BallonTV</h1>
+        <p>بث مباشر وحصري لمباريات اليوم</p>
     </header>
 
-    <!-- بانر إعلاني علوي (Top Banner Ad) -->
-    <section class="top-ad-banner container">
-        <!-- كود الإعلان هنا، مثال: Google AdSense Display Ad -->
-        <div class="ad-placeholder" style="height: 90px; background-color: #333; color: #eee; display: flex; align-items: center; justify-content: center;">
-            إعلان بانر علوي (970x90)
-            <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <ins class="adsbygoogle"
-                 style="display:inline-block;width:970px;height:90px"
-                 data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
-                 data-ad-slot="xxxxxxxxxx"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
+    <nav>
+        <a href="#home">الرئيسية</a>
+        <a href="#matches">مباريات اليوم</a>
+        <a href="#about">عن الموقع</a>
+        <a href="#contact">اتصل بنا</a>
+    </nav>
+
+    <div class="container" id="matches">
+        <div class="match-card">
+            <h2>مباراة الأهلي ضد الزمالك - القناة 1</h2>
+            <ul>
+                <li><a href="https://fram.sport4all.online/albaplayer/bein1/?serv=1" target="_blank">شاهد البث الآن (جودة عالية)</a></li>
+                <li><a href="https://fram.sport4all.online/albaplayer/bein1/?serv=2" target="_blank">شاهد البث (جودة متوسطة)</a></li>
+                <li><a href="https://fram.sport4all.online/albaplayer/bein1/?serv=3" target="_blank">شاهد البث (جودة قياسية)</a></li>
+            </ul>
+            <p><strong>ملاحظة هامة:</strong> انقر على أحد الروابط أعلاه لبدء المشاهدة. قد تحتاج إلى تحديث الصفحة إذا لم يعمل البث على الفور.</p>
         </div>
-    </section>
 
-    <!-- القسم الرئيسي (Hero Section) - المباراة الأبرز -->
-    <section class="hero-section">
-        <div class="container">
-            <div class="hero-content">
-                <h1>شاهد قمة الأسبوع: ريال مدريد ضد برشلونة</h1>
-                <p>مباراة الكلاسيكو المنتظرة مباشرة وحصرياً. لا تفوت المتعة!</p>
-                <a href="match-details.html" class="btn btn-hero">شاهد الآن <i class="fas fa-play-circle"></i></a>
-            </div>
+        <div class="match-card">
+            <h2>مباراة ريال مدريد ضد برشلونة - القناة 2</h2>
+            <ul>
+                <li><a href="https://fram.sport4all.online/albaplayer/bein1/?serv=1" target="_blank">رابط البث 1 (جودة عالية)</a></li>
+                <li><a href="https://fram.sport4all.online/albaplayer/bein1/?serv=2" target="_blank">رابط البث 2 (جودة متوسطة)</a></li>
+                <li><a href="https://fram.sport4all.online/albaplayer/bein1/?serv=3" target="_blank">رابط البث 3 (جودة قياسية)</a></li>
+            </ul>
+            <p>تابعوا معنا تغطية حية ومباشرة لهذه المباراة المثيرة.</p>
         </div>
-    </section>
 
-    <main class="main-content container">
-        <div class="content-grid">
-            <!-- المحتوى الرئيسي (المباريات المباشرة والقادمة) -->
-            <div class="main-column">
-                <section class="live-matches">
-                    <h2><i class="fas fa-satellite-dish"></i> تبث الآن</h2>
-                    <div class="match-cards">
-                        <!-- مثال على بطاقة مباراة مباشرة -->
-                        <div class="match-card live">
-                            <img src="images/team1.png" alt="فريق 1" class="team-logo">
-                            <span class="vs">ضد</span>
-                            <img src="images/team2.png" alt="فريق 2" class="team-logo">
-                            <h3>الأهلي vs الزمالك</h3>
-                            <p class="league">الدوري المصري الممتاز</p>
-                            <p class="status live-status"><i class="fas fa-circle"></i> مباشر</p>
-                            <a href="match-details.html" class="btn btn-watch">شاهد الآن</a>
-                        </div>
-                        <!-- يمكنك تكرار البطاقة لمباريات أخرى تبث الآن -->
-                    </div>
-                </section>
-
-                <section class="upcoming-matches">
-                    <h2><i class="fas fa-calendar-alt"></i> المباريات القادمة</h2>
-                    <div class="match-list">
-                        <!-- مثال على عنصر قائمة مباراة قادمة -->
-                        <div class="match-item">
-                            <div class="match-info">
-                                <img src="images/team3.png" alt="فريق 3" class="team-logo-sm">
-                                <span>مانشستر يونايتد</span>
-                                <span class="vs-text">ضد</span>
-                                <span>ليفربول</span>
-                                <img src="images/team4.png" alt="فريق 4" class="team-logo-sm">
-                            </div>
-                            <div class="match-details">
-                                <span class="league">الدوري الإنجليزي</span>
-                                <span class="time"><i class="far fa-clock"></i> 20:00 بتوقيت مكة</span>
-                                <span class="date"><i class="far fa-calendar-alt"></i> 15 أبريل 2024</span>
-                            </div>
-                            <a href="#" class="btn btn-remind">ذكرني</a>
-                        </div>
-                        <!-- يمكنك تكرار لعرض المزيد من المباريات القادمة -->
-                    </div>
-                </section>
-            </div>
-
-            <!-- الشريط الجانبي (Sidebar) - للإعلانات والأخبار العاجلة -->
-            <aside class="sidebar-column">
-                <div class="ad-sidebar">
-                    <!-- كود إعلان جانبي (300x600) -->
-                    <div class="ad-placeholder" style="height: 600px; background-color: #333; color: #eee; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                        إعلان جانبي (300x600)<br>
-                        <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                        <ins class="adsbygoogle"
-                             style="display:inline-block;width:300px;height:600px"
-                             data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
-                             data-ad-slot="xxxxxxxxxx"></ins>
-                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
-                    </div>
-                </div>
-
-                <div class="latest-news-sidebar">
-                    <h2><i class="fas fa-newspaper"></i> آخر الأخبار</h2>
-                    <ul>
-                        <li><a href="#">برشلونة يقترب من ضم نجم جديد.</a></li>
-                        <li><a href="#">إصابة مؤثرة تضرب صفوف ريال مدريد.</a></li>
-                        <li><a href="#">تحليل: لماذا تعثر ليفربول في الجولة الأخيرة؟</a></li>
-                        <li><a href="#">مواعيد مباريات دوري أبطال أوروبا.</a></li>
-                    </ul>
-                </div>
-            </aside>
+        <div class="match-card">
+            <h2>مباراة ليفربول ضد مانشستر سيتي - القناة 3</h2>
+            <p>سيتم توفير روابط البث لهذه المباراة قبل بدايتها بوقت قصير. ابقوا على اطلاع!</p>
+            <ul>
+                <li><a href="https://fram.sport4all.online/albaplayer/bein1/?serv=1" target="_blank">رابط البث المتوقع 1</a></li>
+                <li><a href="https://fram.sport4all.online/albaplayer/bein1/?serv=2" target="_blank">رابط البث المتوقع 2</a></li>
+            </ul>
         </div>
-    </main>
+    </div>
 
-    <!-- تذييل الصفحة (Footer) -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-links">
-                <a href="#">من نحن</a>
-                <a href="#">اتصل بنا</a>
-                <a href="#">سياسة الخصوصية</a>
-                <a href="#">شروط الخدمة</a>
-            </div>
-            <div class="social-media">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-            </div>
-            <p>&copy; 2024 جميع الحقوق محفوظة لموقع البث الرياضي.</p>
-        </div>
+    <footer id="contact">
+        <p>للدعم أو الاستفسار، تواصل معنا عبر: <a href="mailto:info@ballontv.com" style="color: white; text-decoration: underline;">info@ballontv.com</a></p>
+        <p>&copy; 2023 BallonTV. جميع الحقوق محفوظة.</p>
     </footer>
-
-    <script src="js/script.js"></script>
 </body>
 </html>
