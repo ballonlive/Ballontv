@@ -1,281 +1,76 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!doctype html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="monetag" content="e32cf3fc5635ef3dc05fd6d4bb8cd7af">
-    <title>BallonTV - مشاهدة مباراة الأهلي ضد الزمالك (جودة عالية)</title>
-
-    <!-- أكواد الإعلان التي تحتاجها في صفحة المشغل -->
-    <script src="https://fpyf8.com/88/tag.min.js" data-zone="166823" async data-cfasync="false"></script>
-    <script src="https://fpyf8.com/88/tag.min.js" data-zone="166820" async data-cfasync="false"></script>
-  
-    <!-- Shaka Player UI library and default CSS -->
-    <script src="https://shaka-player-demo.appspot.com/dist/shaka-player.ui.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://shaka-player-demo.appspot.com/dist/controls.css">
-    
-    <!-- Chromecast SDK (optional) -->
-    <script defer src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
-
-    <style>
-        /* الأنماط العامة لصفحة BallonTV */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f2f5; /* الخلفية الفاتحة الأصلية */
-            color: #333;
-            margin: 0;
-            padding: 0;
-            direction: rtl;
-            text-align: right;
-        }
-
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2.5em;
-        }
-        header p {
-            margin: 5px 0 0;
-            font-size: 1.2em;
-        }
-
-        /* حاوية المشغل الرئيسية لتتناسب مع تصميم BallonTV */
-        .player-container {
-            max-width: 960px;
-            margin: 20px auto;
-            padding: 0 20px; /* تخلص من padding الكبير هنا واستخدمه داخل video-wrapper إذا لزم الأمر */
-            background-color: white; /* خلفية بيضاء لتتناسب مع BallonTV */
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding-bottom: 20px;
-        }
-
-        .player-container h2 {
-            color: #4CAF50;
-            text-align: center;
-            margin-top: 0;
-            padding-top: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #eee;
-        }
-
-        /* أنماط مشغل Shaka لتتناسب مع تصميم BallonTV */
-        .shaka-video-container {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            height: 0;
-            overflow: hidden;
-            margin-bottom: 20px;
-            background-color: #000; /* خلفية سوداء للمشغل نفسه */
-            border-radius: 8px; /* تدوير حواف المشغل */
-        }
-        .shaka-video-container video {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            border-radius: 8px; /* تدوير حواف الفيديو داخل المشغل */
-        }
-
-        /* الأنماط المخصصة لعناصر تحكم Shaka Player */
-        .shaka-video-container .material-icons-round {
-            color: #4CAF50; /* لون أيقونات التحكم (مثل لون BallonTV الأخضر) */
-        }
-        .shaka-seek-bar-container .shaka-seek-bar {
-            background: linear-gradient(to right, #4CAF50, #8BC34A, #CDDC39); /* تدرج لوني لشريط التقدم */
-        }
-        .shaka-volume-bar-container .shaka-volume-bar {
-            background: linear-gradient(to right, #4CAF50, #8BC34A, #CDDC39); /* تدرج لوني لشريط الصوت */
-        }
-        .shaka-spinner-path {
-            stroke: #4CAF50; /* لون مؤشر التحميل */
-            stroke-linecap: round;
-            animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
-        }
-        @keyframes dash {
-            0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; }
-            50% { stroke-dasharray: 89, 200; stroke-dashoffset: -35px; }
-            100% { stroke-dasharray: 89, 200; stroke-dashoffset: -124px; }
-        }
-        @keyframes color {
-            100%, 0% { stroke: #4CAF50; } /* لون مؤشر التحميل */
-            40% { stroke: #8BC34A; }
-            66% { stroke: #CDDC39; }
-            80%, 90% { stroke: #AEEA00; }
-        }
-
-        /* زر العودة */
-        .back-button-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .back-button {
-            display: inline-block;
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-        .back-button:hover {
-            background-color: #0056b3;
-        }
-
-        /* تذييل الصفحة */
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-            margin-top: 30px;
-        }
-        footer p {
-            margin: 0;
-        }
-        footer a {
-            color: #4CAF50; /* لون الروابط في التذييل */
-            text-decoration: underline;
-        }
-
-        /* استجابة التصميم */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2em;
-            }
-            header p {
-                font-size: 1em;
-            }
-            .player-container {
-                margin: 15px auto;
-                padding: 0 15px;
-            }
-            .player-container h2 {
-                font-size: 1.5em;
-            }
-        }
-    </style>
+    <title>BallonLive Stream</title> <!-- تم التغيير هنا -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <header>
-        <h1>BallonTV</h1>
-        <p>مشاهدة مباشرة وحصرية</p>
-    </header>
+    <div class="video-player-container" id="video-player-container">
+        <!-- يمكن أن يكون هناك نص "LiveX Stream" هنا إذا كان هناك عنصر يعرضه -->
+        <!-- على سبيل المثال، إذا كان هناك <p>LiveX Stream</p> -->
+        <a href="https://t.me/ballonlive" target="_blank" class="telegram-link"> <!-- يمكنك تحديث رابط التليجرام هنا أيضًا -->
+            <img id="telegram-logo" src="https://www2.0zz0.com/2025/08/26/11/860127513.png" alt="Telegram logo">
+        </a>
 
-    <div class="player-container">
-        <!-- يمكنك تغيير هذا العنوان لكل صفحة playerX.html -->
-        <h2>مشاهدة مباراة الأهلي ضد الزمالك (جودة عالية)</h2>
-        <div style="margin-bottom: 20px; text-align: center;">
-            <!-- هنا سيظهر الإعلان الأول في صفحة المشغل -->
+        <video id="video-player" type="video/mp4" poster="https://www2.0zz0.com/2025/08/25/14/924229628.jpg"></video>
+
+        <div class="loading-spinner" id="loading-spinner" style="display: none;">
+            <i class="fa-solid fa-spinner fa-spin"></i>
         </div>
 
-        <!-- هذا هو مكان مشغل Shaka Player -->
-        <div data-shaka-player-container style="width:100%;">
-            <video autoplay data-shaka-player id="video" poster="https://i.imgur.com/G5gQe81.png" style="width:100%; height:100%;"></video>
-        </div>
-        
-        <div style="margin-top: 20px; margin-bottom: 20px; text-align: center;">
-            <!-- هنا سيظهر الإعلان الثاني في صفحة المشغل -->
+        <div class="center-controls" id="center-controls">
+            <button id="rewind-btn" title="Rewind 10 seconds">
+                <i class="material-icons">replay_10</i>
+            </button>
+            <button id="play-pause-btn" title="Play/Pause">
+                <i class="bi bi-play-fill"></i>
+            </button>
+            <button id="forward-btn" title="Forward 10 seconds">
+                <i class="material-icons">forward_10</i>
+            </button>
         </div>
 
-        <div class="back-button-container">
-            <a href="index.html" class="back-button">العودة إلى المباريات</a>
+        <div class="controls-container">
+            <div class="progress-bar" id="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+
+            <div class="controls-bottom">
+                <div class="controls-left">
+                    <button id="volume-toggle-btn" title="Mute/Unmute">
+                        <i class="bi bi-volume-up-fill"></i>
+                    </button>
+                    <div class="time-display" id="time-display">Live</div>
+                </div>
+
+                <div class="controls-right">
+                    <button id="quality-btn" title="Change Quality">Auto</button>
+                    <button id="fit-fill-btn" title="Toggle Fit/Normal/Fill">Fit</button>
+                    <button id="fullscreen-btn" title="Toggle Fullscreen">
+                        <i class="fa-solid fa-expand"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="telegram-modal" class="modal-overlay">
+            <div class="modal-content">
+                <img src="https://www2.0zz0.com/2025/08/26/11/860127513.png" alt="Telegram Logo" class="modal-logo">
+                <p>للاستمتاع بالبث المباشر، انضم إلى قناتنا على التليجرام.</p>
+                <a href="https://t.me/ballonlive" target="_blank" class="join-btn"> <!-- تم التغيير هنا -->
+                    <i class="fab fa-telegram-plane"></i> إنضمام الآن 
+                </a>
+                <button id="close-modal-btn" class="close-btn">إغلاق</button>
+            </div>
         </div>
     </div>
 
-    <footer>
-        <p>للدعم أو الاستفسار، تواصل معنا عبر: <a href="mailto:info@ballontv.com" style="color: white; text-decoration: underline;">info@ballontv.com</a></p>
-        <p>&copy; 2023 BallonTV. جميع الحقوق محفوظة.</p>
-    </footer>
-
-    <!-- أكواد الإعلانات التي يتم تحميلها قبل إغلاق </body> -->
-    <script>(s=>{s.dataset.zone='9785323',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-
-    <script>
-        document.addEventListener('shaka-ui-loaded', () => {
-            initPlayer();
-        });
-
-        function initPlayer() {
-            const video = document.getElementById('video');
-            const ui = video['ui'];
-            const controls = ui.getControls();
-            const player = controls.getPlayer();
-
-            // إعدادات واجهة التحكم
-            const config = {
-                'controlPanelElements': ['rewind', 'play_pause', 'fast_forward', 'time_and_duration', 'spacer', 'volume', 'fullscreen', 'overflow_menu'],
-                'overflowMenuButtons': ['captions', 'quality', 'language', 'picture_in_picture', 'playback_rate', 'cast'],
-                'statisticsList': ['width', 'height', 'playTime', 'bufferingTime'],
-                'playbackRates': [0.5, 0.75, 1, 1.25, 1.5, 2],
-                'fastForwardRates': [2, 4, 8, 1],
-                'rewindRates': [-1, -2, -4, -8]
-            };
-            ui.configure(config);
-
-            window.player = player; // For debugging purposes
-            window.ui = ui; // For debugging purposes
-
-            player.addEventListener("error", onErrorEvent);
-            controls.addEventListener("error", onErrorEvent);
-
-            // --------------------------------------------------------------------
-            // هنا تقوم بتعيين رابط البث (manifestUri) والمفتاح (clearKey) لكل صفحة لاعب
-            // هذا هو الجزء الذي سيتغير لكل ملف playerX.html
-            const manifestUri = 'https://www.youtube.com/live/8RYigUKpBow?si=Iduy2_2BAYSQUXt_'; // <---- غيّر هذا الرابط
-            const clearKeyId = 'your-key-id'; // <---- غيّر هذا بمعرف المفتاح الفعلي
-            const clearKey = 'your-key-value'; // <---- غيّر هذا بقيمة المفتاح الفعلي
-            // --------------------------------------------------------------------
-
-            if (!manifestUri) {
-                console.error('لم يتم تحديد رابط البث.');
-                alert('حدث خطأ: لم يتم تحديد رابط البث لهذه المباراة.');
-                return;
-            }
-
-            // إعدادات DRM (ClearKey)
-            player.configure({
-                drm: {
-                    clearKeys: {} // Reset old keys
-                }
-            });
-            
-            if (clearKeyId && clearKey) {
-                player.configure({
-                    drm: {
-                        clearKeys: {
-                            [clearKeyId]: clearKey
-                        }
-                    }
-                });
-            }
-
-            // تحميل المصدر
-            player.load(manifestUri).then(() => {
-                console.log('The video has been loaded successfully!');
-            }).catch(onError);
-        }
-
-        function onErrorEvent(event) {
-            onError(event.detail);
-        }
-
-        function onError(error) {
-            console.error('Error code', error.code, 'object', error);
-            // يمكنك تخصيص رسالة الخطأ هنا
-            alert('حدث خطأ أثناء تشغيل الفيديو: ' + error.code + '. يرجى المحاولة مرة أخرى.');
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="script.js"></script>
 </body>
 </html>
