@@ -1,18 +1,27 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="monetag" content="e32cf3fc5635ef3dc05fd6d4bb8cd7af">
-    <title>BallonTV - مشاهدة قرعة دوري ابطال اوربا (جودة عالية)</title>
+    <title>BallonTV - مشاهدة مباراة الأهلي ضد الزمالك (جودة عالية)</title>
+
     <!-- أكواد الإعلان التي تحتاجها في صفحة المشغل -->
     <script src="https://fpyf8.com/88/tag.min.js" data-zone="166823" async data-cfasync="false"></script>
     <script src="https://fpyf8.com/88/tag.min.js" data-zone="166820" async data-cfasync="false"></script>
+  
+    <!-- Shaka Player UI library and default CSS -->
+    <script src="https://shaka-player-demo.appspot.com/dist/shaka-player.ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://shaka-player-demo.appspot.com/dist/controls.css">
+    
+    <!-- Chromecast SDK (optional) -->
+    <script defer src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
 
     <style>
+        /* الأنماط العامة لصفحة BallonTV */
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f2f5;
+            background-color: #f0f2f5; /* الخلفية الفاتحة الأصلية */
             color: #333;
             margin: 0;
             padding: 0;
@@ -36,11 +45,12 @@
             font-size: 1.2em;
         }
 
+        /* حاوية المشغل الرئيسية لتتناسب مع تصميم BallonTV */
         .player-container {
             max-width: 960px;
             margin: 20px auto;
-            padding: 0 20px;
-            background-color: white;
+            padding: 0 20px; /* تخلص من padding الكبير هنا واستخدمه داخل video-wrapper إذا لزم الأمر */
+            background-color: white; /* خلفية بيضاء لتتناسب مع BallonTV */
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             padding-bottom: 20px;
@@ -55,28 +65,57 @@
             border-bottom: 2px solid #eee;
         }
 
-        .video-wrapper {
+        /* أنماط مشغل Shaka لتتناسب مع تصميم BallonTV */
+        .shaka-video-container {
             position: relative;
             padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
             height: 0;
             overflow: hidden;
             margin-bottom: 20px;
+            background-color: #000; /* خلفية سوداء للمشغل نفسه */
+            border-radius: 8px; /* تدوير حواف المشغل */
         }
-
-        .video-wrapper iframe {
+        .shaka-video-container video {
+            width: 100%;
+            height: 100%;
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
+            border-radius: 8px; /* تدوير حواف الفيديو داخل المشغل */
         }
 
+        /* الأنماط المخصصة لعناصر تحكم Shaka Player */
+        .shaka-video-container .material-icons-round {
+            color: #4CAF50; /* لون أيقونات التحكم (مثل لون BallonTV الأخضر) */
+        }
+        .shaka-seek-bar-container .shaka-seek-bar {
+            background: linear-gradient(to right, #4CAF50, #8BC34A, #CDDC39); /* تدرج لوني لشريط التقدم */
+        }
+        .shaka-volume-bar-container .shaka-volume-bar {
+            background: linear-gradient(to right, #4CAF50, #8BC34A, #CDDC39); /* تدرج لوني لشريط الصوت */
+        }
+        .shaka-spinner-path {
+            stroke: #4CAF50; /* لون مؤشر التحميل */
+            stroke-linecap: round;
+            animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+        }
+        @keyframes dash {
+            0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; }
+            50% { stroke-dasharray: 89, 200; stroke-dashoffset: -35px; }
+            100% { stroke-dasharray: 89, 200; stroke-dashoffset: -124px; }
+        }
+        @keyframes color {
+            100%, 0% { stroke: #4CAF50; } /* لون مؤشر التحميل */
+            40% { stroke: #8BC34A; }
+            66% { stroke: #CDDC39; }
+            80%, 90% { stroke: #AEEA00; }
+        }
+
+        /* زر العودة */
         .back-button-container {
             text-align: center;
             margin-top: 20px;
         }
-
         .back-button {
             display: inline-block;
             background-color: #007bff;
@@ -91,6 +130,7 @@
             background-color: #0056b3;
         }
 
+        /* تذييل الصفحة */
         footer {
             background-color: #333;
             color: white;
@@ -104,7 +144,12 @@
         footer p {
             margin: 0;
         }
+        footer a {
+            color: #4CAF50; /* لون الروابط في التذييل */
+            text-decoration: underline;
+        }
 
+        /* استجابة التصميم */
         @media (max-width: 768px) {
             header h1 {
                 font-size: 2em;
@@ -129,15 +174,17 @@
     </header>
 
     <div class="player-container">
-        <h2>مشاهدة قرعة دوري ابطال اوربا (جودة عالية)</h2>
+        <!-- يمكنك تغيير هذا العنوان لكل صفحة playerX.html -->
+        <h2>مشاهدة مباراة الأهلي ضد الزمالك (جودة عالية)</h2>
         <div style="margin-bottom: 20px; text-align: center;">
             <!-- هنا سيظهر الإعلان الأول في صفحة المشغل -->
         </div>
 
-        <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/live/8RYigUKpBow?si=kBytK6TiTDJBkP_8" allowfullscreen></iframe>
+        <!-- هذا هو مكان مشغل Shaka Player -->
+        <div data-shaka-player-container style="width:100%;">
+            <video autoplay data-shaka-player id="video" poster="https://i.imgur.com/G5gQe81.png" style="width:100%; height:100%;"></video>
         </div>
-
+        
         <div style="margin-top: 20px; margin-bottom: 20px; text-align: center;">
             <!-- هنا سيظهر الإعلان الثاني في صفحة المشغل -->
         </div>
@@ -152,6 +199,83 @@
         <p>&copy; 2023 BallonTV. جميع الحقوق محفوظة.</p>
     </footer>
 
+    <!-- أكواد الإعلانات التي يتم تحميلها قبل إغلاق </body> -->
     <script>(s=>{s.dataset.zone='9785323',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+
+    <script>
+        document.addEventListener('shaka-ui-loaded', () => {
+            initPlayer();
+        });
+
+        function initPlayer() {
+            const video = document.getElementById('video');
+            const ui = video['ui'];
+            const controls = ui.getControls();
+            const player = controls.getPlayer();
+
+            // إعدادات واجهة التحكم
+            const config = {
+                'controlPanelElements': ['rewind', 'play_pause', 'fast_forward', 'time_and_duration', 'spacer', 'volume', 'fullscreen', 'overflow_menu'],
+                'overflowMenuButtons': ['captions', 'quality', 'language', 'picture_in_picture', 'playback_rate', 'cast'],
+                'statisticsList': ['width', 'height', 'playTime', 'bufferingTime'],
+                'playbackRates': [0.5, 0.75, 1, 1.25, 1.5, 2],
+                'fastForwardRates': [2, 4, 8, 1],
+                'rewindRates': [-1, -2, -4, -8]
+            };
+            ui.configure(config);
+
+            window.player = player; // For debugging purposes
+            window.ui = ui; // For debugging purposes
+
+            player.addEventListener("error", onErrorEvent);
+            controls.addEventListener("error", onErrorEvent);
+
+            // --------------------------------------------------------------------
+            // هنا تقوم بتعيين رابط البث (manifestUri) والمفتاح (clearKey) لكل صفحة لاعب
+            // هذا هو الجزء الذي سيتغير لكل ملف playerX.html
+            const manifestUri = 'https://example.com/path/to/alahly-zamalek-high.mpd'; // <---- غيّر هذا الرابط
+            const clearKeyId = 'your-key-id'; // <---- غيّر هذا بمعرف المفتاح الفعلي
+            const clearKey = 'your-key-value'; // <---- غيّر هذا بقيمة المفتاح الفعلي
+            // --------------------------------------------------------------------
+
+            if (!manifestUri) {
+                console.error('لم يتم تحديد رابط البث.');
+                alert('حدث خطأ: لم يتم تحديد رابط البث لهذه المباراة.');
+                return;
+            }
+
+            // إعدادات DRM (ClearKey)
+            player.configure({
+                drm: {
+                    clearKeys: {} // Reset old keys
+                }
+            });
+            
+            if (clearKeyId && clearKey) {
+                player.configure({
+                    drm: {
+                        clearKeys: {
+                            [clearKeyId]: clearKey
+                        }
+                    }
+                });
+            }
+
+            // تحميل المصدر
+            player.load(manifestUri).then(() => {
+                console.log('The video has been loaded successfully!');
+            }).catch(onError);
+        }
+
+        function onErrorEvent(event) {
+            onError(event.detail);
+        }
+
+        function onError(error) {
+            console.error('Error code', error.code, 'object', error);
+            // يمكنك تخصيص رسالة الخطأ هنا
+            alert('حدث خطأ أثناء تشغيل الفيديو: ' + error.code + '. يرجى المحاولة مرة أخرى.');
+        }
+    </script>
 </body>
 </html>
