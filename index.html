@@ -222,31 +222,3 @@
     <script>(s=>{s.dataset.zone='9785323',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 </body>
 </html>
-```
-
-**شرح أماكن وضع أكواد الإعلانات:**
-
-1.  **في قسم `<head>`:**
-    ```html
-    <script src="https://fpyf8.com/88/tag.min.js" data-zone="166823" async data-cfasync="false"></script>
-    <script src="https://fpyf8.com/88/tag.min.js" data-zone="166820" async data-cfasync="false"></script>
-    ```
-    *   وضعت هذه الأكواد هنا لأنها غالبًا ما تكون أكواد إعلانات شبكية (network ads) أو إعلانات منبثقة (pop-ups/unders) التي قد تحتاج إلى التحميل مبكرًا لتفعيل آلياتها. استخدام `async` و `data-cfasync="false"` يساعد على عدم حظر تحميل الصفحة.
-
-2.  **قبل إغلاق وسم `</body>` مباشرة:**
-    ```html
-    <script>(s=>{s.dataset.zone='9785323',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-    ```
-    *   عادةً ما يكون هذا هو أفضل مكان لأكواد الإعلانات التي قد تؤثر على سرعة تحميل المحتوى المرئي للصفحة (مثل الإعلانات التي تظهر داخل المحتوى أو تتطلب حسابات معقدة). وضعها هنا يضمن أن محتوى موقعك (الرأس، شريط التنقل، بطاقات المباريات) سيتم عرضه أولاً للمستخدم، مما يحسن تجربة المستخدم.
-
-**أماكن مقترحة لظهور الإعلانات (يمكنك إضافة `div` فارغ أو عنصر خاص بالإعلان):**
-
-لقد أضفت بعض `div` فارغة مع تنسيق بسيط `margin` و `text-align: center` كأماكن مقترحة يمكنك أن تتوقع ظهور الإعلانات فيها. ستقوم الأكواد الإعلانية نفسها بملء هذه المساحات أو إضافة عناصر إعلانية أخرى.
-
-*   **أسفل شريط التنقل مباشرة:**
-    ```html
-    <div class="container">
-        <div style="margin-bottom: 20px; text-align: center;">
-            <!-- هنا سيظهر الإعلان الأول -->
-        </div>
-    </div>
