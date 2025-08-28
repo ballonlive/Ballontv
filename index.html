@@ -1,10 +1,22 @@
+Chat prompt
+Model response
+بالتأكيد! لدمج الإعلانات في موقعك، ستحتاج إلى وضع أكواد الإعلان في الأماكن المناسبة داخل ملف HTML الخاص بك.
+
+إليك كيفية دمج الأكواد الإعلانية التي قدمتها في ملف HTML الخاص بك، مع أفضل الممارسات لمكان وضعها:
+
+```html
 <!DOCTYPE html>
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="monetag" content="e32cf3fc5635ef3dc05fd6d4bb8cd7af"> <!-- هذا هو سطر الإعلان الذي تمت إضافته -->
+    <meta name="monetag" content="e32cf3fc5635ef3dc05fd6d4bb8cd7af">
     <title>BallonTV - بث مباريات اليوم</title>
+    <!-- أكواد الإعلانات التي يتم تحميلها في <head> -->
+    <!-- يفضل وضع بعض أكواد الإعلان هنا إذا كانت لا تؤثر على عرض المحتوى الأولي -->
+    <script src="https://fpyf8.com/88/tag.min.js" data-zone="166823" async data-cfasync="false"></script>
+    <script src="https://fpyf8.com/88/tag.min.js" data-zone="166820" async data-cfasync="false"></script>
+
     <style>
         /* أنماط CSS الأساسية للجسم */
         body {
@@ -13,17 +25,17 @@
             color: #333;
             margin: 0;
             padding: 0;
-            direction: rtl; /* لجعل التخطيط من اليمين لليسار للعربية */
+            direction: rtl;
             text-align: right;
         }
 
         /* أنماط CSS لرأس الصفحة */
         header {
-            background-color: #4CAF50; /* لون أخضر جميل */
+            background-color: #4CAF50;
             color: white;
             padding: 20px 0;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* ظل خفيف */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         header h1 {
             margin: 0;
@@ -36,47 +48,47 @@
 
         /* أنماط CSS لشريط التنقل */
         nav {
-            background-color: #333; /* لون رمادي داكن */
-            overflow: hidden; /* لإزالة أي تجاوزات */
+            background-color: #333;
+            overflow: hidden;
             text-align: center;
         }
         nav a {
-            display: inline-block; /* لعرض الروابط بجانب بعضها البعض */
+            display: inline-block;
             color: white;
             text-align: center;
             padding: 14px 16px;
-            text-decoration: none; /* إزالة الخط السفلي من الروابط */
+            text-decoration: none;
             font-weight: bold;
         }
         nav a:hover {
-            background-color: #ddd; /* لون رمادي فاتح عند التمرير */
+            background-color: #ddd;
             color: black;
         }
 
         /* أنماط CSS للحاوية الرئيسية */
         .container {
-            max-width: 960px; /* أقصى عرض للحاوية */
-            margin: 20px auto; /* توسيط الحاوية مع مسافة علوية وسفلية */
-            padding: 0 20px; /* مسافة داخلية من الجانبين */
+            max-width: 960px;
+            margin: 20px auto;
+            padding: 0 20px;
         }
 
         /* أنماط CSS لبطاقة المباراة */
         .match-card {
             background-color: white;
-            border-radius: 8px; /* حواف دائرية */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* ظل خفيف */
-            margin-bottom: 20px; /* مسافة أسفل كل بطاقة */
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
             padding: 20px;
             text-align: right;
         }
         .match-card h2 {
-            color: #4CAF50; /* لون أخضر لعنوان المباراة */
+            color: #4CAF50;
             margin-top: 0;
-            border-bottom: 2px solid #eee; /* خط سفلي خفيف */
+            border-bottom: 2px solid #eee;
             padding-bottom: 10px;
         }
         .match-card ul {
-            list-style: none; /* إزالة نقاط القائمة الافتراضية */
+            list-style: none;
             padding: 0;
             margin-top: 15px;
         }
@@ -85,14 +97,14 @@
             font-size: 1.1em;
         }
         .match-card ul li a {
-            color: #007bff; /* لون أزرق للروابط */
+            color: #007bff;
             text-decoration: none;
             font-weight: bold;
-            transition: color 0.3s ease; /* تأثير انتقال ناعم للون */
+            transition: color 0.3s ease;
         }
         .match-card ul li a:hover {
-            text-decoration: underline; /* خط سفلي عند التمرير */
-            color: #0056b3; /* لون أزرق أغمق عند التمرير */
+            text-decoration: underline;
+            color: #0056b3;
         }
         .match-card p {
             font-size: 0.9em;
@@ -158,6 +170,14 @@
         <a href="#contact">اتصل بنا</a>
     </nav>
 
+    <!-- مكان لوضع الإعلان الأول (مثلاً أسفل شريط التنقل مباشرة) -->
+    <div class="container">
+        <!-- يمكنك إضافة هذا الكود في أي مكان تريده لظهور الإعلان -->
+        <div style="margin-bottom: 20px; text-align: center;">
+            <!-- هنا سيظهر الإعلان الأول -->
+        </div>
+    </div>
+
     <div class="container" id="matches">
         <div class="match-card">
             <h2>مباراة الأهلي ضد الزمالك - القناة 1</h2>
@@ -169,6 +189,11 @@
             <p><strong>ملاحظة هامة:</strong> انقر على أحد الروابط أعلاه لبدء المشاهدة. قد تحتاج إلى تحديث الصفحة إذا لم يعمل البث على الفور.</p>
         </div>
 
+        <!-- مكان لوضع إعلان بين بطاقات المباريات -->
+        <div style="margin: 30px 0; text-align: center;">
+            <!-- هنا يمكن أن يظهر إعلان آخر -->
+        </div>
+
         <div class="match-card">
             <h2>مباراة ريال مدريد ضد برشلونة - القناة 2</h2>
             <ul>
@@ -177,6 +202,11 @@
                 <li><a href="https://fram.sport4all.online/albaplayer/bein1/?serv=3" target="_blank">رابط البث 3 (جودة قياسية)</a></li>
             </ul>
             <p>تابعوا معنا تغطية حية ومباشرة لهذه المباراة المثيرة.</p>
+        </div>
+
+        <!-- مكان لوضع إعلان آخر بين بطاقات المباريات -->
+        <div style="margin: 30px 0; text-align: center;">
+            <!-- هنا يمكن أن يظهر إعلان آخر -->
         </div>
 
         <div class="match-card">
@@ -193,5 +223,37 @@
         <p>للدعم أو الاستفسار، تواصل معنا عبر: <a href="mailto:info@ballontv.com" style="color: white; text-decoration: underline;">info@ballontv.com</a></p>
         <p>&copy; 2023 BallonTV. جميع الحقوق محفوظة.</p>
     </footer>
+
+    <!-- أكواد الإعلانات التي يتم تحميلها قبل إغلاق </body> -->
+    <!-- يفضل وضع أكواد الإعلانات هنا لتحسين سرعة تحميل الصفحة -->
+    <script>(s=>{s.dataset.zone='9785323',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 </body>
 </html>
+```
+
+**شرح أماكن وضع أكواد الإعلانات:**
+
+1.  **في قسم `<head>`:**
+    ```html
+    <script src="https://fpyf8.com/88/tag.min.js" data-zone="166823" async data-cfasync="false"></script>
+    <script src="https://fpyf8.com/88/tag.min.js" data-zone="166820" async data-cfasync="false"></script>
+    ```
+    *   وضعت هذه الأكواد هنا لأنها غالبًا ما تكون أكواد إعلانات شبكية (network ads) أو إعلانات منبثقة (pop-ups/unders) التي قد تحتاج إلى التحميل مبكرًا لتفعيل آلياتها. استخدام `async` و `data-cfasync="false"` يساعد على عدم حظر تحميل الصفحة.
+
+2.  **قبل إغلاق وسم `</body>` مباشرة:**
+    ```html
+    <script>(s=>{s.dataset.zone='9785323',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+    ```
+    *   عادةً ما يكون هذا هو أفضل مكان لأكواد الإعلانات التي قد تؤثر على سرعة تحميل المحتوى المرئي للصفحة (مثل الإعلانات التي تظهر داخل المحتوى أو تتطلب حسابات معقدة). وضعها هنا يضمن أن محتوى موقعك (الرأس، شريط التنقل، بطاقات المباريات) سيتم عرضه أولاً للمستخدم، مما يحسن تجربة المستخدم.
+
+**أماكن مقترحة لظهور الإعلانات (يمكنك إضافة `div` فارغ أو عنصر خاص بالإعلان):**
+
+لقد أضفت بعض `div` فارغة مع تنسيق بسيط `margin` و `text-align: center` كأماكن مقترحة يمكنك أن تتوقع ظهور الإعلانات فيها. ستقوم الأكواد الإعلانية نفسها بملء هذه المساحات أو إضافة عناصر إعلانية أخرى.
+
+*   **أسفل شريط التنقل مباشرة:**
+    ```html
+    <div class="container">
+        <div style="margin-bottom: 20px; text-align: center;">
+            <!-- هنا سيظهر الإعلان الأول -->
+        </div>
+    </div>
