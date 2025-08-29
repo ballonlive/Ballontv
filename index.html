@@ -3,221 +3,514 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="monetag" content="">
-    <title>BallonTV - بث مباريات اليوم</title>
-    <!-- يفضل وضع بعض أكواد الإعلان هنا إذا كانت لا تؤثر على عرض المحتوى الأولي -->
-    <script src="https://fpyf8.com/88/tag.min.js" data-zone="166823" async data-cfasync="false"></script>
-    <script src="https://fpyf8.com/88/tag.min.js" data-zone="166820" async data-cfasync="false"></script>
-
+    <title>BallonTV - جدول مباريات الغد</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* أنماط CSS الأساسية للجسم */
+        :root {
+            --primary-color: #28a745; /* أخضر جذاب */
+            --secondary-color: #007bff; /* أزرق مميز */
+            --accent-color: #ffc107; /* أصفر للتأكيد */
+            --background-dark: #2c3e50; /* خلفية داكنة للفوتر والهيدر */
+            --background-light: #ecf0f1; /* خلفية فاتحة للجسم */
+            --card-background: #ffffff; /* خلفية البطاقات */
+            --text-dark: #34495e; /* لون النص الغامق */
+            --text-light: #ecf0f1; /* لون النص الفاتح */
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-dark);
             margin: 0;
             padding: 0;
             direction: rtl;
             text-align: right;
+            line-height: 1.6;
         }
 
-        /* أنماط CSS لرأس الصفحة */
+        /* رأس الصفحة */
         header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px 0;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            padding: 25px 0;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            position: relative;
         }
         header h1 {
             margin: 0;
-            font-size: 2.5em;
+            font-size: 3em;
+            letter-spacing: 1px;
+            color: var(--primary-color);
         }
         header p {
-            margin: 5px 0 0;
-            font-size: 1.2em;
+            margin: 10px 0 0;
+            font-size: 1.3em;
+            color: var(--text-light);
         }
 
-        /* أنماط CSS لشريط التنقل */
+        /* ساعة غرينتش */
+        #gmt-clock {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-top: 15px;
+            padding: 8px 15px;
+            background-color: rgba(0, 0, 0, 0.3);
+            display: inline-block;
+            border-radius: 5px;
+        }
+
+        /* شريط التنقل */
         nav {
-            background-color: #333;
+            background-color: var(--primary-color);
             overflow: hidden;
             text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         nav a {
             display: inline-block;
-            color: white;
+            color: var(--text-light);
             text-align: center;
-            padding: 14px 16px;
+            padding: 16px 20px;
             text-decoration: none;
             font-weight: bold;
-        }
-        nav a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-
-        /* أنماط CSS للحاوية الرئيسية */
-        .container {
-            max-width: 960px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-
-        /* أنماط CSS لبطاقة المباراة */
-        .match-card {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            padding: 20px;
-            text-align: right;
-        }
-        .match-card h2 {
-            color: #4CAF50;
-            margin-top: 0;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-        }
-        .match-card ul {
-            list-style: none;
-            padding: 0;
-            margin-top: 15px;
-        }
-        .match-card ul li {
-            margin-bottom: 12px;
+            transition: background-color 0.3s ease, color 0.3s ease;
             font-size: 1.1em;
         }
-        .match-card ul li a {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-        .match-card ul li a:hover {
-            text-decoration: underline;
-            color: #0056b3;
-        }
-        .match-card p {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 20px;
-            border-top: 1px dashed #eee;
-            padding-top: 10px;
+        nav a:hover {
+            background-color: var(--secondary-color);
+            color: var(--text-light);
         }
 
-        /* أنماط CSS لتذييل الصفحة */
-        footer {
-            background-color: #333;
-            color: white;
+        /* الحاوية الرئيسية */
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 25px;
+        }
+
+        /* أقسام إعلانية (متروكة فارغة حاليًا) */
+        .ad-space {
+            background-color: #f7f7f7;
+            border: 2px dashed #ccc;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+            color: #888;
+            font-size: 1.1em;
             text-align: center;
-            padding: 20px 0;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-            margin-top: 30px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .ad-space:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background-color: #f0fdf2;
+        }
+
+        /* بطاقة القسم */
+        .section-card {
+            background-color: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            padding: 30px;
+            text-align: right;
+            border-right: 5px solid var(--primary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .section-card h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 25px;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 15px;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+        }
+        .section-card h2 i {
+            margin-left: 10px;
+            color: var(--secondary-color);
+        }
+
+        /* قائمة المباريات */
+        .match-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .match-list li {
+            background-color: #f9f9f9;
+            margin-bottom: 15px;
+            padding: 18px 25px;
+            border-radius: 8px;
+            border-right: 4px solid var(--secondary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .match-list li:hover {
+            background-color: #f0f8ff;
+            transform: translateX(-5px);
+        }
+        .match-list li .match-details {
+            flex-grow: 1;
+        }
+        .match-list li .match-time {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.2em;
+            margin-right: 20px;
+            white-space: nowrap; /* Keep time on one line */
+        }
+        .match-list li .teams {
+            font-weight: bold;
+            font-size: 1.15em;
+            color: var(--text-dark);
+        }
+        .match-list li .league {
+            font-size: 0.95em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .match-list li a {
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+            padding: 10px 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            white-space: nowrap;
+            margin-left: 15px;
+        }
+        .match-list li a:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* تذييل الصفحة */
+        footer {
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            box-shadow: 0 -4px 8px rgba(0,0,0,0.2);
         }
         footer p {
             margin: 0;
+            font-size: 1em;
+        }
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        footer a:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
         }
 
-        /* أنماط CSS للاستجابة (Responsive Design) */
+        /* الاستجابة (Responsive Design) */
         @media (max-width: 768px) {
             header h1 {
-                font-size: 2em;
+                font-size: 2.2em;
             }
             header p {
                 font-size: 1em;
             }
-            nav a {
-                padding: 10px 12px;
+            #gmt-clock {
                 font-size: 0.9em;
             }
+            nav a {
+                padding: 12px 15px;
+                font-size: 1em;
+            }
             .container {
-                margin: 15px auto;
+                margin: 20px auto;
                 padding: 0 15px;
             }
-            .match-card {
+            .section-card {
+                padding: 20px;
+                border-right-width: 3px;
+            }
+            .section-card h2 {
+                font-size: 1.8em;
+                margin-bottom: 20px;
+            }
+            .match-list li {
+                flex-direction: column;
+                align-items: flex-end;
                 padding: 15px;
+                border-right-width: 3px;
             }
-            .match-card h2 {
-                font-size: 1.5em;
+            .match-list li .match-time {
+                margin-right: 0;
+                margin-bottom: 10px;
+                font-size: 1.1em;
             }
-            .match-card ul li {
+            .match-list li .teams {
+                font-size: 1.05em;
+                text-align: right;
+                width: 100%;
+            }
+            .match-list li .league {
+                font-size: 0.9em;
+                text-align: right;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .match-list li a {
+                width: calc(100% - 30px);
+                text-align: center;
+                margin-left: 0;
+                margin-top: 15px;
+            }
+            .ad-space {
+                min-height: 80px;
                 font-size: 1em;
+                margin: 20px 0;
             }
         }
     </style>
+    <!-- Font Awesome Icons for better visual appeal -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header>
         <h1>BallonTV</h1>
-        <p>بث مباشر وحصري لمباريات اليوم</p>
+        <p>بث مباشر وحصري لمباريات الغد</p>
+        <div id="gmt-clock"></div>
     </header>
 
     <nav>
-        <a href="#home">الرئيسية</a>
-        <a href="#matches">مباريات اليوم</a>
-        <a href="#about">عن الموقع</a>
-        <a href="#contact">اتصل بنا</a>
+        <a href="#home"><i class="fas fa-home"></i> الرئيسية</a>
+        <a href="#matches-tomorrow"><i class="fas fa-futbol"></i> مباريات الغد</a>
+        <a href="#news"><i class="fas fa-newspaper"></i> آخر الأخبار</a>
+        <a href="#analysis"><i class="fas fa-chart-line"></i> تحليلات</a>
+        <a href="#contact"><i class="fas fa-envelope"></i> اتصل بنا</a>
     </nav>
 
-    <!-- مكان لوضع الإعلان الأول (مثلاً أسفل شريط التنقل مباشرة) -->
     <div class="container">
-        <!-- يمكنك إضافة هذا الكود في أي مكان تريده لظهور الإعلان -->
-        <div style="margin-bottom: 20px; text-align: center;">
-            <!-- هنا سيظهر الإعلان الأول -->
+        <!-- مكان مخصص للإعلانات (العليا) -->
+        <div class="ad-space">
+            مكان للإعلان هنا (يمكنك إضافة كود إعلانك لاحقًا)
         </div>
-    </div>
 
-    <div class="container" id="matches">
-        <div class="match-card">
-            <h2>قرعة دوري ابطال اوربا - القناة 1</h2>
-            <ul>
-                <li><a href="player1.html" target="_blank">شاهد البث الآن (جودة عالية)</a></li>
-                <li><a href="player2.html" target="_blank">شاهد البث (جودة متوسطة)</a></li>
-                <li><a href="player3.html" target="_blank">شاهد البث (جودة قياسية)</a></li>
+        <section id="matches-tomorrow" class="section-card">
+            <h2><i class="fas fa-calendar-alt"></i> جدول مباريات الغد 29-8-2025</h2>
+
+            <!-- الدوري الإسباني -->
+            <h3><i class="fas fa-trophy"></i> الدوري الإسباني ⚽️</h3>
+            <ul class="match-list">
+                <li>
+                    <div class="match-details">
+                        <div class="teams">إلتشي 🆚 ليفانتي</div>
+                        <div class="league">الدوري الإسباني</div>
+                    </div>
+                    <div class="match-time">20:30 <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
+                    <a href="match_link_elche_levante.html" target="_blank">شاهد الآن</a>
+                </li>
+                <li>
+                    <div class="match-details">
+                        <div class="teams">فالنسيا 🆚 خيتافي</div>
+                        <div class="league">الدوري الإسباني</div>
+                    </div>
+                    <div class="match-time">22:30 <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
+                    <a href="match_link_valencia_getafe.html" target="_blank">شاهد الآن</a>
+                </li>
             </ul>
-            <p><strong>ملاحظة هامة:</strong> انقر على أحد الروابط أعلاه لبدء المشاهدة. قد تحتاج إلى تحديث الصفحة إذا لم يعمل البث على الفور.</p>
-        </div>
 
-        <!-- مكان لوضع إعلان بين بطاقات المباريات -->
-        <div style="margin: 30px 0; text-align: center;">
-            <!-- هنا يمكن أن يظهر إعلان آخر -->
-        </div>
-
-        <div class="match-card">
-            <h2>مباراة ريال مدريد ضد برشلونة - القناة 2</h2>
-            <ul>
-                <li><a href="player4.html" target="_blank">رابط البث 1 (جودة عالية)</a></li>
-                <li><a href="player5.html" target="_blank">رابط البث 2 (جودة متوسطة)</a></li>
-                <li><a href="player6.html" target="_blank">رابط البث 3 (جودة قياسية)</a></li>
+            <!-- الدوري الإيطالي -->
+            <h3><i class="fas fa-trophy"></i> الدوري الإيطالي ⚽️</h3>
+            <ul class="match-list">
+                <li>
+                    <div class="match-details">
+                        <div class="teams">كريمونيسي 🆚 ساسولو</div>
+                        <div class="league">الدوري الإيطالي</div>
+                    </div>
+                    <div class="match-time">19:30 <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
+                    <a href="match_link_cremonese_sassuolo.html" target="_blank">شاهد الآن</a>
+                </li>
+                <li>
+                    <div class="match-details">
+                        <div class="teams">ليتشي 🆚 ميلان</div>
+                        <div class="league">الدوري الإيطالي</div>
+                    </div>
+                    <div class="match-time">21:45 <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
+                    <a href="match_link_lecce_milan.html" target="_blank">شاهد الآن</a>
+                </li>
             </ul>
-            <p>تابعوا معنا تغطية حية ومباشرة لهذه المباراة المثيرة.</p>
-        </div>
 
-        <!--<script src="https://fpyf8.com/88/tag.min.js" data-zone="166820" async data-cfasync="false"></script> -->
-        <div style="margin: 30px 0; text-align: center;">
-            <!-- هنا يمكن أن يظهر إعلان آخر -->
-        </div>
-
-        <div class="match-card">
-            <h2>مباراة ليفربول ضد مانشستر سيتي - القناة 3</h2>
-            <p>سيتم توفير روابط البث لهذه المباراة قبل بدايتها بوقت قصير. ابقوا على اطلاع!</p>
-            <ul>
-                <li><a href="player7.html" target="_blank">رابط البث المتوقع 1</a></li>
-                <li><a href="player8.html" target="_blank">رابط البث المتوقع 2</a></li>
+            <!-- الدوري الألماني -->
+            <h3><i class="fas fa-trophy"></i> الدوري الألماني ⚽️</h3>
+            <ul class="match-list">
+                <li>
+                    <div class="match-details">
+                        <div class="teams">هامبورغ 🆚 س.باولي</div>
+                        <div class="league">الدوري الألماني</div>
+                    </div>
+                    <div class="match-time">21:30 <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
+                    <a href="match_link_hamburg_stpauli.html" target="_blank">شاهد الآن</a>
+                </li>
             </ul>
+
+            <!-- الدوري الفرنسي -->
+            <h3><i class="fas fa-trophy"></i> الدوري الفرنسي ⚽️</h3>
+            <ul class="match-list">
+                <li>
+                    <div class="match-details">
+                        <div class="teams">لانس 🆚 بريست</div>
+                        <div class="league">الدوري الفرنسي</div>
+                    </div>
+                    <div class="match-time">21:45 <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
+                    <a href="match_link_lens_brest.html" target="_blank">شاهد الآن</a>
+                </li>
+            </ul>
+
+            <!-- الدوري السعودي -->
+            <h3><i class="fas fa-trophy"></i> الدوري السعودي 🇸🇦</h3>
+            <ul class="match-list">
+                <li>
+                    <div class="match-details">
+                        <div class="teams">الهلال 🆚 الرياض</div>
+                        <div class="league">الدوري السعودي</div>
+                    </div>
+                    <div class="match-time">18:50 <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
+                    <a href="match_link_hilal_riyadh.html" target="_blank">شاهد الآن</a>
+                </li>
+                <li>
+                    <div class="match-details">
+                        <div class="teams">التعاون 🆚 النصر</div>
+                        <div class="league">الدوري السعودي</div>
+                    </div>
+                    <div class="match-time">21:00 <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
+                    <a href="match_link_taawoun_nasr.html" target="_blank">شاهد الآن</a>
+                </li>
+            </ul>
+
+            <!-- بطولة التشامبيونشيب -->
+            <h3><i class="fas fa-trophy"></i> بطولة التشامبيونشيب 🏴󠁧󠁢󠁥󠁮󠁧󠁿</h3>
+            <ul class="match-list">
+                <li>
+                    <div class="match-details">
+                        <div class="teams">ليستر 🆚 برمنغهام</div>
+                        <div class="league">بطولة التشامبيونشيب</div>
+                    </div>
+                    <div class="match-time">22:00 <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
+                    <a href="match_link_leicester_birmingham.html" target="_blank">شاهد الآن</a>
+                </li>
+            </ul>
+
+            <!-- كأس إفريقيا للمحليين -->
+            <h3><i class="fas fa-trophy"></i> كأس إفريقيا للمحلين 🏆</h3>
+            <ul class="match-list">
+                <li>
+                    <div class="match-details">
+                        <div class="teams">السودان 🆚 السنغال</div>
+                        <div class="league">كأس إفريقيا للمحلين</div>
+                    </div>
+                    <div class="match-time">18:00 <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
+                    <a href="match_link_sudan_senegal.html" target="_blank">شاهد الآن</a>
+                </li>
+            </ul>
+
+            <!-- الدوري القطري -->
+            <h3><i class="fas fa-trophy"></i> الدوري القطري 🇶🇦</h3>
+            <ul class="match-list">
+                <li>
+                    <div class="match-details">
+                        <div class="teams">العربي 🆚 أم صلال</div>
+                        <div class="league">الدوري القطري</div>
+                    </div>
+                    <div class="match-time">18:30 <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
+                    <a href="match_link_alarabi_umsalal.html" target="_blank">شاهد الآن</a>
+                </li>
+                <li>
+                    <div class="match-details">
+                        <div class="teams">الشحانية 🆚 الوكرة</div>
+                        <div class="league">الدوري القطري</div>
+                    </div>
+                    <div class="match-time">20:30 <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
+                    <a href="match_link_alshahaniya_alwakrah.html" target="_blank">شاهد الآن</a>
+                </li>
+            </ul>
+        </section>
+
+        <!-- مكان مخصص للإعلانات (وسط الصفحة) -->
+        <div class="ad-space">
+            مكان إعلان آخر هنا (يمكنك إضافة كود إعلانك لاحقًا)
+        </div>
+
+        <section id="news" class="section-card">
+            <h2><i class="fas fa-newspaper"></i> آخر الأخبار</h2>
+            <p>
+                هنا يمكنك إضافة آخر أخبار كرة القدم، مقالات تحليلية، أو تحديثات حول الفرق واللاعبين.
+                يمكنك عرض عناوين الأخبار وروابط لقراءتها بالكامل.
+            </p>
+            <ul>
+                <li><a href="#">مقال: أبرز الانتقالات الصيفية التي هزت الميركاتو</a></li>
+                <li><a href="#">تقرير: فرص الأندية العربية في البطولات القارية</a></li>
+                <li><a href="#">تحليل: لماذا يعاني هذا الفريق من تذبذب النتائج؟</a></li>
+            </ul>
+        </section>
+
+        <section id="analysis" class="section-card">
+            <h2><i class="fas fa-chart-line"></i> تحليلات ومقالات</h2>
+            <p>
+                قسم خاص بالمقالات والتحليلات العميقة للمباريات والبطولات.
+                استكشف آراء الخبراء وتوقعاتهم للمواجهات القادمة.
+            </p>
+            <ul>
+                <li><a href="#">تحليل فني لمباراة القمة بين ... و ...</a></li>
+                <li><a href="#">تكتيكات المدربين: كيف يخططون للفوز؟</a></li>
+                <li><a href="#">أبرز النجوم الصاعدة في الدوريات الأوروبية</a></li>
+            </ul>
+        </section>
+        
+        <!-- مكان مخصص للإعلانات (أسفل الصفحة) -->
+        <div class="ad-space">
+            مكان إعلان سفلي هنا (يمكنك إضافة كود إعلانك لاحقًا)
         </div>
     </div>
 
     <footer id="contact">
-        <p>للدعم أو الاستفسار، تواصل معنا عبر: <a href="mailto:info@ballontv.com" style="color: white; text-decoration: underline;">info@ballontv.com</a></p>
+        <p>للدعم أو الاستفسار، تواصل معنا عبر: <a href="mailto:info@ballontv.com">info@ballontv.com</a></p>
         <p>&copy; 2023 BallonTV. جميع الحقوق محفوظة.</p>
     </footer>
 
-    <!-- أكواد الإعلانات التي يتم تحميلها قبل إغلاق </body> -->
-    <!-- يفضل وضع أكواد الإعلانات هنا لتحسين سرعة تحميل الصفحة -->
-    
+    <script>
+        // دالة لتحديث ساعة غرينتش
+        function updateGMTClock() {
+            const now = new Date();
+            const utcHours = now.getUTCHours();
+            const utcMinutes = now.getUTCMinutes();
+            const utcSeconds = now.getUTCSeconds();
+
+            const formattedTime =
+                (utcHours < 10 ? '0' : '') + utcHours + ':' +
+                (utcMinutes < 10 ? '0' : '') + utcMinutes + ':' +
+                (utcSeconds < 10 ? '0' : '') + utcSeconds;
+
+            document.getElementById('gmt-clock').textContent = 'توقيت غرينتش (GMT): ' + formattedTime;
+        }
+
+        // تحديث الساعة كل ثانية
+        setInterval(updateGMTClock, 1000);
+        // تشغيلها فوراً عند تحميل الصفحة
+        updateGMTClock();
+    </script>
 </body>
 </html>
