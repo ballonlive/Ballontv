@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyLiveStream</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden; /* Prevent scroll on fullscreen */
+        }
+
+        /* Video Player Container */
+        .video-player-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px; /* Adjust as needed */
+            aspect-ratio: 16 / 9; /* Standard video aspect ratio */
+            background-color: #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .video-player-container.fullscreen {
+            width: 100vw;
+            height: 100vh;
+            max-width: none;
+            aspect-ratio: unset;
+        }
+
+        #video-player {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain; /* Default fit mode */
+        }
+
+        /* Controls Overlay */
+        .controls-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+            padding: 10px;
+            box-sizing: border-box;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-player-container.show-controls .controls-container {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .controls-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+        }
+
+        .controls-left, .controls-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .controls-container button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.2s ease;
+        }
+
+        .controls-container button:hover {
+            color: #1abc9c; /* Highlight color */
+        }
+
+        #quality-btn, #fit-fill-btn {
+            font-size: 0.9em;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .time-display {
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0%;
+            background-color: #1abc9c; /* Progress color */
+            transition: width 0.1s linear;
+        }
+
+        /* Center Controls (Play/Pause, Rewind, Forward) */
+        .center-controls {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+            opacity: 1;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .center-controls.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .center-controls button {
+            background-color: rgba(0, 0, 0, 0.6);
+            border: none;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 2.5em;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .center-controls button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+            transform: scale(1.05);
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 4em;
+            z-index: 11;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .center-controls button {
+                width: 50px;
+                height: 50px;
+                font-size: 2em;
+            }
+            .controls-container button {
+                font-size: 1em;
+            }
+            #quality-btn, #fit-fill-btn {
+                padding: 3px 8px;
+                min-width: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-player-container" id="video-player-container">
+        <!-- تم إزالة رابط وشعار التيليجرام -->
+
+        <video id="video-player" type="video/mp4" poster="https://d.top4top.io/p_344291guh0.jpg"></video>
+
+        <div class="loading-spinner" id="loading-spinner" style="display: none;">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+        </div>
+
+        <div class="center-controls" id="center-controls">
+            <button id="rewind-btn" title="Rewind 10 seconds">
+                <i class="material-icons">replay_10</i>
+            </button>
+            <button id="play-pause-btn" title="Play/Pause">
+                <i class="bi bi-play-fill"></i>
+            </button>
+            <button id="forward-btn" title="Forward 10 seconds">
+                <i class="material-icons">forward_10</i>
+            </button>
+        </div>
+
+        <div class="controls-container">
+            <div class="progress-bar" id="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+
+            <div class="controls-bottom">
+                <div class="controls-left">
+                    <button id="volume-toggle-btn" title="Mute/Unmute">
+                        <i class="bi bi-volume-up-fill"></i>
+                    </button>
+                    <div class="time-display" id="time-display">Live</div>
+                </div>
+
+                <div class="controls-right">
+                    <button id="quality-btn" title="Change Quality">Auto</button>
+                    <button id="fit-fill-btn" title="Toggle Fit/Normal/Fill">Fit</button>
+                    <button id="fullscreen-btn" title="Toggle Fullscreen">
+                        <i class="fa-solid fa-expand"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- تم إزالة مودال التيليجرام بالكامل -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const videoPlayer = document.getElementById('video-player');
+            const videoContainer = document.getElementById('video-player-container');
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const rewindBtn = document.getElementById('rewind-btn');
+            const forwardBtn = document.getElementById('forward-btn');
+            const progressBar = document.getElementById('progress-bar');
+            const progress = document.getElementById('progress');
+            const timeDisplay = document.getElementById('time-display');
+            const volumeToggleBtn = document.getElementById('volume-toggle-btn');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const qualityBtn = document.getElementById('quality-btn');
+            const fitFillBtn = document.getElementById('fit-fill-btn');
+            const centerControls = document.getElementById('center-controls');
+
+            let hls;
+            let qualityLevels = [];
+            let currentQualityIndex = 0;
+            let fillModeCounter = 0; // 0: Fit, 1: Fill, 2: Cover
+            let controlsTimeout;
+            let lastTapTime = 0;
+
+            // Video Source
+            // **تأكد من تحديث هذا الرابط إلى رابط البث المباشر الخاص بك**
+            const videoSrc = 'https://balance.footballii.ir/hls2/b3.m3u8'; 
+
+            // --- Utility Functions ---
+
+            function formatTime(timeInSeconds) {
+                const minutes = Math.floor(timeInSeconds / 60).toString().padStart(2, '0');
+                const seconds = Math.floor(timeInSeconds % 60).toString().padStart(2, '0');
+                return `${minutes}:${seconds}`;
+            }
+
+            function debounce(func, delay) {
+                let timeout;
+                return (...args) => {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func(...args), delay);
+                };
+            }
+
+            function showControls() {
+                videoContainer.classList.add('show-controls');
+                clearTimeout(controlsTimeout);
+                if (!videoPlayer.paused) {
+                    controlsTimeout = setTimeout(hideControls, 3000);
+                }
+            }
+
+            function hideControls() {
+                if (videoPlayer.paused) return;
+                videoContainer.classList.remove('show-controls');
+            }
+
+            function setVideoFitMode() {
+                const modes = ['contain', 'fill', 'cover']; // 'contain' for Fit, 'fill' for Normal, 'cover' for Fill
+                const labels = ['Fit', 'Normal', 'Fill'];
+                const currentMode = modes[(fillModeCounter) % modes.length];
+                const currentLabel = labels[(fillModeCounter) % labels.length];
+                videoPlayer.style.objectFit = currentMode;
+                fitFillBtn.textContent = currentLabel;
+                console.log(`Video fit mode changed to: ${currentLabel}`);
+            }
+
+            // --- HLS.js Initialization ---
+
+            function initHls() {
+                if (Hls.isSupported()) {
+                    hls = new Hls();
+                    hls.loadSource(videoSrc);
+                    hls.attachMedia(videoPlayer);
+
+                    hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+                        qualityLevels = [{ label: 'Auto', index: -1 }];
+                        data.levels.forEach((level, index) => {
+                            qualityLevels.push({ label: `${level.height}p`, index: index });
+                        });
+                        hls.currentLevel = -1; // Set to auto by default
+                        qualityBtn.textContent = 'Auto';
+                        videoPlayer.play().catch(e => console.error("Autoplay failed:", e));
+                    });
+
+                    hls.on(Hls.Events.ERROR, (event, data) => {
+                        if (data.fatal) {
+                            console.error('HLS fatal error:', data);
+                            hls.destroy();
+                            // Attempt to re-initialize after a delay
+                            setTimeout(initHls, 2000);
+                        }
+                    });
+                } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+                    videoPlayer.src = videoSrc;
+                    videoPlayer.addEventListener('loadedmetadata', () => {
+                        videoPlayer.play();
+                    });
+                    qualityBtn.style.display = 'none'; // Hide quality button if HLS.js not used
+                } else {
+                    console.error('HLS not supported on this browser.');
+                    // Display an error message to the user
+                    videoContainer.innerHTML = '<p style="color:white; text-align:center;">Your browser does not support HLS video streams.</p>';
+                }
+            }
+
+            // Initialize HLS immediately on DOMContentLoaded
+            initHls();
+
+            // --- Event Listeners ---
+
+            // Play/Pause button
+            playPauseBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                videoPlayer.paused ? videoPlayer.play() : videoPlayer.pause();
+                showControls();
+            });
+
+            // Rewind & Forward
+            rewindBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                videoPlayer.currentTime = Math.max(0, videoPlayer.currentTime - 10);
+                showControls();
+            });
+
+            forwardBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                videoPlayer.currentTime = Math.min(videoPlayer.duration, videoPlayer.currentTime + 10);
+                showControls();
+            });
+
+            // Time update (progress bar for live streams)
+            videoPlayer.addEventListener('timeupdate', () => {
+                if (!isNaN(videoPlayer.duration) && videoPlayer.duration > 0) { // Check if duration is valid and not 0
+                    const progressPercentage = (videoPlayer.currentTime / videoPlayer.duration) * 100;
+                    requestAnimationFrame(() => {
+                        progress.style.width = `${progressPercentage}%`;
+                    });
+                    timeDisplay.textContent = `${formatTime(videoPlayer.currentTime)} / ${formatTime(videoPlayer.duration)}`;
+                } else {
+                    timeDisplay.textContent = 'Live'; // For live streams without a defined duration
+                    progress.style.width = '100%'; // Show full progress for live streams
+                }
+            });
+
+            // Progress bar click
+            progressBar.addEventListener('click', (e) => {
+                if (isNaN(videoPlayer.duration) || videoPlayer.duration === 0) return; // Disable seeking for true live streams
+                const rect = progressBar.getBoundingClientRect();
+                const clickPosition = (e.clientX - rect.left) / rect.width;
+                videoPlayer.currentTime = clickPosition * videoPlayer.duration;
+            });
+
+            // Volume toggle
+            volumeToggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                videoPlayer.muted = !videoPlayer.muted;
+                volumeToggleBtn.innerHTML = videoPlayer.muted ? '<i class="bi bi-volume-mute-fill"></i>' : '<i class="bi bi-volume-up-fill"></i>';
+                showControls();
+            });
+
+            // Fullscreen toggle
+            fullscreenBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                } else {
+                    videoContainer.requestFullscreen().catch(err => {
+                        console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+                    });
+                }
+                showControls();
+            });
+
+            // Quality change
+            qualityBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!hls || qualityLevels.length <= 1) return; // Don't cycle if only "Auto" or no levels
+                currentQualityIndex = (currentQualityIndex + 1) % qualityLevels.length;
+                const newQuality = qualityLevels[currentQualityIndex];
+                hls.currentLevel = newQuality.index;
+                qualityBtn.textContent = newQuality.label;
+                console.log(`Quality changed to: ${newQuality.label}`);
+            });
+
+            // Fit/Fill mode toggle
+            fitFillBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                fillModeCounter = (fillModeCounter + 1) % 3; // Cycle through 3 modes
+                setVideoFitMode();
+            });
+
+            // Video events
+            videoPlayer.addEventListener('waiting', () => {
+                loadingSpinner.style.display = 'block';
+                playPauseBtn.style.display = 'none';
+                centerControls.classList.add('hide');
+                showControls(); // Ensure controls are visible when buffering
+            });
+
+            videoPlayer.addEventListener('playing', () => {
+                loadingSpinner.style.display = 'none';
+                playPauseBtn.style.display = 'block';
+                centerControls.classList.remove('hide');
+                hideControls(); // Hide controls after playing starts
+            });
+
+            videoPlayer.addEventListener('pause', () => {
+                playPauseBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
+                showControls();
+            });
+
+            videoPlayer.addEventListener('play', () => {
+                playPauseBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+                hideControls();
+            });
+
+            // Mouse/Touch Interactions
+            videoContainer.addEventListener('mousemove', debounce(showControls, 300));
+            videoContainer.addEventListener('mouseleave', hideControls);
+            videoContainer.addEventListener('click', (e) => {
+                // Toggle controls only if not clicking on an interactive element
+                if (!e.target.closest('.controls-container') && !e.target.closest('.center-controls')) {
+                    videoContainer.classList.contains('show-controls') ? hideControls() : showControls();
+                }
+            });
+
+            // Double-tap for fullscreen on mobile
+            videoContainer.addEventListener('touchend', (e) => {
+                // Only process taps directly on the video container, not controls
+                if (e.target.closest('.controls-container') || e.target.closest('.center-controls')) {
+                    return;
+                }
+
+                const currentTime = new Date().getTime();
+                const tapLength = currentTime - lastTapTime;
+
+                if (tapLength < 300 && tapLength > 0) {
+                    e.preventDefault(); // Prevent default browser behavior (e.g., zoom)
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    } else {
+                        videoContainer.requestFullscreen();
+                    }
+                }
+                lastTapTime = currentTime;
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                // Ensure controls are visible when using keyboard shortcuts
+                showControls();
+
+                switch (e.key) {
+                    case ' ':
+                    case 'k':
+                        e.preventDefault(); // Prevent scrolling down with spacebar
+                        videoPlayer.paused ? videoPlayer.play() : videoPlayer.pause();
+                        break;
+                    case 'ArrowRight':
+                        videoPlayer.currentTime = Math.min(videoPlayer.duration, videoPlayer.currentTime + 5);
+                        break;
+                    case 'ArrowLeft':
+                        videoPlayer.currentTime = Math.max(0, videoPlayer.currentTime - 5);
+                        break;
+                    case 'm':
+                        videoPlayer.muted = !videoPlayer.muted;
+                        volumeToggleBtn.innerHTML = videoPlayer.muted ? '<i class="bi bi-volume-mute-fill"></i>' : '<i class="bi bi-volume-up-fill"></i>';
+                        break;
+                    case 'f':
+                        document.fullscreenElement ? document.exitFullscreen() : videoContainer.requestFullscreen();
+                        break;
+                }
+            });
+
+            // Fullscreen change event
+            document.addEventListener('fullscreenchange', () => {
+                if (document.fullscreenElement) {
+                    fullscreenBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+                    videoContainer.classList.add('fullscreen');
+                    // Lock orientation to landscape on fullscreen, if supported
+                    if (screen.orientation && screen.orientation.lock) {
+                        screen.orientation.lock('landscape').catch(() => { /* Orientation lock might fail, e.g., on desktop */ });
+                    }
+                } else {
+                    fullscreenBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+                    videoContainer.classList.remove('fullscreen');
+                    // Unlock orientation when exiting fullscreen
+                    if (screen.orientation && screen.orientation.unlock) {
+                        screen.orientation.unlock();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
