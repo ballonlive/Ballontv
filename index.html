@@ -104,12 +104,20 @@
             text-align: center;
             border-radius: 8px;
             transition: all 0.3s ease;
+            /* إضافة هذه لتوسيط الإعلانات التي قد تكون ذات عرض محدد */
+            overflow: hidden; /* لمنع المحتوى من تجاوز حدود المساحة */
         }
         .ad-space:hover {
             border-color: var(--primary-color);
             color: var(--primary-color);
             background-color: #f0fdf2;
         }
+        /* لضمان أن الإعلانات تملأ المساحة المخصصة إذا كانت responsive */
+        .ad-space > * {
+            max-width: 100%;
+            height: auto;
+        }
+
 
         /* بطاقة القسم */
         .section-card {
@@ -302,6 +310,9 @@
     </style>
     <!-- Font Awesome Icons for better visual appeal -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--  مكان مقترح لكود الإعلان في قسم <head> -->
+    <!-- أكواد الإعلانات التي تتطلب أن تكون في الهيد تذهب هنا -->
+    <script type='text/javascript' src='//pl27548528.revenuecpmgate.com/f4/63/dd/f463dd1a9f569afe4443e26e8a0b3037.js'></script>
 </head>
 <body>
     <header>
@@ -322,7 +333,19 @@
     <div class="container">
         <!-- مكان مخصص للإعلانات (العليا) -->
         <div class="ad-space">
-            مكان للإعلان هنا (يمكنك إضافة كود إعلانك لاحقًا)
+            <!-- ضع كود إعلانك هنا ليظهر في أعلى الصفحة -->
+            <!-- مثال: <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+            <!-- <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="YYYYYYYYYY"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins> -->
+            <!-- <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script> -->
+            <!-- أو أي كود إعلان آخر لديك -->
+            <p>مكان للإعلان هنا (يمكنك إضافة كود إعلانك لاحقًا)</p>
         </div>
 
         <section id="matches-tomorrow" class="section-card">
@@ -348,9 +371,9 @@
                     <div class="match-time">16:30 م <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
                     <a href="https://66.coffe.world/albaplayer/bein-1/" target="_blank">شاهد الآن</a>
                 </li>
-                
+
                 </ul>
-                
+
 
             <!-- الدوري الإسباني -->
             <h3><i class="fas fa-trophy"></i> الدوري الإسباني 🇪🇸</h3>
@@ -408,10 +431,10 @@
                     <div class="match-time">19:45 م <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
                     <a href="https://sportzonline.site/channels/hd/hd7.php" target="_blank">شاهد الآن</a>
                 </li>
-                
-                
+
+
             </ul>
-            
+
             <!-- الدوري السعودي -->
             <h3><i class="fas fa-trophy"></i> الدوري السعودي 🇸🇦</h3>
             <ul class="match-list">
@@ -423,8 +446,8 @@
                     <div class="match-time">17:00 م <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
                     <a href="player1.html" target="_blank">شاهد الآن</a>
                 </li>
-                
-                
+
+
             </ul>
 
             <!-- الدوري الفرنسي -->
@@ -446,7 +469,7 @@
                     <div class="match-time">19:45 م <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
                     <a href="https://66.coffe.world/albaplayer/bein-3/" target="_blank">شاهد الآن</a>
                 </li>
-                
+
             </ul>
 
             <!-- الدوري الألماني -->
@@ -460,8 +483,8 @@
                     <div class="match-time">16:30 م <span style="font-size:0.8em;">بتوقيت مكة المكرمة</span></div>
                     <a href="https://66.coffe.world/albaplayer/bein-4/" target="_blank">شاهد الآن</a>
                 </li>
-                
-                 
+
+
             </ul>
 
             <!-- الدوري البرتغالي -->
@@ -480,7 +503,8 @@
 
         <!-- مكان مخصص للإعلانات (وسط الصفحة) -->
         <div class="ad-space">
-            مكان إعلان آخر هنا (يمكنك إضافة كود إعلانك لاحقًا)
+            <!-- ضع كود إعلانك هنا ليظهر في وسط الصفحة -->
+            <p>مكان إعلان آخر هنا (يمكنك إضافة كود إعلانك لاحقًا)</p>
         </div>
 
         <section id="news-section" class="section-card">
@@ -508,10 +532,11 @@
                 <li><a href="analysis.html#analysis3">أبرز النجوم الصاعدة في الدوريات الأوروبية</a></li>
             </ul>
         </section>
-        
+
         <!-- مكان مخصص للإعلانات (أسفل الصفحة) -->
         <div class="ad-space">
-            مكان إعلان سفلي هنا (يمكنك إضافة كود إعلانك لاحقًا)
+            <!-- ضع كود إعلانك هنا ليظهر في أسفل الصفحة -->
+            <p>مكان إعلان سفلي هنا (يمكنك إضافة كود إعلانك لاحقًا)</p>
         </div>
     </div>
 
