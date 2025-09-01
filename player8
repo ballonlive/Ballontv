@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Video Embed</title>
+</head>
+<body>
+
+    <h1>مقطع فيديو من فيسبوك</h1>
+
+    <iframe src="https://web.facebook.com/plugins/video.php?href=https%3A%2F%2Fweb.facebook.com%2F61569559612820%2Fvideos%2F681741430851777%2F&width=1280" width="1280" height="720" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
+
+    <p>هذا مثال لكيفية تضمين فيديو فيسبوك على صفحة الويب الخاصة بك.</p>
+
+</body>
+</html>
