@@ -1,174 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Embed Zoom on Load</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column; /* للسماح للعناصر بالترتيب عمودياً */
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            font-family: sans-serif;
-            overflow: hidden; /* لمنع ظهور scrollbars عند الزوم */
+<div style="width: 476px; margin: 0 auto; text-align: center;">
+    <!-- كود بث الفيديو من فيسبوك -->
+    <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fweb.facebook.com%2F61577361164767%2Fvideos%2F811003818168598%2F&show_text=false&width=476&t=0" width="476" height="476" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
 
-            /* تطبيق الزوم الافتراضي عند التحميل هنا */
-            transform: scale(1.5); /* 1.5 = 150% زوم (50% تكبير إضافي) */
-            transform-origin: center center;
-            transition: transform 0.2s ease-in-out; /* إضافة انتقال لجعل التكبير الأولي سلسًا */
-        }
-
-        .iframe-container {
-            position: relative;
-            width: 560px; /* عرض iframe الأصلي */
-            height: 315px; /* ارتفاع iframe الأصلي */
-            overflow: hidden;
-            border: 1px solid #ccc;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 50px; /* مسافة من الأعلى لعدم تداخل عناصر التحكم مع الشاشة */
-            margin-bottom: 20px;
-        }
-
-        #youtubePlayer {
-            width: 100%;
-            height: 100%;
-            /* لن نطبق transform على اللاعب هنا لأننا نطبقها على الـ body */
-        }
-
-        .controls {
-            /* سننقل عناصر التحكم خارج الـ iframe-container لتكون مرئية دائمًا */
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 5px;
-            display: flex;
-            gap: 10px;
-            z-index: 10;
-            position: fixed; /* لتثبيت عناصر التحكم في مكانها */
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-        }
-
-        .controls button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .controls button:hover {
-            background-color: #0056b3;
-        }
-
-        .controls input[type="text"] {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: 250px;
-            font-size: 14px;
-        }
-    </style>
-</head>
-<body>
-    <div class="iframe-container">
-        <iframe id="youtubePlayer"
-            width="560" height="315"
-            src="https://www.youtube.com/embed/NKqaSOumnFQ?si=Ni2bf3tZ-mleNgfe"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen>
-        </iframe>
+    <!-- هنا يوضع كود الإعلان الخاص بك -->
+    <div style="margin-top: 20px; border: 1px solid #ddd; padding: 10px; background-color: #f9f9f9;">
+        <!-- مثال على كود إعلان صورة أو نص -->
+        <a href="رابط_إعلانك_هنا" target="_blank">
+            <img src="رابط_صورة_إعلانك_هنا" alt="اسم إعلانك" style="max-width: 100%; height: auto;">
+        </a>
+        <p style="font-size: 12px; color: #666;">إعلان</p>
+        <!-- إذا كان لديك كود إعلاني من Google AdSense أو أي شبكة أخرى، ضعه هنا مباشرةً -->
+        <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+        <!-- <ins class="adsbygoogle" -->
+        <!--      style="display:block" -->
+        <!--      data-ad-client="ca-pub-XXXXXXXXXXXXX" -->
+        <!--      data-ad-slot="YYYYYYYYYYYYYYY"></ins> -->
+        <!-- <script> -->
+        <!--      (adsbygoogle = window.adsbygoogle || []).push({}); -->
+        <!-- </script> -->
     </div>
-
-    <!-- عناصر التحكم تم نقلها خارج iframe-container لتأثر بالزوم العام -->
-    <div class="controls">
-        <button onclick="zoomIn()">Zoom In</button>
-        <button onclick="zoomOut()">Zoom Out</button>
-        <button onclick="resetZoom()">Reset Zoom</button>
-        <input type="text" id="streamLinkInput" value="https://www.youtube.com/embed/NKqaSOumnFQ" placeholder="Enter YouTube Embed URL">
-        <button onclick="changeStream()">Change Stream</button>
-    </div>
-
-    <script>
-        const youtubePlayer = document.getElementById('youtubePlayer');
-        const streamLinkInput = document.getElementById('streamLinkInput');
-        const bodyElement = document.body; // الحصول على عنصر body
-
-        let currentScale = 1.5; // يبدأ الزوم من 150% (50% تكبير إضافي)
-        const scaleStep = 0.1;
-        const minScale = 1.0; // 100%
-        const maxScale = 2.5; // 250%
-
-        function applyScale() {
-            bodyElement.style.transform = `scale(${currentScale})`;
-        }
-
-        function zoomIn() {
-            if (currentScale < maxScale) {
-                currentScale += scaleStep;
-                applyScale();
-            }
-        }
-
-        function zoomOut() {
-            if (currentScale > minScale) {
-                currentScale -= scaleStep;
-                applyScale();
-            }
-        }
-
-        function resetZoom() {
-            currentScale = 1.0; // إعادة الزوم إلى 100%
-            applyScale();
-        }
-
-        function changeStream() {
-            let newStreamLink = streamLinkInput.value.trim();
-            if (newStreamLink) {
-                if (!newStreamLink.includes("/embed/")) {
-                    const videoIdMatch = newStreamLink.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([^&\n?#]+)/);
-                    if (videoIdMatch && videoIdMatch[1]) {
-                        newStreamLink = `https://www.youtube.com/embed/${videoIdMatch[1]}?autoplay=1`;
-                    } else {
-                        alert('Please enter a valid YouTube embed URL or a standard YouTube video URL.');
-                        return;
-                    }
-                }
-                youtubePlayer.src = newStreamLink + (newStreamLink.includes("?") ? "&" : "?") + "autoplay=1";
-                // لا يوجد داعي لـ resetZoom هنا إذا أردت أن يبقى الزوم المطبق على الصفحة
-            } else {
-                alert('Please enter a valid YouTube embed URL.');
-            }
-        }
-
-        // إخفاء وإظهار عناصر التحكم (اختياري)
-        // في هذا السيناريو، قد ترغب في إظهارها بشكل دائم أو التحكم بها بطريقة مختلفة
-        // بما أن عناصر التحكم ثابتة (position: fixed)، فإنها لن تتأثر بحركة الماوس داخل الـ iframe
-        // يمكنك إزالة هذا الجزء أو تعديله حسب الحاجة
-        // let controlsTimeout;
-        // const controls = document.querySelector('.controls');
-        // function showControls() {
-        //     controls.style.opacity = '1';
-        //     clearTimeout(controlsTimeout);
-        //     controlsTimeout = setTimeout(() => {
-        //         controls.style.opacity = '0';
-        //     }, 3000);
-        // }
-        // document.addEventListener('mousemove', showControls);
-        // showControls(); // إظهار عناصر التحكم عند تحميل الصفحة
-    </script>
-</body>
-</html>
+</div>
