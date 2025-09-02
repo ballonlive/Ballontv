@@ -3,68 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحة البث المباشر المضمن</title>
+    <title>مشغل يوتيوب مخصص</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            color: #333;
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background-color: #f0f0f0; }
+        .player-container { 
+            background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+            text-align: center; max-width: 800px; width: 90%; 
         }
-        .video-wrapper {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 90%; /* لتكييف العرض مع الشاشات الصغيرة */
+        #player { 
+            width: 100%; 
+            height: 450px; /* أو استخدم نسبة 16:9 مع CSS لجعله استجابيًا */
         }
-        h1 {
-            color: #0056b3;
-            margin-bottom: 20px;
+        .controls button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
         }
-        /* لتجاوبية الـ iframe */
-        .iframe-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* نسبة 16:9 للفيديو */
-            height: 0;
-            overflow: hidden;
-            background-color: #000;
-            margin: 0 auto; /* لتوسيطه */
-        }
-        .iframe-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0; /* لإزالة الحدود */
+        .controls button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <div class="video-wrapper">
-        <h1>مشاهدة البث المباشر</h1>
-        <p>هذا الفيديو مضمن مباشرة من يوتيوب:</p>
-        
-        <div class="iframe-container">
-            <!-- الكود الذي قدمته -->
-            <iframe 
-                src="https://www.youtube.com/embed/_3DlXClQqCE?si=FLEfdvceV2gCrJ2e&amp;controls=0" 
-                title="YouTube video player" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                referrerpolicy="strict-origin-when-cross-origin" 
-                allowfullscreen>
-            </iframe>
+    <div class="player-container">
+        <h1>بث يوتيوب في مشغل مخصص</h1>
+        <div id="player"></div>
+        <div class="controls" style="margin-top: 15px;">
+            <button id="playButton">تشغيل</button>
+            <button id="pauseButton">إيقاف مؤقت</button>
         </div>
-
-        <p style="margin-top: 20px;">استمتع بالمشاهدة!</p>
     </div>
+
+    <script>
+        // هذا الكود يقوم بتحميل YouTube IFrame Player API
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '450',
+                width: '100%',
+                videoId: '_3DlXClQqCE', // معرف الفيديو الخاص بك
+                playerVars: {
+                    'controls': 0, // إخفاء عناصر التحكم الافتراضية ليوتيوب
+                    'autoplay': 0,
+                    'mute': 1, // يمكن كتم الصوت تلقائيًا لضمان التشغيل التلقائي إذا أردت
+                    'rel': 0 // عدم إظهار مقاطع فيديو ذات صلة في النهاية
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            console.log("مشغل يوتيوب جاهز!");
+            // يمكنك هنا تشغيل الفيديو تلقائيًا إذا أردت
+            // event.target.playVideo();
+        }
+
+        function onPlayerStateChange(event) {
+            // يمكنك هنا مراقبة حالة الفيديو (تشغيل، إيقاف مؤقت، انتهى)
+            console.log("حالة المشغل: " + event.data);
+        }
+
+        // إضافة وظائف للأزرار المخصصة
+        document.getElementById('playButton').addEventListener('click', function() {
+            if (player) {
+                player.playVideo();
+            }
+        });
+
+        document.getElementById('pauseButton').addEventListener('click', function() {
+            if (player) {
+                player.pauseVideo();
+            }
+        });
+    </script>
 </body>
 </html>
