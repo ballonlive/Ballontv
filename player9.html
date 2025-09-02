@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Embed Zoom</title>
+    <title>YouTube Embed Zoom on Load</title>
     <style>
         body {
             display: flex;
+            flex-direction: column; /* للسماح للعناصر بالترتيب عمودياً */
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -14,36 +15,46 @@
             background-color: #f0f0f0;
             font-family: sans-serif;
             overflow: hidden; /* لمنع ظهور scrollbars عند الزوم */
+
+            /* تطبيق الزوم الافتراضي عند التحميل هنا */
+            transform: scale(1.5); /* 1.5 = 150% زوم (50% تكبير إضافي) */
+            transform-origin: center center;
+            transition: transform 0.2s ease-in-out; /* إضافة انتقال لجعل التكبير الأولي سلسًا */
         }
 
         .iframe-container {
             position: relative;
             width: 560px; /* عرض iframe الأصلي */
             height: 315px; /* ارتفاع iframe الأصلي */
-            overflow: hidden; /* لإخفاء الأجزاء الزائدة عند التكبير */
+            overflow: hidden;
             border: 1px solid #ccc;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-top: 50px; /* مسافة من الأعلى لعدم تداخل عناصر التحكم مع الشاشة */
+            margin-bottom: 20px;
         }
 
         #youtubePlayer {
             width: 100%;
             height: 100%;
-            transform-origin: center center;
-            transition: transform 0.2s ease-in-out;
+            /* لن نطبق transform على اللاعب هنا لأننا نطبقها على الـ body */
         }
 
         .controls {
-            position: absolute;
-            bottom: 10px;
+            /* سننقل عناصر التحكم خارج الـ iframe-container لتكون مرئية دائمًا */
             background-color: rgba(0, 0, 0, 0.7);
             padding: 10px;
             border-radius: 5px;
             display: flex;
             gap: 10px;
             z-index: 10;
+            position: fixed; /* لتثبيت عناصر التحكم في مكانها */
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
         }
 
         .controls button {
@@ -80,27 +91,29 @@
             referrerpolicy="strict-origin-when-cross-origin"
             allowfullscreen>
         </iframe>
+    </div>
 
-        <div class="controls">
-            <button onclick="zoomIn()">Zoom In</button>
-            <button onclick="zoomOut()">Zoom Out</button>
-            <button onclick="resetZoom()">Reset Zoom</button>
-            <input type="text" id="streamLinkInput" value="https://www.youtube.com/embed/NKqaSOumnFQ" placeholder="Enter YouTube Embed URL">
-            <button onclick="changeStream()">Change Stream</button>
-        </div>
+    <!-- عناصر التحكم تم نقلها خارج iframe-container لتأثر بالزوم العام -->
+    <div class="controls">
+        <button onclick="zoomIn()">Zoom In</button>
+        <button onclick="zoomOut()">Zoom Out</button>
+        <button onclick="resetZoom()">Reset Zoom</button>
+        <input type="text" id="streamLinkInput" value="https://www.youtube.com/embed/NKqaSOumnFQ" placeholder="Enter YouTube Embed URL">
+        <button onclick="changeStream()">Change Stream</button>
     </div>
 
     <script>
         const youtubePlayer = document.getElementById('youtubePlayer');
         const streamLinkInput = document.getElementById('streamLinkInput');
+        const bodyElement = document.body; // الحصول على عنصر body
 
-        let currentScale = 1.0;
+        let currentScale = 1.5; // يبدأ الزوم من 150% (50% تكبير إضافي)
         const scaleStep = 0.1;
-        const minScale = 1.0;
-        const maxScale = 2.0; // يمكن زيادة الحد الأقصى إذا أردت تكبيراً أكبر
+        const minScale = 1.0; // 100%
+        const maxScale = 2.5; // 250%
 
         function applyScale() {
-            youtubePlayer.style.transform = `scale(${currentScale})`;
+            bodyElement.style.transform = `scale(${currentScale})`;
         }
 
         function zoomIn() {
@@ -118,16 +131,14 @@
         }
 
         function resetZoom() {
-            currentScale = 1.0;
+            currentScale = 1.0; // إعادة الزوم إلى 100%
             applyScale();
         }
 
         function changeStream() {
             let newStreamLink = streamLinkInput.value.trim();
             if (newStreamLink) {
-                // التأكد من أن الرابط هو رابط تضمين يوتيوب وليس رابط الفيديو العادي
                 if (!newStreamLink.includes("/embed/")) {
-                    // محاولة تحويل رابط يوتيوب عادي إلى رابط تضمين
                     const videoIdMatch = newStreamLink.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([^&\n?#]+)/);
                     if (videoIdMatch && videoIdMatch[1]) {
                         newStreamLink = `https://www.youtube.com/embed/${videoIdMatch[1]}?autoplay=1`;
@@ -136,27 +147,28 @@
                         return;
                     }
                 }
-                youtubePlayer.src = newStreamLink + (newStreamLink.includes("?") ? "&" : "?") + "autoplay=1"; // تشغيل تلقائي
-                resetZoom(); // إعادة تعيين الزوم عند تغيير البث
+                youtubePlayer.src = newStreamLink + (newStreamLink.includes("?") ? "&" : "?") + "autoplay=1";
+                // لا يوجد داعي لـ resetZoom هنا إذا أردت أن يبقى الزوم المطبق على الصفحة
             } else {
                 alert('Please enter a valid YouTube embed URL.');
             }
         }
 
         // إخفاء وإظهار عناصر التحكم (اختياري)
-        let controlsTimeout;
-        const controls = document.querySelector('.controls');
-
-        function showControls() {
-            controls.style.opacity = '1';
-            clearTimeout(controlsTimeout);
-            controlsTimeout = setTimeout(() => {
-                controls.style.opacity = '0';
-            }, 3000);
-        }
-
-        document.addEventListener('mousemove', showControls);
-        showControls();
+        // في هذا السيناريو، قد ترغب في إظهارها بشكل دائم أو التحكم بها بطريقة مختلفة
+        // بما أن عناصر التحكم ثابتة (position: fixed)، فإنها لن تتأثر بحركة الماوس داخل الـ iframe
+        // يمكنك إزالة هذا الجزء أو تعديله حسب الحاجة
+        // let controlsTimeout;
+        // const controls = document.querySelector('.controls');
+        // function showControls() {
+        //     controls.style.opacity = '1';
+        //     clearTimeout(controlsTimeout);
+        //     controlsTimeout = setTimeout(() => {
+        //         controls.style.opacity = '0';
+        //     }, 3000);
+        // }
+        // document.addEventListener('mousemove', showControls);
+        // showControls(); // إظهار عناصر التحكم عند تحميل الصفحة
     </script>
 </body>
 </html>
