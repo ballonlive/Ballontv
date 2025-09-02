@@ -3,66 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoomable Video Player</title>
+    <title>Fullscreen Video Player</title>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        body, html {
             margin: 0;
-            background-color: #f0f0f0;
-            overflow: hidden; /* Hide scrollbars if content scales out */
+            padding: 0;
+            height: 100%; /* Make body and html take full height */
+            overflow: hidden; /* Hide scrollbars */
+            background-color: #000; /* Black background for fullscreen video */
         }
 
         .video-container {
             position: relative;
-            width: 560px; /* Base width */
-            height: 315px; /* Base height */
-            overflow: hidden; /* Important for containing scaled content */
-            border: 1px solid #ccc;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            background-color: black; /* To blend with video if there are borders */
-
-            /* CSS for scaling - you'd change this with JavaScript */
-            transform-origin: center center; /* Zoom from the center */
-            transform: scale(1); /* Initial scale */
-            transition: transform 0.3s ease-in-out; /* Smooth transition */
+            width: 100%; /* Take full width of the parent (body) */
+            height: 100%; /* Take full height of the parent (body) */
+            overflow: hidden;
+            background-color: black;
+            transform-origin: center center;
+            transform: scale(1);
+            transition: transform 0.3s ease-in-out;
         }
 
         .video-container iframe {
             width: 100%;
             height: 100%;
-            display: block; /* Remove extra space below iframe */
+            display: block;
         }
 
-        /* Example of different sizes and zoom levels */
-        /* You would typically change the 'transform' property with JavaScript */
-
-        /* Smaller size example */
-        .video-container.small {
-            width: 320px;
-            height: 180px;
-        }
-
-        /* Larger size example */
-        .video-container.large {
-            width: 800px;
-            height: 450px;
-        }
-
-        /* Zoomed in example */
-        .video-container.zoomed {
-            transform: scale(1.5); /* 150% zoom */
-        }
-
-        /* You can add buttons and JavaScript to control these classes or directly manipulate 'transform' */
+        /* Hide controls for a truly fullscreen experience, or reposition them */
         .controls {
             position: absolute;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 10;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            display: none; /* Hide controls by default in fullscreen, you can make them visible on hover/JS */
         }
 
         .controls button {
@@ -70,13 +48,22 @@
             margin: 0 5px;
             font-size: 16px;
             cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 3px;
+        }
+
+        /* You can add a class to show controls on hover, for example */
+        body:hover .controls {
+            display: block;
         }
     </style>
 </head>
 <body>
 
     <div class="video-container" id="myVideoPlayer">
-        <iframe src="https://www.youtube.com/embed/NKqaSOumnFQ?si=nHenUkhNmCu9lBHn"
+        <iframe src="https://www.youtube.com/embed/NKqaSOumnFQ?si=nHenUkhNmCu9lBHn&autoplay=1"
                 title="YouTube video player"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -84,21 +71,20 @@
                 allowfullscreen></iframe>
     </div>
 
+    <!-- Controls are hidden by default in CSS, but you can enable them if needed -->
     <div class="controls">
         <button onclick="zoomIn()">Zoom In</button>
         <button onclick="zoomOut()">Zoom Out</button>
         <button onclick="resetZoom()">Reset Zoom</button>
-        <button onclick="changeSize('small')">Small</button>
-        <button onclick="changeSize('medium')">Medium</button>
-        <button onclick="changeSize('large')">Large</button>
+        <!-- Removed size buttons as the video is always fullscreen -->
     </div>
 
     <script>
         const videoPlayer = document.getElementById('myVideoPlayer');
         let currentScale = 1;
-        const scaleStep = 0.2;
-        const minScale = 0.5;
-        const maxScale = 2;
+        const scaleStep = 0.1; // Smaller step for smoother zoom
+        const minScale = 1; // Prevent zooming out beyond fullscreen
+        const maxScale = 3; // Allow more zoom in
 
         function applyScale() {
             videoPlayer.style.transform = `scale(${currentScale})`;
@@ -121,28 +107,25 @@
         function resetZoom() {
             currentScale = 1;
             applyScale();
-            videoPlayer.style.width = '560px'; // Reset to original dimensions
-            videoPlayer.style.height = '315px';
         }
 
-        function changeSize(size) {
-            videoPlayer.classList.remove('small', 'large'); // Remove existing size classes
-            videoPlayer.style.width = ''; // Clear inline styles
-            videoPlayer.style.height = '';
-
-            if (size === 'small') {
-                videoPlayer.style.width = '320px';
-                videoPlayer.style.height = '180px';
-            } else if (size === 'medium') {
-                videoPlayer.style.width = '560px';
-                videoPlayer.style.height = '315px';
-            } else if (size === 'large') {
-                videoPlayer.style.width = '800px';
-                videoPlayer.style.height = '450px';
-            }
-            currentScale = 1; // Reset zoom when changing size
-            applyScale();
+        // Optional: Hide controls after a few seconds of inactivity
+        let controlsTimeout;
+        function showControls() {
+            const controls = document.querySelector('.controls');
+            controls.style.display = 'block';
+            clearTimeout(controlsTimeout);
+            controlsTimeout = setTimeout(() => {
+                controls.style.display = 'none';
+            }, 3000); // Hide after 3 seconds
         }
+
+        // Add event listeners to show controls on mouse movement
+        document.addEventListener('mousemove', showControls);
+        // Show controls initially for a brief moment
+        showControls();
+
+        // Also, added autoplay=1 to the YouTube URL for automatic playback
     </script>
 </body>
 </html>
