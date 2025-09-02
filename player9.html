@@ -1,94 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fullscreen Video Player</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%; /* Make body and html take full height */
-            overflow: hidden; /* Hide scrollbars */
-            background-color: #000; /* Black background for fullscreen video */
-        }
-
-        .video-container {
-            position: relative;
-            width: 100%; /* Take full width of the parent (body) */
-            height: 100%; /* Take full height of the parent (body) */
-            overflow: hidden;
-            background-color: black;
-            transform-origin: center center;
-            transform: scale(1);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .video-container iframe {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        /* Hide controls for a truly fullscreen experience, or reposition them */
-        .controls {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 5px;
-            display: none; /* Hide controls by default in fullscreen, you can make them visible on hover/JS */
-        }
-
-        .controls button {
-            padding: 10px 20px;
-            margin: 0 5px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #333;
-            color: white;
-            border: none;
-            border-radius: 3px;
-        }
-
-        /* You can add a class to show controls on hover, for example */
-        body:hover .controls {
-            display: block;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="video-container" id="myVideoPlayer">
-        <iframe src="https://www.youtube.com/embed/NKqaSOumnFQ?si=nHenUkhNmCu9lBHn&autoplay=1"
-                title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin"
-                allowfullscreen></iframe>
-    </div>
-
-    <!-- Controls are hidden by default in CSS, but you can enable them if needed -->
-    <div class="controls">
-        <button onclick="zoomIn()">Zoom In</button>
-        <button onclick="zoomOut()">Zoom Out</button>
-        <button onclick="resetZoom()">Reset Zoom</button>
-        <!-- Removed size buttons as the video is always fullscreen -->
-    </div>
-
     <script>
         const videoPlayer = document.getElementById('myVideoPlayer');
-        let currentScale = 1;
-        const scaleStep = 0.1; // Smaller step for smoother zoom
-        const minScale = 1; // Prevent zooming out beyond fullscreen
-        const maxScale = 3; // Allow more zoom in
+        let currentScale = 1.2; // قم بتغيير هذه القيمة للتكبير الافتراضي
+        const scaleStep = 0.1;
+        const minScale = 1;
+        const maxScale = 3;
 
         function applyScale() {
             videoPlayer.style.transform = `scale(${currentScale})`;
         }
+
+        // استدعاء applyScale() عند تحميل الصفحة لتطبيق الزوم الافتراضي
+        document.addEventListener('DOMContentLoaded', applyScale);
 
         function zoomIn() {
             if (currentScale < maxScale) {
@@ -109,7 +31,6 @@
             applyScale();
         }
 
-        // Optional: Hide controls after a few seconds of inactivity
         let controlsTimeout;
         function showControls() {
             const controls = document.querySelector('.controls');
@@ -117,15 +38,9 @@
             clearTimeout(controlsTimeout);
             controlsTimeout = setTimeout(() => {
                 controls.style.display = 'none';
-            }, 3000); // Hide after 3 seconds
+            }, 3000);
         }
 
-        // Add event listeners to show controls on mouse movement
         document.addEventListener('mousemove', showControls);
-        // Show controls initially for a brief moment
         showControls();
-
-        // Also, added autoplay=1 to the YouTube URL for automatic playback
     </script>
-</body>
-</html>
