@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Video Embed with Custom Fullscreen Button</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #fullscreenButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        #fullscreenButton:hover {
+            background-color: #0056b3;
+        }
+        /* لتحديد حجم الحاوية للعرض بشكل أفضل */
+        .video-container {
+            width: 1280px; /* نفس عرض الفيديو */
+            margin: 0 auto;
+            position: relative; /* مهم للتحكم في الفيديو */
+        }
+        iframe {
+            display: block; /* لإزالة أي مسافات إضافية تحت الإطار */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>بث مباشر من فيسبوك مع زر تكبير الشاشة</h1>
+
+    <button id="fullscreenButton">تكبير الشاشة</button>
+
+    <div class="video-container">
+        <!-- أضفنا id="facebookVideo" إلى iframe -->
+        <iframe id="facebookVideo"
+                src="https://web.facebook.com/plugins/video.php?href=https%3A%2F%2Fweb.facebook.com%2F61577361164767%2Fvideos%2F811003818168598%2F&width=1280"
+                width="1280" height="720"
+                style="border:none;overflow:hidden"
+                scrolling="no" frameborder="0"
+                allowfullscreen="true"
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                allowFullScreen="true">
+        </iframe>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoFrame = document.getElementById('facebookVideo');
+            const fullscreenButton = document.getElementById('fullscreenButton');
+
+            fullscreenButton.addEventListener('click', function() {
+                if (videoFrame.requestFullscreen) {
+                    videoFrame.requestFullscreen();
+                } else if (videoFrame.mozRequestFullScreen) { /* Firefox */
+                    videoFrame.mozRequestFullScreen();
+                } else if (videoFrame.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                    videoFrame.webkitRequestFullscreen();
+                } else if (videoFrame.msRequestFullscreen) { /* IE/Edge */
+                    videoFrame.msRequestFullscreen();
+                } else {
+                    alert("المتصفح الخاص بك لا يدعم وضع ملء الشاشة عن طريق هذا الزر.");
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
