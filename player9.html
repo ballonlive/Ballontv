@@ -1,16 +1,107 @@
-    <script>
-        const videoPlayer = document.getElementById('myVideoPlayer');
-        let currentScale = 1.2; // قم بتغيير هذه القيمة للتكبير الافتراضي
-        const scaleStep = 0.1;
-        const minScale = 1;
-        const maxScale = 3;
-
-        function applyScale() {
-            videoPlayer.style.transform = `scale(${currentScale})`;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Embed Zoom</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: sans-serif;
+            overflow: hidden; /* لمنع ظهور scrollbars عند الزوم */
         }
 
-        // استدعاء applyScale() عند تحميل الصفحة لتطبيق الزوم الافتراضي
-        document.addEventListener('DOMContentLoaded', applyScale);
+        .iframe-container {
+            position: relative;
+            width: 560px; /* عرض iframe الأصلي */
+            height: 315px; /* ارتفاع iframe الأصلي */
+            overflow: hidden; /* لإخفاء الأجزاء الزائدة عند التكبير */
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #youtubePlayer {
+            width: 100%;
+            height: 100%;
+            transform-origin: center center;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .controls button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .controls button:hover {
+            background-color: #0056b3;
+        }
+
+        .controls input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 250px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="iframe-container">
+        <iframe id="youtubePlayer"
+            width="560" height="315"
+            src="https://www.youtube.com/embed/NKqaSOumnFQ?si=Ni2bf3tZ-mleNgfe"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+        </iframe>
+
+        <div class="controls">
+            <button onclick="zoomIn()">Zoom In</button>
+            <button onclick="zoomOut()">Zoom Out</button>
+            <button onclick="resetZoom()">Reset Zoom</button>
+            <input type="text" id="streamLinkInput" value="https://www.youtube.com/embed/NKqaSOumnFQ" placeholder="Enter YouTube Embed URL">
+            <button onclick="changeStream()">Change Stream</button>
+        </div>
+    </div>
+
+    <script>
+        const youtubePlayer = document.getElementById('youtubePlayer');
+        const streamLinkInput = document.getElementById('streamLinkInput');
+
+        let currentScale = 1.0;
+        const scaleStep = 0.1;
+        const minScale = 1.0;
+        const maxScale = 2.0; // يمكن زيادة الحد الأقصى إذا أردت تكبيراً أكبر
+
+        function applyScale() {
+            youtubePlayer.style.transform = `scale(${currentScale})`;
+        }
 
         function zoomIn() {
             if (currentScale < maxScale) {
@@ -27,20 +118,45 @@
         }
 
         function resetZoom() {
-            currentScale = 1;
+            currentScale = 1.0;
             applyScale();
         }
 
+        function changeStream() {
+            let newStreamLink = streamLinkInput.value.trim();
+            if (newStreamLink) {
+                // التأكد من أن الرابط هو رابط تضمين يوتيوب وليس رابط الفيديو العادي
+                if (!newStreamLink.includes("/embed/")) {
+                    // محاولة تحويل رابط يوتيوب عادي إلى رابط تضمين
+                    const videoIdMatch = newStreamLink.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([^&\n?#]+)/);
+                    if (videoIdMatch && videoIdMatch[1]) {
+                        newStreamLink = `https://www.youtube.com/embed/${videoIdMatch[1]}?autoplay=1`;
+                    } else {
+                        alert('Please enter a valid YouTube embed URL or a standard YouTube video URL.');
+                        return;
+                    }
+                }
+                youtubePlayer.src = newStreamLink + (newStreamLink.includes("?") ? "&" : "?") + "autoplay=1"; // تشغيل تلقائي
+                resetZoom(); // إعادة تعيين الزوم عند تغيير البث
+            } else {
+                alert('Please enter a valid YouTube embed URL.');
+            }
+        }
+
+        // إخفاء وإظهار عناصر التحكم (اختياري)
         let controlsTimeout;
+        const controls = document.querySelector('.controls');
+
         function showControls() {
-            const controls = document.querySelector('.controls');
-            controls.style.display = 'block';
+            controls.style.opacity = '1';
             clearTimeout(controlsTimeout);
             controlsTimeout = setTimeout(() => {
-                controls.style.display = 'none';
+                controls.style.opacity = '0';
             }, 3000);
         }
 
         document.addEventListener('mousemove', showControls);
         showControls();
     </script>
+</body>
+</html>
