@@ -1,93 +1,148 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشغل يوتيوب مخصص</title>
+    <title>Zoomable Video Player</title>
     <style>
-        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background-color: #f0f0f0; }
-        .player-container { 
-            background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
-            text-align: center; max-width: 800px; width: 90%; 
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            overflow: hidden; /* Hide scrollbars if content scales out */
         }
-        #player { 
-            width: 100%; 
-            height: 450px; /* أو استخدم نسبة 16:9 مع CSS لجعله استجابيًا */
+
+        .video-container {
+            position: relative;
+            width: 560px; /* Base width */
+            height: 315px; /* Base height */
+            overflow: hidden; /* Important for containing scaled content */
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: black; /* To blend with video if there are borders */
+
+            /* CSS for scaling - you'd change this with JavaScript */
+            transform-origin: center center; /* Zoom from the center */
+            transform: scale(1); /* Initial scale */
+            transition: transform 0.3s ease-in-out; /* Smooth transition */
         }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            display: block; /* Remove extra space below iframe */
+        }
+
+        /* Example of different sizes and zoom levels */
+        /* You would typically change the 'transform' property with JavaScript */
+
+        /* Smaller size example */
+        .video-container.small {
+            width: 320px;
+            height: 180px;
+        }
+
+        /* Larger size example */
+        .video-container.large {
+            width: 800px;
+            height: 450px;
+        }
+
+        /* Zoomed in example */
+        .video-container.zoomed {
+            transform: scale(1.5); /* 150% zoom */
+        }
+
+        /* You can add buttons and JavaScript to control these classes or directly manipulate 'transform' */
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
         .controls button {
             padding: 10px 20px;
-            margin: 5px;
+            margin: 0 5px;
             font-size: 16px;
             cursor: pointer;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-        .controls button:hover {
-            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <div class="player-container">
-        <h1>بث يوتيوب في مشغل مخصص</h1>
-        <div id="player"></div>
-        <div class="controls" style="margin-top: 15px;">
-            <button id="playButton">تشغيل</button>
-            <button id="pauseButton">إيقاف مؤقت</button>
-        </div>
+
+    <div class="video-container" id="myVideoPlayer">
+        <iframe src="https://www.youtube.com/embed/NKqaSOumnFQ?si=nHenUkhNmCu9lBHn"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen></iframe>
+    </div>
+
+    <div class="controls">
+        <button onclick="zoomIn()">Zoom In</button>
+        <button onclick="zoomOut()">Zoom Out</button>
+        <button onclick="resetZoom()">Reset Zoom</button>
+        <button onclick="changeSize('small')">Small</button>
+        <button onclick="changeSize('medium')">Medium</button>
+        <button onclick="changeSize('large')">Large</button>
     </div>
 
     <script>
-        // هذا الكود يقوم بتحميل YouTube IFrame Player API
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        const videoPlayer = document.getElementById('myVideoPlayer');
+        let currentScale = 1;
+        const scaleStep = 0.2;
+        const minScale = 0.5;
+        const maxScale = 2;
 
-        var player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '450',
-                width: '100%',
-                videoId: '_NKqaSOumnFQ', // معرف الفيديو الخاص بك
-                playerVars: {
-                    'controls': 0, // إخفاء عناصر التحكم الافتراضية ليوتيوب
-                    'autoplay': 0,
-                    'mute': 1, // يمكن كتم الصوت تلقائيًا لضمان التشغيل التلقائي إذا أردت
-                    'rel': 0 // عدم إظهار مقاطع فيديو ذات صلة في النهاية
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
+        function applyScale() {
+            videoPlayer.style.transform = `scale(${currentScale})`;
         }
 
-        function onPlayerReady(event) {
-            console.log("مشغل يوتيوب جاهز!");
-            // يمكنك هنا تشغيل الفيديو تلقائيًا إذا أردت
-            // event.target.playVideo();
-        }
-
-        function onPlayerStateChange(event) {
-            // يمكنك هنا مراقبة حالة الفيديو (تشغيل، إيقاف مؤقت، انتهى)
-            console.log("حالة المشغل: " + event.data);
-        }
-
-        // إضافة وظائف للأزرار المخصصة
-        document.getElementById('playButton').addEventListener('click', function() {
-            if (player) {
-                player.playVideo();
+        function zoomIn() {
+            if (currentScale < maxScale) {
+                currentScale += scaleStep;
+                applyScale();
             }
-        });
+        }
 
-        document.getElementById('pauseButton').addEventListener('click', function() {
-            if (player) {
-                player.pauseVideo();
+        function zoomOut() {
+            if (currentScale > minScale) {
+                currentScale -= scaleStep;
+                applyScale();
             }
-        });
+        }
+
+        function resetZoom() {
+            currentScale = 1;
+            applyScale();
+            videoPlayer.style.width = '560px'; // Reset to original dimensions
+            videoPlayer.style.height = '315px';
+        }
+
+        function changeSize(size) {
+            videoPlayer.classList.remove('small', 'large'); // Remove existing size classes
+            videoPlayer.style.width = ''; // Clear inline styles
+            videoPlayer.style.height = '';
+
+            if (size === 'small') {
+                videoPlayer.style.width = '320px';
+                videoPlayer.style.height = '180px';
+            } else if (size === 'medium') {
+                videoPlayer.style.width = '560px';
+                videoPlayer.style.height = '315px';
+            } else if (size === 'large') {
+                videoPlayer.style.width = '800px';
+                videoPlayer.style.height = '450px';
+            }
+            currentScale = 1; // Reset zoom when changing size
+            applyScale();
+        }
     </script>
 </body>
 </html>
