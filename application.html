@@ -103,13 +103,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 35px 0;
+            margin: 35px auto; /* توسيط الإعلانات */
             color: #888;
             font-size: 1.2em;
             text-align: center;
             border-radius: 10px;
             transition: all 0.4s ease;
             overflow: hidden; /* لإخفاء أي تجاوزات من الإعلانات */
+            max-width: 100%; /* لضمان الاستجابة */
         }
         .ad-space:hover {
             border-color: var(--primary-color);
@@ -117,9 +118,10 @@
             background-color: #e6f7ff;
         }
         /* لتناسب الإعلانات ذات الارتفاع والعرض المحدد */
-        .ad-space iframe {
+        .ad-space iframe, .ad-space ins, .ad-space img {
             display: block;
             margin: 0 auto;
+            max-width: 100%;
         }
 
         /* بطاقة القسم */
@@ -277,7 +279,7 @@
             .ad-space {
                 min-height: 80px;
                 font-size: 1.1em;
-                margin: 25px 0;
+                margin: 25px auto;
             }
         }
 
@@ -321,7 +323,7 @@
             .ad-space {
                 min-height: 60px;
                 font-size: 1em;
-                margin: 20px 0;
+                margin: 20px auto;
             }
         }
         @media (max-width: 480px) {
@@ -366,9 +368,18 @@
     </nav>
 
     <div class="container">
-        <!-- مكان مخصص للإعلانات (العليا) -->
-        <div class="ad-space" style="height: 300px; width: 160px; margin: 35px auto;">
-            <!-- Your ad script here -->
+        <!-- الإعلان الأول: بانر علوي (300x160) -->
+        <div class="ad-space" style="height: 300px; width: 160px;">
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : '2e39edd968fd8ee9c837d284ceae7e23',
+                    'format' : 'iframe',
+                    'height' : 300,
+                    'width' : 160,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/2e39edd968fd8ee9c837d284ceae7e23/invoke.js"></script>
         </div>
 
         <section id="about-app" class="section-card">
@@ -384,6 +395,11 @@
             </p>
         </section>
 
+        <!-- الإعلان الثاني: إعلان وسطي (سكريبت كامل) -->
+        <div class="ad-space" style="min-height: 100px;">
+            <script type='text/javascript' src='//pl27548673.revenuecpmgate.com/f1/8d/b6/f18db6d5da5ac1c3b54898787afd4e43.js'></script>
+        </div>
+
         <section id="features-app" class="section-card">
             <h2><i class="fas fa-star"></i> مميزات تطبيق BallonTV</h2>
             <ul>
@@ -395,12 +411,23 @@
             </ul>
         </section>
 
-        <!-- مكان مخصص للإعلانات (وسط الصفحة) -->
-        <div class="ad-space" style="height: 50px; width: 320px; margin: 35px auto;">
-            <!-- Your ad script here -->
+        <!-- الإعلان الثالث: إعلان بانر صغير (320x50) -->
+        <div class="ad-space" style="height: 50px; width: 320px;">
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : '0e7dc812c18362bbd1aff82fbd22154e',
+                    'format' : 'iframe',
+                    'height' : 50,
+                    'width' : 320,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/0e7dc812c18362bbd1aff82fbd22154e/invoke.js"></script>
         </div>
+        
+        <!-- الإعلان الرابع: إعلان وسطي آخر (سكريبت كامل) -->
         <div class="ad-space" style="min-height: 100px;">
-            <!-- Your ad script here -->
+             <script type='text/javascript' src='//pl27548528.revenuecpmgate.com/f4/63/dd/f463dd1a9f569afe4443e26e8a0b3037.js'></script>
         </div>
 
         <section id="download-app" class="section-card">
@@ -419,15 +446,17 @@
             </p>
         </section>
 
-        <!-- مكان مخصص للإعلانات (أسفل الصفحة) -->
+        <!-- الإعلان الخامس: إعلان أسفل زر التحميل (سكريبت كامل مع div) -->
         <div class="ad-space" style="min-height: 100px;">
-            <!-- Your ad script here -->
+             <script async="async" data-cfasync="false" src="//pl27548677.revenuecpmgate.com/dd616bebb010b900d99e73fe7b12eb90/invoke.js"></script>
+             <div id="container-dd616bebb010b900d99e73fe7b12eb90"></div>
         </div>
-        <div class="ad-space" style="min-height: 100px;">
-             <!-- Your ad script here -->
-        </div>
-        <div class="ad-space" style="min-height: 100px;">
-            <!-- Your ad script here -->
+        
+        <!-- إعلان نصي أو رابط تابع -->
+        <div class="ad-space" style="min-height: 60px; border: none; background-color: transparent;">
+            <a href="https://www.revenuecpmgate.com/hhmkuhystv?key=8b753c781f6905261bba48bde927e4a4" target="_blank" style="color:var(--primary-color); text-decoration: none; font-weight: bold; font-size: 1.1em;">
+                <i class="fas fa-hand-point-left"></i> اكتشف عروضنا الحصرية الأخرى!
+            </a>
         </div>
     </div>
 
