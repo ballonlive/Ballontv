@@ -1,416 +1,149 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BALLONLIVE-مباريات اليوم</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #28a745; /* أخضر جذاب */
-            --secondary-color: #007bff; /* أزرق مميز */
-            --accent-color: #ffc107; /* أصفر للتأكيد */
-            --background-dark: #2c3e50; /* خلفية داكنة للفوتر والهيدر */
-            --background-light: #ecf0f1; /* خلفية فاتحة للجسم */
-            --card-background: #ffffff; /* خلفية البطاقات */
-            --text-dark: #34495e; /* لون النص الغامق */
-            --text-light: #ecf0f1; /* لون النص الفاتح */
-        }
+  <meta charset="UTF-8">
+  <title>Player - Auto Fullscreen with Controls</title>
+  <link rel="icon" href="//alraqi-tv.com/DRM/shakaplayer/shaka.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  
+  <!-- Shaka Player UI library and default CSS -->
+  <script src="https://shaka-player-demo.appspot.com/dist/shaka-player.ui.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://shaka-player-demo.appspot.com/dist/controls.css">
+  
+  <!-- Chromecast SDK (optional) -->
+  <script defer src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
 
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--background-light);
-            color: var(--text-dark);
-            margin: 0;
-            padding: 0;
-            direction: rtl;
-            text-align: right;
-            line-height: 1.6;
-        }
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* لمنع ظهور أشرطة التمرير */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000;
+    }
+    .player-container {
+      width: 100vw; /* عرض 100% من عرض النافذة */
+      height: 100vh; /* ارتفاع 100% من ارتفاع النافذة */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000; /* خلفية سوداء للحاوية */
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* للحفاظ على نسبة العرض إلى الارتفاع */
+      background-color: #000;
+    }
+    /* إخفاء أي عناصر غير ضرورية، ولكن لا تتدخل في عناصر تحكم Shaka Player */
+    h1, input[type="text"], button, .footer {
+      display: none !important;
+    }
 
-        /* رأس الصفحة */
-        header {
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            padding: 25px 0;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            position: relative;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 3em;
-            letter-spacing: 1px;
-            color: var(--primary-color);
-        }
-        header p {
-            margin: 10px 0 0;
-            font-size: 1.3em;
-            color: var(--text-light);
-        }
-
-        /* ساعة غرينتش */
-        #gmt-clock {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: var(--accent-color);
-            margin-top: 15px;
-            padding: 8px 15px;
-            background-color: rgba(0, 0, 0, 0.3);
-            display: inline-block;
-            border-radius: 5px;
-        }
-
-        /* شريط التنقل */
-        nav {
-            background-color: var(--primary-color);
-            overflow: hidden;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        nav a {
-            display: inline-block;
-            color: var(--text-light);
-            text-align: center;
-            padding: 16px 20px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            font-size: 1.1em;
-        }
-        nav a:hover {
-            background-color: var(--secondary-color);
-            color: var(--text-light);
-        }
-
-        /* الحاوية الرئيسية */
-        .container {
-            max-width: 1100px;
-            margin: 30px auto;
-            padding: 0 25px;
-        }
-
-        /* أقسام إعلانية (متروكة فارغة حاليًا) */
-        .ad-space {
-            background-color: #f7f7f7;
-            border: 2px dashed #ccc;
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 30px 0;
-            color: #888;
-            font-size: 1.1em;
-            text-align: center;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            /* إضافة هذه لتوسيط الإعلانات التي قد تكون ذات عرض محدد */
-            overflow: hidden; /* لمنع المحتوى من تجاوز حدود المساحة */
-        }
-        .ad-space:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-            background-color: #f0fdf2;
-        }
-        /* لضمان أن الإعلانات تملأ المساحة المخصصة إذا كانت responsive */
-        .ad-space > * {
-            max-width: 100%;
-            height: auto;
-        }
-
-
-        /* بطاقة القسم */
-        .section-card {
-            background-color: var(--card-background);
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            padding: 30px;
-            text-align: right;
-            border-right: 5px solid var(--primary-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .section-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-        .section-card h2 {
-            color: var(--primary-color);
-            margin-top: 0;
-            margin-bottom: 25px;
-            border-bottom: 3px solid var(--accent-color);
-            padding-bottom: 15px;
-            font-size: 2em;
-            display: flex;
-            align-items: center;
-        }
-        .section-card h2 i {
-            margin-left: 10px;
-            color: var(--secondary-color);
-        }
-        .section-card h3 {
-            color: var(--secondary-color);
-            margin-top: 30px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            font-size: 1.6em;
-            display: flex;
-            align-items: center;
-        }
-        .section-card h3 i {
-            margin-left: 10px;
-            color: var(--primary-color);
-        }
-
-        /* iframe styling */
-        .iframe-wrapper {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            height: 0;
-            overflow: hidden;
-            margin-top: 20px;
-            background-color: black; /* لتعبئة المساحة قبل تحميل الفيديو */
-        }
-        .iframe-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* Fullscreen button style */
-        .fullscreen-button {
-            background-color: var(--primary-color);
-            color: var(--text-light);
-            border: none;
-            padding: 10px 20px;
-            font-size: 1.1em;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            margin-top: 15px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .fullscreen-button:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-2px);
-        }
-        .fullscreen-button i {
-            font-size: 1.2em;
-        }
-
-
-        /* تذييل الصفحة */
-        footer {
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 50px;
-            box-shadow: 0 -4px 8px rgba(0,0,0,0.2);
-        }
-        footer p {
-            margin: 0;
-            font-size: 1em;
-        }
-        footer a {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        footer a:hover {
-            color: var(--accent-color);
-            text-decoration: underline;
-        }
-
-        /* الاستجابة (Responsive Design) */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.2em;
-            }
-            header p {
-                font-size: 1em;
-            }
-            #gmt-clock {
-                font-size: 0.9em;
-            }
-            nav a {
-                padding: 12px 15px;
-                font-size: 1em;
-            }
-            .container {
-                margin: 20px auto;
-                padding: 0 15px;
-            }
-            .section-card {
-                padding: 20px;
-                border-right-width: 3px;
-            }
-            .section-card h2 {
-                font-size: 1.8em;
-                margin-bottom: 20px;
-            }
-            .ad-space {
-                min-height: 80px;
-                font-size: 1em;
-                margin: 20px 0;
-            }
-            .fullscreen-button {
-                padding: 8px 15px;
-                font-size: 1em;
-            }
-        }
-    </style>
-    <!-- Font Awesome Icons for better visual appeal -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!--  مكان مقترح لكود الإعلان في قسم <head> -->
-    <!-- أكواد الإعلانات التي تتطلب أن تكون في الهيد تذهب هنا -->
-    <script type='text/javascript' src='//pl27548528.revenuecpmgate.com/f4/63/dd/f463dd1a9f569afe4443e26e8a0b3037.js'></script>
-    <script type='text/javascript' src='//pl27548528.revenuecpmgate.com/f4/63/dd/f463dd1a9f569afe4443e26e8a0b3037.js'></script>
+    /* أنماط الشاكا بلاير الأساسية (حافظ عليها كما هي) */
+    .shaka-video-container .material-icons-round {
+      color: #00abe2;
+    }
+    .shaka-seek-bar-container .shaka-seek-bar {
+      background: linear-gradient(to right, #051937, #00205b, #00247e, #22229f, #510dbc);
+    }
+    .shaka-volume-bar-container .shaka-volume-bar {
+      background: linear-gradient(to right, #051937, #00205b, #00247e, #22229f, #510dbc);
+    }
+    .shaka-spinner-path {
+      stroke: #d62d20;
+      stroke-linecap: round;
+      animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+    }
+    @keyframes dash {
+      0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; }
+      50% { stroke-dasharray: 89, 200; stroke-dashoffset: -35px; }
+      100% { stroke-dasharray: 89, 200; stroke-dashoffset: -124px; }
+    }
+    @keyframes color {
+      100%, 0% { stroke: #d62d20; }
+      40% { stroke: #0057e7; }
+      66% { stroke: #008744; }
+      80%, 90% { stroke: #ffa700; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>BallonTV</h1>
-        <p> بث مباشر وحصري لاقوى المباريات العالمية</p>
-        <div id="gmt-clock"></div>
-    </header>
+  <div class="player-container">
+    <video autoplay data-shaka-player poster="https://images5.alphacoders.com/133/1338700.png" id="video"></video>
+  </div>
 
-    <nav>
-        <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
-        <a href="tomorrow_matches.html"><i class="fas fa-futbol"></i> مباريات الغد</a>
-        <a href="news.html"><i class="fas fa-newspaper"></i> آخر الأخبار</a>
-        <a href="analysis.html"><i class="fas fa-chart-line"></i> تحليلات</a>
-        <a href="contact.html"><i class="fas fa-envelope"></i> اتصل بنا</a>
-        <a href="application.html"><i class="fas fa-envelope"></i> اتحميل تطبيق ballon TV</a>
-    </nav>
+  <script>
+    document.addEventListener('shaka-ui-loaded', () => {
+        initPlayer();
+    });
 
-    <div class="container">
-        <!-- مكان مخصص للإعلانات (العليا) -->
-        <div class="ad-space">
-            <!-- ضع كود إعلانك هنا ليظهر في أعلى الصفحة -->
-            <!-- مثال: <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
-            <!-- <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-                 data-ad-slot="YYYYYYYYYY"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins> -->
-            <!-- <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script> -->
-            <!-- أو أي كود إعلان آخر لديك -->
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : '0e7dc812c18362bbd1aff82fbd22154e',
-                    'format' : 'iframe',
-                    'height' : 50,
-                    'width' : 320,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/0e7dc812c18362bbd1aff82fbd22154e/invoke.js"></script>
-        </div>
+    function initPlayer() {
+      const video = document.getElementById('video');
+      const ui = video['ui'];
+      const controls = ui.getControls();
+      const player = controls.getPlayer();
 
-        <section id="live-stream" class="section-card">
-            <h2><i class="fas fa-tv"></i> بث مباشر</h2>
-            <div class="iframe-wrapper">
-                <iframe id="video-iframe" src="https://web.facebook.com/plugins/video.php?href=https%3A%2F%2Fweb.facebook.com%2F61577361164767%2Fvideos%2F811003818168598%2F&width=1280" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
-            </div>
-            <button id="fullscreen-btn" class="fullscreen-button">
-                <i class="fas fa-expand"></i> تكبير الشاشة
-            </button>
-        </section>
+      const config = {
+          'controlPanelElements': [
+              'play_pause',
+              'time_and_duration',
+              'spacer',
+              'volume',
+              'mute',
+              'cast',
+              'overflow_menu',
+              'fullscreen',
+              'picture_in_picture',
+              'playback_rate'
+          ],
+          'overflowMenuButtons': ['quality', 'language', 'caption', 'loop'],
+          'statisticsList': [],
+          'playbackRates': [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+          'fastForwardRates': [2, 4, 8],
+          'rewindRates': [2, 4, 8]
+      };
+      ui.configure(config);
 
-        <!-- مكان مخصص للإعلانات (وسط الصفحة) -->
-        <div class="ad-space">
-            <!-- ضع كود إعلانك هنا ليظهر في وسط الصفحة -->
-            <script async="async" data-cfasync="false" src="//pl27548677.revenuecpmgate.com/dd616bebb010b900d99e73fe7b12eb90/invoke.js"></script>
-            <div id="container-dd616bebb010b900d99e73fe7b12eb90"></div>
-        </div>
+      window.player = player;
+      window.ui = ui;
 
-        <section id="news-section" class="section-card">
-            <h2><i class="fas fa-newspaper"></i> آخر الأخبار</h2>
-            <p>
-                هنا يمكنك إضافة آخر أخبار كرة القدم، مقالات تحليلية، أو تحديثات حول الفرق واللاعبين.
-                يمكنك عرض عناوين الأخبار وروابط لقراءتها بالكامل.
-            </p>
-            <ul>
-                <li><a href="news.html#article1">مقال: أبرز الانتقالات الصيفية التي هزت الميركاتو</a></li>
-                <li><a href="news.html#article2">تقرير: فرص الأندية العربية في البطولات القارية</a></li>
-                <li><a href="news.html#article3">تحليل: لماذا يعاني هذا الفريق من تذبذب النتائج؟</a></li>
-            </ul>
-        </section>
+      player.addEventListener("error", onErrorEvent);
+      controls.addEventListener("error", onErrorEvent);
 
-        <section id="analysis-section" class="section-card">
-            <h2><i class="fas fa-chart-line"></i> تحليلات ومقالات</h2>
-            <p>
-                قسم خاص بالمقالات والتحليلات العميقة للمباريات والبطولات.
-                استكشف آراء الخبراء وتوقعاتهم للمواجهات القادمة.
-            </p>
-            <ul>
-                <li><a href="analysis.html#analysis1">تحليل فني لمباراة القمة بين ... و ...</a></li>
-                <li><a href="analysis.html#analysis2">تكتيكات المدربين: كيف يخططون للفوز؟</a></li>
-                <li><a href="analysis.html#analysis3">أبرز النجوم الصاعدة في الدوريات الأوروبية</a></li>
-            </ul>
-        </section>
+      // الرابط الجديد لملف HLS
+      const manifestUri = "https://vo-live-media.cdb.cdn.orange.com/Content/Channel/AbuDhabiSportsChannel1/HLS/index.m3u8";
+      
+      // تم إزالة جزء DRM لأن الرابط الجديد لا يبدو أنه يتضمنه
 
-        <!-- مكان مخصص للإعلانات (أسفل الصفحة) -->
-        <div class="ad-space">
-            <!-- ضع كود إعلانك هنا ليظهر في أسفل الصفحة -->
-            <p>مكان إعلان سفلي هنا (يمكنك إضافة كود إعلانك لاحقًا)</p>
-        </div>
-    </div>
+      player.load(manifestUri).then(() => {
+          console.log('The video has been loaded successfully!');
+          // محاولة تفعيل وضع ملء الشاشة على عنصر "html" بعد التحميل الناجح
+          if (document.documentElement.requestFullscreen) {
+              document.documentElement.requestFullscreen();
+          } else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
+              document.documentElement.mozRequestFullScreen();
+          } else if (document.documentElement.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+              document.documentElement.webkitRequestFullscreen();
+          } else if (document.documentElement.msRequestFullscreen) { /* IE/Edge */
+              document.documentElement.msRequestFullscreen();
+          }
+      }).catch(onError);
+    }
 
-    <footer id="contact-section">
-        <p>للدعم أو الاستفسار، تواصل معنا عبر: <a href="mailto:info@ballontv.com">info@ballontv.com</a></p>
-        <p>&copy; 2023 BallonTV. جميع الحقوق محفوظة.</p>
-    </footer>
+    function onErrorEvent(event) {
+        onError(event.detail);
+    }
 
-    <script>
-        // دالة لتحديث ساعة غرينتش
-        function updateGMTClock() {
-            const now = new Date();
-            const utcHours = now.getUTCHours();
-            const utcMinutes = now.getUTCMinutes();
-            const utcSeconds = now.getUTCSeconds();
-
-            const formattedTime =
-                (utcHours < 10 ? '0' : '') + utcHours + ':' +
-                (utcMinutes < 10 ? '0' : '') + utcMinutes + ':' +
-                (utcSeconds < 10 ? '0' : '') + utcSeconds;
-
-            document.getElementById('gmt-clock').textContent = 'توقيت غرينتش (GMT): ' + formattedTime;
-        }
-
-        // تحديث الساعة كل ثانية
-        setInterval(updateGMTClock, 1000);
-        // تشغيلها فوراً عند تحميل الصفحة
-        updateGMTClock();
-
-        // ** كود زر ملء الشاشة **
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
-        const videoIframe = document.getElementById('video-iframe');
-
-        fullscreenBtn.addEventListener('click', () => {
-            if (videoIframe.requestFullscreen) {
-                videoIframe.requestFullscreen();
-            } else if (videoIframe.mozRequestFullScreen) { /* Firefox */
-                videoIframe.mozRequestFullScreen();
-            } else if (videoIframe.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-                videoIframe.webkitRequestFullscreen();
-            } else if (videoIframe.msRequestFullscreen) { /* IE/Edge */
-                videoIframe.msRequestFullscreen();
-            } else {
-                alert('متصفحك لا يدعم وضع ملء الشاشة بشكل مباشر لهذا العنصر. يمكنك محاولة استخدام زر ملء الشاشة الموجود داخل مشغل الفيديو.');
-            }
-        });
-        // ** نهاية كود زر ملء الشاشة **
-    </script>
+    function onError(error) {
+        console.error('Error code', error.code, 'object', error);
+        alert('حدث خطأ أثناء تشغيل الفيديو: ' + error.code);
+    }
+  </script>
 </body>
 </html>
