@@ -108,33 +108,6 @@
             padding: 0 30px;
         }
 
-        /* أقسام إعلانية */
-        .ad-space {
-            background-color: var(--background-light);
-            border: 2px dashed var(--border-color);
-            min-height: 100px; /* يمكن تعديل الارتفاع حسب الحاجة */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 35px 0;
-            color: #888;
-            font-size: 1.2em;
-            text-align: center;
-            border-radius: 10px;
-            transition: all 0.4s ease;
-            overflow: hidden; /* لإخفاء أي تجاوزات من الإعلانات */
-        }
-        .ad-space:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-            background-color: #e6f7ff;
-        }
-        /* لتناسب الإعلانات ذات الارتفاع والعرض المحدد */
-        .ad-space iframe {
-            display: block;
-            margin: 0 auto;
-        }
-
         /* بطاقة القسم */
         .section-card {
             background-color: var(--card-background);
@@ -243,6 +216,34 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
+        /* Ads specific styling */
+        .ad-container {
+            margin: 40px auto;
+            text-align: center;
+            border: 2px dashed var(--accent-color);
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #fff9e6; /* Light yellow background for ads */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 90%;
+        }
+        .ad-container p {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        .ad-container iframe, .ad-container div[id^="container-"] {
+            margin: 0 auto;
+            display: block; /* Center iframes/ad containers */
+        }
+        /* Style for the ad scripts that might create divs */
+        div[id^="container-"] {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+
         /* تذييل الصفحة */
         footer {
             background-color: var(--background-dark);
@@ -319,11 +320,6 @@
                 font-size: 0.95em;
                 margin-left: 15px;
             }
-            .ad-space {
-                min-height: 80px;
-                font-size: 1.1em;
-                margin: 25px 0;
-            }
         }
 
         @media (max-width: 768px) {
@@ -389,11 +385,6 @@
                 margin-top: 15px;
                 padding: 10px 0;
             }
-            .ad-space {
-                min-height: 60px;
-                font-size: 1em;
-                margin: 20px 0;
-            }
         }
         @media (max-width: 480px) {
             header h1 {
@@ -430,145 +421,61 @@
         <a href="contact.html"><i class="fas fa-envelope"></i> اتصل بنا</a>
     </nav>
 
-    <div class="container">
-        <!-- مكان مخصص للإعلانات (العليا) -->
-        <div class="ad-space" style="height: 300px; width: 160px; margin: 35px auto;">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : '2e39edd968fd8ee9c837d284ceae7e23',
-                    'format' : 'iframe',
-                    'height' : 300,
-                    'width' : 160,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/2e39edd968fd8ee9c837d284ceae7e23/invoke.js"></script>
-        </div>
+    <!-- Ad Placement 1: Below Navbar -->
+    <div class="ad-container">
+        <p>انزل الى الاسفل و شاهد البث المباشر للمباريات</p>
+        <script type="text/javascript">
+            atOptions = {
+                'key' : '2e39edd968fd8ee9c837d284ceae7e23',
+                'format' : 'iframe',
+                'height' : 300,
+                'width' : 160,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/2e39edd968fd8ee9c837d284ceae7e23/invoke.js"></script>
+    </div>
 
+    <div class="container">
         <section id="matches-today" class="section-card">
             <h2><i class="fas fa-football-ball"></i> جدول مباريات اليوم</h2>
 
-            <h3><i class="fas fa-trophy"></i> كأس ملك تايلاند</h3>
+      
+            
+                    
+            <h3><i class="fas fa-globe-americas"></i> إقصائيات كأس العالم - أمريكا الجنوبية</h3>
             <ul class="match-list">
                 <li>
                     <div class="match-details">
-                        <div class="teams">العراق 🆚 هون كونغ</div>
-                        <div class="league">كأس ملك تايلاند</div>
+                        <div class="teams">الأرجنتين 🆚 فنزويلا</div>
+                        <div class="league">إقصائيات كأس العالم - أمريكا الجنوبية</div>
                     </div>
-                    <div class="match-time">14:00 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
-                    <a href="https://sportzonline.site/channels/hd/hd5.php" target="_blank">شاهد الآن</a>
+                    <div class="match-time">22:00 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
+                    <a href="player1.html" target="_blank">شاهد الآن</a> <!-- Placeholder link -->
+                </li>
+                <li>
+                    <div class="match-details">
+                        <div class="teams">البرازيل 🆚 تشيلي</div>
+                        <div class="league">إقصائيات كأس العالم - أمريكا الجنوبية</div>
+                    </div>
+                    <div class="match-time">23:45 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
+                    <a href="player2.html" target="_blank">شاهد الآن</a> <!-- Placeholder link -->
                 </li>
             </ul>
 
-            <h3><i class="fas fa-users"></i> مباريات ودية</h3>
-            <ul class="match-list">
-                <li>
-                    <div class="match-details">
-                        <div class="teams">السعودية 🆚 مقدونيا الشمالية</div>
-                        <div class="league">مباراة ودية</div>
-                    </div>
-                    <div class="match-time">16:00 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
-                    <a href="https://dddd.alkoora.live/albaplayer/ad-sport-4/" target="_blank">شاهد الآن</a>
-                </li>
-                <li>
-                    <div class="match-details">
-                        <div class="teams">الإمارات 🆚 سوريا</div>
-                        <div class="league">مباراة ودية</div>
-                    </div>
-                    <div class="match-time">17:30<span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
-                    <a href="https://dddd.alkoora.live/albaplayer/ad-sport-3/" target="_blank">شاهد الآن</a>
-                </li>
-            </ul>
-
-            <h3><i class="fas fa-globe-africa"></i> إقصائيات كأس العالم - أفريقيا</h3>
-            <ul class="match-list">
-                <li>
-                    <div class="match-details">
-                        <div class="teams">أنغولا 🆚 ليبيا</div>
-                        <div class="league">إقصائيات كأس العالم - أفريقيا</div>
-                    </div>
-                    <div class="match-time">17:00 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
-                    <a href="https://sportzonline.site/channels/hd/hd5.php" target="_blank">شاهد الآن</a>
-                </li>
-                <li>
-                    <div class="match-details">
-                        <div class="teams">الجزائر 🆚 بوتسوانا</div>
-                        <div class="league">إقصائيات كأس العالم - أفريقيا</div>
-                    </div>
-                    <div class="match-time">20:00 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
-                    <a href="player1.html" target="_blank">شاهد الآن</a>
-                </li>
-                <li>
-                    <div class="match-details">
-                        <div class="teams">تونس 🆚 ليبيريا</div>
-                        <div class="league">إقصائيات كأس العالم - أفريقيا</div>
-                    </div>
-                    <div class="match-time">20:00 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
-                    <a href="player2.html" target="_blank">شاهد الآن</a>
-                </li>
-            </ul>
-
-            <h3><i class="fas fa-globe-europe"></i> إقصائيات كأس العالم - أوروبا</h3>
-            <ul class="match-list">
-                <li>
-                    <div class="match-details">
-                        <div class="teams">روسيا 🆚 الأردن</div>
-                        <div class="league">إقصائيات كأس العالم - أوروبا</div>
-                    </div>
-                    <div class="match-time">18:00 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
-                    <a href="https://dddd.alkoora.live/albaplayer/ad-sport-3/" target="_blank">شاهد الآن</a>
-                </li>
-                <li>
-                    <div class="match-details">
-                        <div class="teams">بلغاريا 🆚 إسبانيا</div>
-                        <div class="league">إقصائيات كأس العالم - أوروبا</div>
-                    </div>
-                    <div class="match-time">19:45<span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
-                    <a href="https://ac.yalla1shoot.club/albaplayer/sports-1/" target="_blank">شاهد الآن</a>
-                </li>
-                <li>
-                    <div class="match-details">
-                        <div class="teams">ليختنشتاين 🆚 بلجيكا</div>
-                        <div class="league">إقصائيات كأس العالم - أوروبا</div>
-                    </div>
-                    <div class="match-time">19:45 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
-                    <a href="https://ac.yalla1shoot.club/albaplayer/sports-5/" target="_blank">شاهد الآن</a>
-                </li>
-                <li>
-                    <div class="match-details">
-                        <div class="teams">هولندا 🆚 بولندا</div>
-                        <div class="league">إقصائيات كأس العالم - أوروبا</div>
-                    </div>
-                    <div class="match-time">19:45 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
-                    <a href="https://ac.yalla1shoot.club/albaplayer/sports-2/" target="_blank">شاهد الآن</a>
-                </li>
-                <li>
-                    <div class="match-details">
-                        <div class="teams">سلوفاكيا 🆚 ألمانيا</div>
-                        <div class="league">إقصائيات كأس العالم - أوروبا</div>
-                    </div>
-                    <div class="match-time">19:45<span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
-                    <a href="https://ac.yalla1shoot.club/albaplayer/sports-3/" target="_blank">شاهد الآن</a>
-                </li>
+    </li>
             </ul>
         </section>
 
-        <!-- مكان مخصص للإعلانات (وسط الصفحة) -->
-        <div class="ad-space" style="height: 50px; width: 320px; margin: 35px auto;">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : '0e7dc812c18362bbd1aff82fbd22154e',
-                    'format' : 'iframe',
-                    'height' : 50,
-                    'width' : 320,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/0e7dc812c18362bbd1aff82fbd22154e/invoke.js"></script>
-        </div>
-        <div class="ad-space" style="min-height: 100px;">
+        <!-- Ad Placement 2: Between Sections -->
+        <div class="ad-container">
+            <p></p>
             <script type='text/javascript' src='//pl27548673.revenuecpmgate.com/f1/8d/b6/f18db6d5da5ac1c3b54898787afd4e43.js'></script>
+            <script type='text/javascript' src='//pl27548528.revenuecpmgate.com/f4/63/dd/f463dd1a9f569afe4443e26e8a0b3037.js'></script>
+            <script async="async" data-cfasync="false" src="//pl27548677.revenuecpmgate.com/dd616bebb010b900d99e73fe7b12eb90/invoke.js"></script>
+            <div id="container-dd616bebb010b900d99e73fe7b12eb90"></div>
         </div>
+
 
         <section id="news-section" class="section-card">
             <h2><i class="fas fa-newspaper"></i> آخر الأخبار</h2>
@@ -594,18 +501,26 @@
                 <li><a href="analysis.html#analysis3"><i class="fas fa-chevron-circle-left"></i> أبرز النجوم الصاعدة في الدوريات الأوروبية الخمس الكبرى</a></li>
             </ul>
         </section>
+    </div>
 
-        <!-- مكان مخصص للإعلانات (أسفل الصفحة) -->
-        <div class="ad-space" style="min-height: 100px;">
-            <script type='text/javascript' src='//pl27548528.revenuecpmgate.com/f4/63/dd/f463dd1a9f569afe4443e26e8a0b3037.js'></script>
-        </div>
-        <div class="ad-space" style="min-height: 100px;">
-             <script async="async" data-cfasync="false" src="//pl27548677.revenuecpmgate.com/dd616bebb010b900d99e73fe7b12eb90/invoke.js"></script>
-             <div id="container-dd616bebb010b900d99e73fe7b12eb90"></div>
-        </div>
-        <div class="ad-space" style="min-height: 100px;">
-            <a href="https://www.revenuecpmgate.com/hhmkuhystv?key=8b753c781f6905261bba48bde927e4a4" target="_blank" style="color:var(--primary-color); text-decoration: none;">إعلان نصي مميز هنا!</a>
-        </div>
+    <!-- Ad Placement 3: Above Footer -->
+    <div class="ad-container">
+        <p>لا تفوت أفضل العروض!</p>
+        <script type="text/javascript">
+            atOptions = {
+                'key' : '0e7dc812c18362bbd1aff82fbd22154e',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 320,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/0e7dc812c18362bbd1aff82fbd22154e/invoke.js"></script>
+        <p>
+            <a href="https://www.revenuecpmgate.com/hhmkuhystv?key=8b753c781f6905261bba48bde927e4a4" target="_blank">
+                انقر هنا لمشاهدة المزيد!
+            </a>
+        </p>
     </div>
 
     <footer id="contact-section">
