@@ -216,6 +216,34 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
+        /* Ads specific styling */
+        .ad-container {
+            margin: 40px auto;
+            text-align: center;
+            border: 2px dashed var(--accent-color);
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #fff9e6; /* Light yellow background for ads */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 90%;
+        }
+        .ad-container p {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        .ad-container iframe, .ad-container div[id^="container-"] {
+            margin: 0 auto;
+            display: block; /* Center iframes/ad containers */
+        }
+        /* Style for the ad scripts that might create divs */
+        div[id^="container-"] {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+
         /* تذييل الصفحة */
         footer {
             background-color: var(--background-dark);
@@ -393,6 +421,21 @@
         <a href="contact.html"><i class="fas fa-envelope"></i> اتصل بنا</a>
     </nav>
 
+    <!-- Ad Placement 1: Below Navbar -->
+    <div class="ad-container">
+        <p>إعلان مميز</p>
+        <script type="text/javascript">
+            atOptions = {
+                'key' : '2e39edd968fd8ee9c837d284ceae7e23',
+                'format' : 'iframe',
+                'height' : 300,
+                'width' : 160,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/2e39edd968fd8ee9c837d284ceae7e23/invoke.js"></script>
+    </div>
+
     <div class="container">
         <section id="matches-today" class="section-card">
             <h2><i class="fas fa-football-ball"></i> جدول مباريات اليوم</h2>
@@ -457,6 +500,27 @@
                 </li>
             </ul>
 
+            <h3><i class="fas fa-globe-americas"></i> إقصائيات كأس العالم - أمريكا الجنوبية</h3>
+            <ul class="match-list">
+                <li>
+                    <div class="match-details">
+                        <div class="teams">الأرجنتين 🆚 فنزويلا</div>
+                        <div class="league">إقصائيات كأس العالم - أمريكا الجنوبية</div>
+                    </div>
+                    <div class="match-time">22:00 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
+                    <a href="https://example.com/arg-ven" target="_blank">شاهد الآن</a> <!-- Placeholder link -->
+                </li>
+                <li>
+                    <div class="match-details">
+                        <div class="teams">البرازيل 🆚 تشيلي</div>
+                        <div class="league">إقصائيات كأس العالم - أمريكا الجنوبية</div>
+                    </div>
+                    <div class="match-time">23:45 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
+                    <a href="https://example.com/bra-chi" target="_blank">شاهد الآن</a> <!-- Placeholder link -->
+                </li>
+            </ul>
+
+
             <h3><i class="fas fa-globe-europe"></i> إقصائيات كأس العالم - أوروبا</h3>
             <ul class="match-list">
                 <li>
@@ -502,6 +566,16 @@
             </ul>
         </section>
 
+        <!-- Ad Placement 2: Between Sections -->
+        <div class="ad-container">
+            <p>محتوى إعلاني مميز</p>
+            <script type='text/javascript' src='//pl27548673.revenuecpmgate.com/f1/8d/b6/f18db6d5da5ac1c3b54898787afd4e43.js'></script>
+            <script type='text/javascript' src='//pl27548528.revenuecpmgate.com/f4/63/dd/f463dd1a9f569afe4443e26e8a0b3037.js'></script>
+            <script async="async" data-cfasync="false" src="//pl27548677.revenuecpmgate.com/dd616bebb010b900d99e73fe7b12eb90/invoke.js"></script>
+            <div id="container-dd616bebb010b900d99e73fe7b12eb90"></div>
+        </div>
+
+
         <section id="news-section" class="section-card">
             <h2><i class="fas fa-newspaper"></i> آخر الأخبار</h2>
             <p>
@@ -526,6 +600,26 @@
                 <li><a href="analysis.html#analysis3"><i class="fas fa-chevron-circle-left"></i> أبرز النجوم الصاعدة في الدوريات الأوروبية الخمس الكبرى</a></li>
             </ul>
         </section>
+    </div>
+
+    <!-- Ad Placement 3: Above Footer -->
+    <div class="ad-container">
+        <p>لا تفوت أفضل العروض!</p>
+        <script type="text/javascript">
+            atOptions = {
+                'key' : '0e7dc812c18362bbd1aff82fbd22154e',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 320,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/0e7dc812c18362bbd1aff82fbd22154e/invoke.js"></script>
+        <p>
+            <a href="https://www.revenuecpmgate.com/hhmkuhystv?key=8b753c781f6905261bba48bde927e4a4" target="_blank">
+                انقر هنا لمشاهدة المزيد!
+            </a>
+        </p>
     </div>
 
     <footer id="contact-section">
