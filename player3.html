@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>DRM Player - Auto Fullscreen</title>
+  <title>DRM Player - Auto Fullscreen with Controls</title>
   <link rel="icon" href="//alraqi-tv.com/DRM/shakaplayer/shaka.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="no-referrer">
@@ -21,7 +21,7 @@
       margin: 0;
       padding: 0;
       overflow: hidden; /* لمنع ظهور أشرطة التمرير */
-      display: flex; /* لمركزة المحتوى إذا لم يكن بملء الشاشة تمامًا */
+      display: flex;
       justify-content: center;
       align-items: center;
       background: #000;
@@ -40,12 +40,12 @@
       object-fit: contain; /* للحفاظ على نسبة العرض إلى الارتفاع */
       background-color: #000;
     }
-    /* إخفاء أي عناصر غير الفيديو لتحقيق ملء الشاشة الحقيقي */
+    /* إخفاء أي عناصر غير ضرورية، ولكن لا تتدخل في عناصر تحكم Shaka Player */
     h1, input[type="text"], button, .footer {
       display: none !important;
     }
 
-    /* أنماط الشاكا بلاير الأساسية */
+    /* أنماط الشاكا بلاير الأساسية (حافظ عليها كما هي) */
     .shaka-video-container .material-icons-round {
       color: #00abe2;
     }
@@ -90,6 +90,7 @@
       const player = controls.getPlayer();
 
       // إعدادات واجهة التحكم: فقط play/pause, volume, fullscreen
+      // تأكدنا هنا من تضمين 'fullscreen'
       const config = {
           'controlPanelElements': ['play_pause', 'spacer', 'volume', 'fullscreen'],
           'overflowMenuButtons': [],
@@ -126,15 +127,10 @@
           });
       }
 
-      // تحميل المصدر مباشرة عند تهيئة المشغل
       player.load(manifestUri).then(() => {
           console.log('The video has been loaded successfully!');
           // محاولة تفعيل وضع ملء الشاشة على عنصر "html" بعد التحميل الناجح
-          // ملاحظة هامة: في معظم المتصفحات الحديثة، لا يمكن تفعيل وضع ملء الشاشة
-          // تلقائيًا بدون تفاعل من المستخدم (مثل نقرة).
-          // إذا لم يتم الدخول في وضع ملء الشاشة تلقائيًا، فسيظل الفيديو
-          // بملء الشاشة ضمن نافذة المتصفح، ويمكن للمستخدم النقر على زر ملء الشاشة
-          // في المشغل لتفعيله يدويًا.
+          // لا تزال قيود المتصفح قائمة، وقد تحتاج إلى تفاعل المستخدم.
           if (document.documentElement.requestFullscreen) {
               document.documentElement.requestFullscreen();
           } else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
