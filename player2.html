@@ -117,8 +117,8 @@
       player.addEventListener("error", onErrorEvent);
       controls.addEventListener("error", onErrorEvent);
 
-      const manifestUri = "https://ssc-3-enc.edgenextcdn.net/out/v1/42e86125555242aaa2a12056832e7814/index.mpd?|drmScheme=clearkey&drmLicense=7de5dd08ad8041d586c2f16ccc9490a1:5e1503f3398b34f5099933fedab847ef";
-      const clearKeyInput = "7de5dd08ad8041d586c2f16ccc9490a1:5e1503f3398b34f5099933fedab847ef";
+      const manifestUri = "https://ssc-2-enc.edgenextcdn.net/out/v1/a16db2ec338a445a82d9c541cc9293f9/index.mpd?|drmScheme=clearkey&drmLicense=8bcfc55359e24bd7ad1c5560a96ddd3c:b5dcf721ab522af92a9d3bf0bd55b596e1503f3398b34f5099933fedab847ef";
+      const clearKeyInput = "8bcfc55359e24bd7ad1c5560a96ddd3c:b5dcf721ab522af92a9d3bf0bd55b596";
       const [keyId, key] = clearKeyInput.split(':');
 
       player.configure({
