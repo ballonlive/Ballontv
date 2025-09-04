@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>DRM Player - Minimal Controls</title>
+  <title>DRM Player - Auto Fullscreen</title>
   <link rel="icon" href="//alraqi-tv.com/DRM/shakaplayer/shaka.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="no-referrer">
@@ -15,29 +15,37 @@
   <script defer src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #000000;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+    html, body {
+      width: 100%;
+      height: 100%;
       margin: 0;
-      padding: 10px;
-      box-sizing: border-box;
+      padding: 0;
+      overflow: hidden; /* لمنع ظهور أشرطة التمرير */
+      display: flex; /* لمركزة المحتوى إذا لم يكن بملء الشاشة تمامًا */
+      justify-content: center;
+      align-items: center;
+      background: #000;
     }
     .player-container {
-      background: rgba(30, 30, 30, 0.5);
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      width: 100%;
-      max-width: 900px;  
-      height: auto;
+      width: 100vw; /* عرض 100% من عرض النافذة */
+      height: 100vh; /* ارتفاع 100% من ارتفاع النافذة */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000; /* خلفية سوداء للحاوية */
     }
-    /* الأنماط الخاصة بـ Shaka Player */
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* للحفاظ على نسبة العرض إلى الارتفاع */
+      background-color: #000;
+    }
+    /* إخفاء أي عناصر غير الفيديو لتحقيق ملء الشاشة الحقيقي */
+    h1, input[type="text"], button, .footer {
+      display: none !important;
+    }
+
+    /* أنماط الشاكا بلاير الأساسية */
     .shaka-video-container .material-icons-round {
       color: #00abe2;
     }
@@ -63,80 +71,11 @@
       66% { stroke: #008744; }
       80%, 90% { stroke: #ffa700; }
     }
-    /* الأنماط العامة للصفحة */
-    h1 {
-      font-size: 2rem;
-      background: linear-gradient(to right, #5294D6, #EF3232, #FBBC09, #3DB94B);
-      -webkit-background-clip: text;
-      color: transparent;
-      animation: glow 1.5s infinite alternate;
-      margin-bottom: 20px;
-    }
-    @keyframes glow {
-      from { text-shadow: 0 0 10px #fff, 0 0 20px #ff5722; }
-      to { text-shadow: 0 0 20px #fff, 0 0 30px #00abe2; }
-    }
-    input[type="text"] {
-      width: calc(100% - 22px);
-      padding: 12px;
-      margin-bottom: 10px;
-      border: 1px solid #555;
-      border-radius: 8px;
-      background: #333;
-      color: #fff;
-      font-size: 1em;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 8px;
-      background: #ff5722;
-      color: #ffffff;
-      font-size: 1.1em;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    button:hover {
-      background: #e64a19;
-    }
-    video {
-      width: 100%;
-      height: auto;
-      margin-top: 20px;
-      border-radius: 8px;
-      background-color: #000;
-    }
-    .footer {
-      margin-top: 20px;
-      font-size: 0.9em;
-      color: #aaa;
-      text-align: center;
-    }
-    .footer a {
-        color: #ff5722;
-        text-decoration: none;
-    }
   </style>
 </head>
 <body>
   <div class="player-container">
-    <h1>Shaka DRM Video Player</h1>
-    <input id="manifestUri" type="text" placeholder="أدخل رابط البث (mpd أو m3u8)">
-    <input id="clearKey" type="text" placeholder="أدخل المفتاح بالتنسيق keyid:key">
-    
-    <button id="playButton">تشغيل الفيديو</button>
-    
     <video autoplay data-shaka-player poster="https://images5.alphacoders.com/133/1338700.png" id="video"></video>
-  </div>
-
-  <div class="footer">
-      <p>alraqi-tv. All rights reserved ©
-          <script>document.write(new Date().getFullYear())</script>
-         | <a href="https://alraqi-tv.com">Visit our website</a>
-      </p>
   </div>
 
   <script>
@@ -150,14 +89,14 @@
       const controls = ui.getControls();
       const player = controls.getPlayer();
 
-      // تم تعديل عناصر لوحة التحكم هنا
+      // إعدادات واجهة التحكم: فقط play/pause, volume, fullscreen
       const config = {
-          'controlPanelElements': ['play_pause', 'spacer', 'volume', 'fullscreen'], // فقط تشغيل/إيقاف مؤقت، مسافة، صوت، ملء الشاشة
-          'overflowMenuButtons': [], // لا يوجد قائمة تجاوز
-          'statisticsList': [], // لا توجد إحصائيات
-          'playbackRates': [1], // معدل تشغيل واحد فقط
-          'fastForwardRates': [], // إزالة التقديم السريع
-          'rewindRates': [] // إزالة الترجيع السريع
+          'controlPanelElements': ['play_pause', 'spacer', 'volume', 'fullscreen'],
+          'overflowMenuButtons': [],
+          'statisticsList': [],
+          'playbackRates': [1],
+          'fastForwardRates': [],
+          'rewindRates': []
       };
       ui.configure(config);
 
@@ -167,52 +106,45 @@
       player.addEventListener("error", onErrorEvent);
       controls.addEventListener("error", onErrorEvent);
 
-      document.getElementById('playButton').addEventListener('click', () => {
-          const manifestUri = document.getElementById('manifestUri').value;
-          const clearKeyInput = document.getElementById('clearKey').value;
+      const manifestUri = "https://ssc-3-enc.edgenextcdn.net/out/v1/42e86125555242aaa2a12056832e7814/index.mpd?|drmScheme=clearkey&drmLicense=7de5dd08ad8041d586c2f16ccc9490a1:5e1503f3398b34f5099933fedab847ef";
+      const clearKeyInput = "7de5dd08ad8041d586c2f16ccc9490a1:5e1503f3398b34f5099933fedab847ef";
+      const [keyId, key] = clearKeyInput.split(':');
 
-          if (!manifestUri) {
-              alert('الرجاء إدخال رابط البث!');
-              return;
+      player.configure({
+          drm: {
+              clearKeys: {}
           }
-
-          const [keyId, key] = clearKeyInput.split(':');
-
+      });
+      
+      if (keyId && key) {
           player.configure({
               drm: {
-                  clearKeys: {}
+                  clearKeys: {
+                      [keyId]: key
+                  }
               }
           });
-          
-          if (keyId && key) {
-              player.configure({
-                  drm: {
-                      clearKeys: {
-                          [keyId]: key
-                      }
-                  }
-              });
+      }
+
+      // تحميل المصدر مباشرة عند تهيئة المشغل
+      player.load(manifestUri).then(() => {
+          console.log('The video has been loaded successfully!');
+          // محاولة تفعيل وضع ملء الشاشة على عنصر "html" بعد التحميل الناجح
+          // ملاحظة هامة: في معظم المتصفحات الحديثة، لا يمكن تفعيل وضع ملء الشاشة
+          // تلقائيًا بدون تفاعل من المستخدم (مثل نقرة).
+          // إذا لم يتم الدخول في وضع ملء الشاشة تلقائيًا، فسيظل الفيديو
+          // بملء الشاشة ضمن نافذة المتصفح، ويمكن للمستخدم النقر على زر ملء الشاشة
+          // في المشغل لتفعيله يدويًا.
+          if (document.documentElement.requestFullscreen) {
+              document.documentElement.requestFullscreen();
+          } else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
+              document.documentElement.mozRequestFullScreen();
+          } else if (document.documentElement.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+              document.documentElement.webkitRequestFullscreen();
+          } else if (document.documentElement.msRequestFullscreen) { /* IE/Edge */
+              document.documentElement.msRequestFullscreen();
           }
-
-          player.load(manifestUri).then(() => {
-              console.log('The video has been loaded successfully!');
-              // محاولة تفعيل وضع ملء الشاشة بعد التحميل الناجح
-              // يرجى ملاحظة أن هذا قد يتطلب تفاعل المستخدم في بعض المتصفحات.
-              if (document.documentElement.requestFullscreen) {
-                  document.documentElement.requestFullscreen();
-              } else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
-                  document.documentElement.mozRequestFullScreen();
-              } else if (document.documentElement.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-                  document.documentElement.webkitRequestFullscreen();
-              } else if (document.documentElement.msRequestFullscreen) { /* IE/Edge */
-                  document.documentElement.msRequestFullscreen();
-              }
-          }).catch(onError);
-      });
-
-      // لملء حقول الإدخال تلقائيًا عند التحميل
-      document.getElementById('manifestUri').value = "https://ssc-3-enc.edgenextcdn.net/out/v1/42e86125555242aaa2a12056832e7814/index.mpd?|drmScheme=clearkey&drmLicense=7de5dd08ad8041d586c2f16ccc9490a1:5e1503f3398b34f5099933fedab847ef";
-      document.getElementById('clearKey').value = "7de5dd08ad8041d586c2f16ccc9490a1:5e1503f3398b34f5099933fedab847ef";
+      }).catch(onError);
     }
 
     function onErrorEvent(event) {
