@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>Player - Auto Fullscreen with Controls</title>
+  <title>DRM Player - Auto Fullscreen with Controls</title>
   <link rel="icon" href="//alraqi-tv.com/DRM/shakaplayer/shaka.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="no-referrer">
@@ -89,6 +89,7 @@
       const controls = ui.getControls();
       const player = controls.getPlayer();
 
+      // إعدادات واجهة التحكم: أعدنا جميع الأزرار هنا
       const config = {
           'controlPanelElements': [
               'play_pause',
@@ -102,9 +103,9 @@
               'picture_in_picture',
               'playback_rate'
           ],
-          'overflowMenuButtons': ['quality', 'language', 'caption', 'loop'],
+          'overflowMenuButtons': ['quality', 'language', 'caption', 'loop'], // أضف الأزرار التي تريدها في قائمة "المزيد"
           'statisticsList': [],
-          'playbackRates': [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+          'playbackRates': [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], // سرعات تشغيل متعددة
           'fastForwardRates': [2, 4, 8],
           'rewindRates': [2, 4, 8]
       };
@@ -116,10 +117,25 @@
       player.addEventListener("error", onErrorEvent);
       controls.addEventListener("error", onErrorEvent);
 
-      // الرابط الجديد لملف HLS
-      const manifestUri = "https://dmitwlvvll.cdn.mangomolo.com/dubaisportshd5/smil:dubaisportshd5.smil/chunklist_b1300000.m3u8";
+      const manifestUri = "https://ssc-extra1-ak.akamaized.net/out/v1/647c58693f1d46af92bd7e69f17912cb/index.mpd?|drmScheme=clearkey&drmLicense=ecbc9e6fe6b145efb6658fb5cf7427f8:03c17e28911f71221acbc0b11f900401";
+      const clearKeyInput = "ecbc9e6fe6b145efb6658fb5cf7427f8:03c17e28911f71221acbc0b11f900401";
+      const [keyId, key] = clearKeyInput.split(':');
+
+      player.configure({
+          drm: {
+              clearKeys: {}
+          }
+      });
       
-      // تم إزالة جزء DRM لأن الرابط الجديد لا يبدو أنه يتضمنه
+      if (keyId && key) {
+          player.configure({
+              drm: {
+                  clearKeys: {
+                      [keyId]: key
+                  }
+              }
+          });
+      }
 
       player.load(manifestUri).then(() => {
           console.log('The video has been loaded successfully!');
