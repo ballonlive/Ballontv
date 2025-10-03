@@ -9,7 +9,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
 
 <style>
-/* الأساسيات والستايل */
 :root {
   --font-family: 'Tajawal', sans-serif;
   --primary-color: #4CAF50; /* لون رئيسي */
@@ -18,15 +17,17 @@
   --accent-color: #1db954; /* لون مميز */
   --card-bg: #1e1e1e;
   --shadow: rgba(0,0,0,0.5);
+  --button-bg: #1db954;
+  --button-hover-bg: #16a34a;
 }
-
-/* الثيمات */
 [data-theme="light"] {
   --bg-color: #f5f5f7;
   --card-bg: #ffffff;
   --text-color: #1d1d1f;
   --primary-color: #4CAF50;
   --accent-color: #007bff;
+  --button-bg: #4CAF50;
+  --button-hover-bg: #388e3c;
 }
 
 body {
@@ -181,7 +182,7 @@ main {
   box-shadow: 0 4px 12px var(--shadow);
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  height: 250px; /* ارتفاع ثابت مستطيل */
+  height: 250px; /* ارتفاع ثابت */
 }
 .card:hover {
   transform: translateY(-5px);
@@ -198,17 +199,22 @@ main {
   text-align: center;
   color: var(--text-color);
 }
-
-/* إعلانات مخصصة */
-.ads-section {
-  margin: 30px 0;
-  text-align: center;
-}
-.ads-section iframe {
-  max-width: 100%;
-  height: auto;
+/* زر المشاهدة */
+.watch-btn {
   display: block;
+  width: calc(100% - 40px);
   margin: 10px auto;
+  padding: 10px;
+  background-color: var(--button-bg);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+.watch-btn:hover {
+  background-color: var(--button-hover-bg);
 }
 </style>
 </head>
@@ -247,57 +253,13 @@ main {
 <main>
   <h2 class="section-title"><i class="fas fa-satellite-dish"></i> المباريات المباشرة</h2>
   
-  <!-- إعلان في أعلى المحتوى -->
-  <div class="ads-section">
-    <!-- الإعلان الأول -->
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '2e39edd968fd8ee9c837d284ceae7e23',
-        'format' : 'iframe',
-        'height' : 300,
-        'width' : 160,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/2e39edd968fd8ee9c837d284ceae7e23/invoke.js"></script>
+  <!-- زر مشاهدة في أعلى الصفحة -->
+  <div style="text-align:center; margin-bottom:20px;">
+    <button class="watch-btn" onclick="alert('سيتم توجيهك إلى البث المباشر!')">اضغط هنا لمشاهدة المباراة</button>
   </div>
   
-  <!-- المباريات -->
-  <div id="matches-container">
-    <!-- الكروت ستُضاف هنا بواسطة JavaScript -->
-  </div>
-  
-  <!-- إعلان بين المباريات -->
-  <div class="ads-section">
-    <!-- إعلان من revenuecpmgate -->
-    <script type='text/javascript' src='//pl27548673.revenuecpmgate.com/f1/8d/b6/f18db6d5da5ac1c3b54898787afd4e43.js'></script>
-  </div>
-  
-  <!-- إضافة المزيد من المباريات هنا عبر جافاسكريبت -->
-  
-  <!-- إعلان في أسفل المحتوى -->
-  <div class="ads-section">
-    <!-- إعلان آخر من revenuecpmgate -->
-    <script type='text/javascript' src='//pl27548528.revenuecpmgate.com/f4/63/dd/f463dd1a9f569afe4443e26e8a0b3037.js'></script>
-  </div>
-  
-  <!-- إعلان بحجم مختلف في أسفل الصفحة -->
-  <div class="ads-section">
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '0e7dc812c18362bbd1aff82fbd22154e',
-        'format' : 'iframe',
-        'height' : 50,
-        'width' : 320,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/0e7dc812c18362bbd1aff82fbd22154e/invoke.js"></script>
-    <div style="margin-top:10px;">
-      <script async="async" data-cfasync="false" src="//pl27548677.revenuecpmgate.com/dd616bebb010b900d99e73fe7b12eb90/invoke.js"></script>
-      <div id="container-dd616bebb010b900d99e73fe7b12eb90"></div>
-    </div>
-  </div>
+  <!-- مباريات -->
+  <div id="matches-container"></div>
 </main>
 
 <script>
@@ -335,7 +297,7 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
     document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
 });
 
-// البيانات الخاصة بالمباريات
+// بيانات المباريات
 const matches = [
   {
     title: "ليدز 🆚 توتنهام",
@@ -379,9 +341,8 @@ const matches = [
   }
 ];
 
-// إضافة المباريات بشكل ديناميكي
+// إضافة المباريات
 const container = document.getElementById('matches-container');
-
 matches.forEach(match => {
   const card = document.createElement('div');
   card.className = 'card';
@@ -395,10 +356,13 @@ matches.forEach(match => {
   title.textContent = match.title;
   card.appendChild(title);
 
-  // عند النقر يفتح البث
-  card.onclick = () => { window.open(match.streamUrl, '_blank'); };
+  // زر "اضغط هنا لمشاهدة المباراة"
+  const btn = document.createElement('button');
+  btn.textContent = "اضغط هنا لمشاهدة المباراة";
+  btn.className = "watch-btn";
+  btn.onclick = () => { window.open(match.streamUrl, '_blank'); };
+  card.appendChild(btn);
 
-  // إضافة الكارت إلى الحاوية
   container.appendChild(card);
 });
 </script>
