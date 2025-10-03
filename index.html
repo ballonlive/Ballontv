@@ -1,5 +1,4 @@
 
-<html dir="rtl" lang="ar" data-theme="dark">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -29,6 +28,7 @@
   --primary-color: #4CAF50;
   --accent-color: #007bff;
 }
+
 body {
   margin: 0;
   font-family: var(--font-family);
@@ -153,6 +153,7 @@ body {
 main {
   padding: 20px;
 }
+
 /* العنوان */
 .section-title {
   font-size: 1.4rem;
@@ -197,6 +198,18 @@ main {
   text-align: center;
   color: var(--text-color);
 }
+
+/* إعلانات مخصصة */
+.ads-section {
+  margin: 30px 0;
+  text-align: center;
+}
+.ads-section iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px auto;
+}
 </style>
 </head>
 <body>
@@ -230,11 +243,60 @@ main {
   <a href="#">سياسة الخصوصية</a>
 </div>
 
-<!-- المحتوى الرئيسي -->
+<!-- محتوى الصفحة -->
 <main>
   <h2 class="section-title"><i class="fas fa-satellite-dish"></i> المباريات المباشرة</h2>
+  
+  <!-- إعلان في أعلى المحتوى -->
+  <div class="ads-section">
+    <!-- الإعلان الأول -->
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '2e39edd968fd8ee9c837d284ceae7e23',
+        'format' : 'iframe',
+        'height' : 300,
+        'width' : 160,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/2e39edd968fd8ee9c837d284ceae7e23/invoke.js"></script>
+  </div>
+  
+  <!-- المباريات -->
   <div id="matches-container">
     <!-- الكروت ستُضاف هنا بواسطة JavaScript -->
+  </div>
+  
+  <!-- إعلان بين المباريات -->
+  <div class="ads-section">
+    <!-- إعلان من revenuecpmgate -->
+    <script type='text/javascript' src='//pl27548673.revenuecpmgate.com/f1/8d/b6/f18db6d5da5ac1c3b54898787afd4e43.js'></script>
+  </div>
+  
+  <!-- إضافة المزيد من المباريات هنا عبر جافاسكريبت -->
+  
+  <!-- إعلان في أسفل المحتوى -->
+  <div class="ads-section">
+    <!-- إعلان آخر من revenuecpmgate -->
+    <script type='text/javascript' src='//pl27548528.revenuecpmgate.com/f4/63/dd/f463dd1a9f569afe4443e26e8a0b3037.js'></script>
+  </div>
+  
+  <!-- إعلان بحجم مختلف في أسفل الصفحة -->
+  <div class="ads-section">
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '0e7dc812c18362bbd1aff82fbd22154e',
+        'format' : 'iframe',
+        'height' : 50,
+        'width' : 320,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/0e7dc812c18362bbd1aff82fbd22154e/invoke.js"></script>
+    <div style="margin-top:10px;">
+      <script async="async" data-cfasync="false" src="//pl27548677.revenuecpmgate.com/dd616bebb010b900d99e73fe7b12eb90/invoke.js"></script>
+      <div id="container-dd616bebb010b900d99e73fe7b12eb90"></div>
+    </div>
   </div>
 </main>
 
@@ -275,89 +337,69 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
 
 // البيانات الخاصة بالمباريات
 const matches = [
-  
   {
-    title: "باريس سان جرمان ضد برشلونة",
-    imageUrl: "https://a.top4top.io/p_3561pqtzc0.jpg",
-    streamUrl: "https://homosportt.shop/online/stream-91.php"
+    title: "ليدز 🆚 توتنهام",
+    imageUrl: "https://example.com/image1.jpg",
+    streamUrl: "https://yourstreamlink.com/lidz-vs-tottenham"
   },
   {
-    title: "مباراة الأهلي والزمالك",
-    imageUrl: "https://images.unsplash.com/photo-1608874435812-78a0f0a0f6e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    streamUrl: "homosportt.shop/online/stream-91.php"
+    title: "أرسنال 🆚 ويست هام",
+    imageUrl: "https://example.com/image2.jpg",
+    streamUrl: "https://yourstreamlink.com/arsenal-vs-westham"
   },
   {
-    title: "باريس سان جرمان ضد برشلونة",
-    imageUrl: "https://images.unsplash.com/photo-1615178720502-0ed3fded4d84?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    streamUrl: "https://player.html"
+    title: "مان يونايتد 🆚 ساندرلاند",
+    imageUrl: "https://example.com/image3.jpg",
+    streamUrl: "https://yourstreamlink.com/manu-vs-sunderland"
   },
   {
-    title: "بايرن ميونخ ضد ليفربول",
-    imageUrl: "https://images.unsplash.com/photo-1628898369179-2a6654b3c9f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    streamUrl: "https://streamingplatform.com/live/bayern_vs_liverpool"
+    title: "تشيلسي 🆚 ليفربول",
+    imageUrl: "https://example.com/image4.jpg",
+    streamUrl: "https://yourstreamlink.com/chelsea-vs-liverpool"
   },
-  
   {
-    title: "باريس سان جرمان ضد برشلونة",
-    imageUrl: "https://images.unsplash.com/photo-1615178720502-0ed3fded4d84?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    streamUrl: "homosportt.shop/online/stream-91.php"
+    title: "ر.مدريد 🆚 فياريال",
+    imageUrl: "https://example.com/image5.jpg",
+    streamUrl: "https://yourstreamlink.com/rmadrid-vs-villarreal"
   },
-  
   {
-    title: "باريس سان جرمان ضد برشلونة",
-    imageUrl: "https://images.unsplash.com/photo-1615178720502-0ed3fded4d84?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    streamUrl: "homosportt.shop/online/stream-91.php"
+    title: "دورتموند 🆚 لايبزيج",
+    imageUrl: "https://example.com/image6.jpg",
+    streamUrl: "https://yourstreamlink.com/dortmund-vs-leipzig"
   },
-  
   {
-    title: "باريس سان جرمان ضد برشلونة",
-    imageUrl: "https://images.unsplash.com/photo-1615178720502-0ed3fded4d84?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    streamUrl: "homosportt.shop/online/stream-91.php"
+    title: "فرانكفورت 🆚 بايرن",
+    imageUrl: "https://example.com/image7.jpg",
+    streamUrl: "https://yourstreamlink.com/frankfurt-vs-bayern"
   },
-  
   {
-    title: "باريس سان جرمان ضد برشلونة",
-    imageUrl: "https://images.unsplash.com/photo-1615178720502-0ed3fded4d84?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    streamUrl: "homosportt.shop/online/stream-91.php"
-  },
-  
-  {
-    title: "باريس سان جرمان ضد برشلونة",
-    imageUrl: "https://images.unsplash.com/photo-1615178720502-0ed3fded4d84?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    streamUrl: "homosportt.shop/online/stream-91.php"
-  },
-  
-  {
-    title: "باريس سان جرمان ضد برشلونة",
-    imageUrl: "https://images.unsplash.com/photo-1615178720502-0ed3fded4d84?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    streamUrl: "homosportt.shop/online/stream-91.php"
-  },
-  // أضف هنا المزيد من المباريات
+    title: "المغرب 🆚 المكسيك",
+    imageUrl: "https://example.com/image8.jpg",
+    streamUrl: "https://yourstreamlink.com/morocco-vs-mexico"
+  }
 ];
 
-// إضافة الكروت بشكل ديناميكي
+// إضافة المباريات بشكل ديناميكي
 const container = document.getElementById('matches-container');
 
 matches.forEach(match => {
   const card = document.createElement('div');
   card.className = 'card';
 
-  // الصورة
   const img = document.createElement('img');
   img.src = match.imageUrl;
   img.alt = match.title;
   card.appendChild(img);
 
-  // العنوان
   const title = document.createElement('h3');
   title.textContent = match.title;
   card.appendChild(title);
 
-  // عند النقر، يفتح البث
+  // عند النقر يفتح البث
   card.onclick = () => { window.open(match.streamUrl, '_blank'); };
 
   // إضافة الكارت إلى الحاوية
-  document.getElementById('matches-container').appendChild(card);
+  container.appendChild(card);
 });
 </script>
 
