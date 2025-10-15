@@ -1,252 +1,156 @@
-
-<html lang="ar">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>BALLON TV - مباراة المغرب وفرنسا</title>
+  <meta charset="UTF-8">
+  <title>DRM Player - Auto Fullscreen with Controls</title>
+  <link rel="icon" href="//alraqi-tv.com/DRM/shakaplayer/shaka.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  
+  <!-- Shaka Player UI library and default CSS -->
+  <script src="https://shaka-player-demo.appspot.com/dist/shaka-player.ui.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://shaka-player-demo.appspot.com/dist/controls.css">
+  
+  <!-- Chromecast SDK (optional) -->
+  <script defer src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
 
-<!-- مكتبة Clappr للبث -->
-<script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* لمنع ظهور أشرطة التمرير */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000;
+    }
+    .player-container {
+      width: 100vw; /* عرض 100% من عرض النافذة */
+      height: 100vh; /* ارتفاع 100% من ارتفاع النافذة */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000; /* خلفية سوداء للحاوية */
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* للحفاظ على نسبة العرض إلى الارتفاع */
+      background-color: #000;
+    }
+    /* إخفاء أي عناصر غير ضرورية، ولكن لا تتدخل في عناصر تحكم Shaka Player */
+    h1, input[type="text"], button, .footer {
+      display: none !important;
+    }
 
-<!-- خط جميل من Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
-
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Amiri', serif;
-    background: #000;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  /* رأس الصفحة */
-  header {
-    background-color: rgba(0,0,0,0.6);
-    padding: 20px;
-    text-align: center;
-  }
-  h1 {
-    margin: 0;
-    font-size: 2.5em;
-    color: #ffd700;
-  }
-  .match-title {
-    margin-top: 10px;
-    font-size: 2em;
-  }
-
-  /* المحتوى الرئيسي */
-  main {
-    flex: 1;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
-
-  /* إعلان قبل البث - شاشة كاملة */
-  #preAdOverlay {
-    position: fixed;
-    top:0; left:0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 9999;
-  }
-  #preAdBox {
-    background: #222;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    max-width: 400px;
-    width: 90%;
-  }
-  #preAdBox img {
-    max-width: 100%;
-    border-radius: 8px;
-  }
-  #preCountDown {
-    margin-top: 15px;
-    font-size: 1.2em;
-    color: #fff;
-  }
-
-  /* إعلانات داخل البث - تظهر فوق الفيديو */
-  #adBanner {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 300px;
-    background: rgba(34,34,34,0.8);
-    border-radius: 8px;
-    padding: 10px;
-    display: none; /* تظهر عند الحاجة */
-    z-index: 9999;
-    text-align: center;
-  }
-  #adBanner a {
-    display: block;
-    color: #fff;
-    background-color: #ffd700;
-    padding: 8px;
-    border-radius: 4px;
-    text-decoration: none;
-    margin-top: 8px;
-  }
-  #closeAdBtn {
-    margin-top: 8px;
-    padding: 5px 10px;
-    background-color: #ccc;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  /* مشغل الفيديو بعد */
-  #playerContainer {
-    display: none; /* يظهر بعد الإعلان */
-    width: 100%;
-    max-width: 1000px;
-    height: 600px;
-    margin-top: 20px;
-    position: relative;
-  }
-  #player {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-  }
-
-  footer {
-    background-color: rgba(0,0,0,0.6);
-    padding: 15px;
-    text-align: center;
-    font-size: 1em;
-    color: #ccc;
-    margin-top: 20px;
-  }
-</style>
+    /* أنماط الشاكا بلاير الأساسية (حافظ عليها كما هي) */
+    .shaka-video-container .material-icons-round {
+      color: #00abe2;
+    }
+    .shaka-seek-bar-container .shaka-seek-bar {
+      background: linear-gradient(to right, #051937, #00205b, #00247e, #22229f, #510dbc);
+    }
+    .shaka-volume-bar-container .shaka-volume-bar {
+      background: linear-gradient(to right, #051937, #00205b, #00247e, #22229f, #510dbc);
+    }
+    .shaka-spinner-path {
+      stroke: #d62d20;
+      stroke-linecap: round;
+      animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+    }
+    @keyframes dash {
+      0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; }
+      50% { stroke-dasharray: 89, 200; stroke-dashoffset: -35px; }
+      100% { stroke-dasharray: 89, 200; stroke-dashoffset: -124px; }
+    }
+    @keyframes color {
+      100%, 0% { stroke: #d62d20; }
+      40% { stroke: #0057e7; }
+      66% { stroke: #008744; }
+      80%, 90% { stroke: #ffa700; }
+    }
+  </style>
 </head>
 <body>
-
-<header>
-  <h1>BALLON TV</h1>
-  <div class="match-title">مباراة المغرب 🇲🇦 ضد فرنسا 🇫🇷</div>
-</header>
-
-<main>
-  <!-- شاشة إعلان قبل البث -->
-  <div id="preAdOverlay">
-    <div id="preAdBox">
-      <h2>إعلان مهم</h2>
-      <img src="https://via.placeholder.com/600x400?text=إعلان+مهم+انتظر+القليل" />
-      <div id="preCountDown">10</div>
-    </div>
+  <div class="player-container">
+    <video autoplay data-shaka-player poster="https://a.top4top.io/p_3529x2cg80.png" id="video"></video>
   </div>
 
-  <!-- إعلان داخل البث (ظهور مؤقت) -->
-  <div id="adBanner">
-    <div>إعلان ربحي - اضغط هنا للربح</div>
-    <a href="https://otieu.com/4/9093521" target="_blank">نقر للترويج</a>
-    <button id="closeAdBtn">إغلاق الإعلان</button>
-  </div>
+  <script>
+    document.addEventListener('shaka-ui-loaded', () => {
+        initPlayer();
+    });
 
-  <!-- مشغل البث بعد الإعلان -->
-  <div id="playerContainer">
-    <div id="player"></div>
-  </div>
-</main>
+    function initPlayer() {
+      const video = document.getElementById('video');
+      const ui = video['ui'];
+      const controls = ui.getControls();
+      const player = controls.getPlayer();
 
-<footer>
-  &copy; 2024 BALLON TV. جميع الحقوق محفوظة.
-</footer>
+      // إعدادات واجهة التحكم: فقط play/pause, volume, fullscreen
+      // تأكدنا هنا من تضمين 'fullscreen'
+      const config = {
+          'controlPanelElements': ['play_pause', 'spacer', 'volume', 'fullscreen'],
+          'overflowMenuButtons': [],
+          'statisticsList': [],
+          'playbackRates': [1],
+          'fastForwardRates': [],
+          'rewindRates': []
+      };
+      ui.configure(config);
 
-<script>
-const streamUrl = "http://135.125.109.73:9000/beinsportglobal_.m3u8";
+      window.player = player;
+      window.ui = ui;
 
-// إعدادات الإعلان قبل البث
-const adDuration = 10; // ثانية
-const adVideoUrl = "https://www.w3schools.com/html/mov_bbb.mp4"; // استبدل برابط إعلان حقيقي
+      player.addEventListener("error", onErrorEvent);
+      controls.addEventListener("error", onErrorEvent);
 
-// إعلانات داخل البث - روابط إعلانات ربحية
-const adLinks = [
-  "https://otieu.com/4/9093521",
-  "https://otieu.com/4/9047517",
-  "https://otieu.com/4/9047433"
-];
+      const manifestUri = "http://135.125.109.73:9000/beinsportglobal_.m3u8";
+      const clearKeyInput = ":";
+      const [keyId, key] = clearKeyInput.split(':');
 
-const preOverlay = document.getElementById("preAdOverlay");
-const preCountDownEl = document.getElementById("preCountDown");
-const adBanner = document.getElementById("adBanner");
-const closeAdBtn = document.getElementById("closeAdBtn");
-const playerContainer = document.getElementById("playerContainer");
+      player.configure({
+          drm: {
+              clearKeys: {}
+          }
+      });
+      
+      if (keyId && key) {
+          player.configure({
+              drm: {
+                  clearKeys: {
+                      [keyId]: key
+                  }
+              }
+          });
+      }
 
-let countdown = adDuration;
-let timer;
-
-// عرض الإعلان قبل البث
-function startPreAd() {
-  countdown = adDuration;
-  preCountDownEl.innerText = countdown;
-  const intervalId = setInterval(() => {
-    if (countdown <= 0) {
-      clearInterval(intervalId);
-      // إخفاء شاشة الإعلان وبدء البث
-      preOverlay.style.display = "none";
-      startStream();
-    } else {
-      countdown--;
-      preCountDownEl.innerText = countdown;
+      player.load(manifestUri).then(() => {
+          console.log('The video has been loaded successfully!');
+          // محاولة تفعيل وضع ملء الشاشة على عنصر "html" بعد التحميل الناجح
+          // لا تزال قيود المتصفح قائمة، وقد تحتاج إلى تفاعل المستخدم.
+          if (document.documentElement.requestFullscreen) {
+              document.documentElement.requestFullscreen();
+          } else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
+              document.documentElement.mozRequestFullScreen();
+          } else if (document.documentElement.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+              document.documentElement.webkitRequestFullscreen();
+          } else if (document.documentElement.msRequestFullscreen) { /* IE/Edge */
+              document.documentElement.msRequestFullscreen();
+          }
+      }).catch(onError);
     }
-  }, 1000);
-}
 
-// بدء البث
-function startStream() {
-  document.querySelector("#playerContainer").style.display = "block";
-  // تهيئة مشغل الفيديو
-  new Clappr.Player({
-    parent: "#player",
-    source: streamUrl,
-    autoPlay: true,
-    height: "100%",
-    width: "100%"
-  });
-}
+    function onErrorEvent(event) {
+        onError(event.detail);
+    }
 
-// إظهار إعلانات داخل البث بشكل دوري
-function showAd() {
-  const index = Math.floor(Math.random() * adLinks.length);
-  adBanner.querySelector('a').href = adLinks[index];
-  adBanner.style.display = "block";
-
-  // إخفاؤه بعد مدة
-  setTimeout(() => {
-    adBanner.style.display = "none";
-  }, 15000); // 15 ثانية
-}
-
-// زر إغلاق الإعلان
-document.getElementById("closeAdBtn").onclick = () => {
-  adBanner.style.display = "none";
-};
-
-// بدء العد التنازلي قبل البث
-startPreAd();
-
-// بدء دورة عرض الإعلانات كل 30 ثانية
-setInterval(() => {
-  showAd();
-}, 30000); // كل 30 ثانية
-</script>
-
+    function onError(error) {
+        console.error('Error code', error.code, 'object', error);
+        alert('حدث خطأ أثناء تشغيل الفيديو: ' + error.code);
+    }
+  </script>
 </body>
 </html>
