@@ -1,8 +1,9 @@
 
+<html lang="ar">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>بث المباريات - تصميم احترافي وجذاب</title>
+<title>مباراة المغرب ضد فرنسا - بث مباشر</title>
 
 <!-- خطوط وأيقونات -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -21,17 +22,6 @@
   --button-hover-bg: #16a34a;
 }
 
-[data-theme="light"] {
-  --bg-color: #f5f5f7;
-  --card-bg: #ffffff;
-  --text-color: #1d1d1f;
-  --primary-color: #4CAF50;
-  --accent-color: #007bff;
-  --button-bg: #4CAF50;
-  --button-hover-bg: #388e3c;
-}
-
-/* الجسم */
 body {
   margin: 0;
   font-family: var(--font-family);
@@ -156,8 +146,6 @@ body {
 main {
   padding: 20px;
 }
-
-/* عنوان القسم */
 .section-title {
   font-size: 1.4rem;
   margin-bottom: 20px;
@@ -167,7 +155,7 @@ main {
   color: var(--accent-color);
 }
 
-/* حاوية الكروت */
+/* الكروت */
 #matches-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -215,10 +203,15 @@ main {
   background-color: var(--button-hover-bg);
 }
 
-/* زر "مشاهدة" واضح وجذاب */
-.btn-container {
-  text-align: center;
+#videoContainer {
   margin-top: 20px;
+  text-align: center;
+}
+#matchVideo {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  display: none; /* مخفي مبدئيًا */
 }
 </style>
 </head>
@@ -257,15 +250,21 @@ main {
 <main>
   <h2 class="section-title"><i class="fas fa-satellite-dish"></i> المباريات المباشرة</h2>
   
-  <!-- زر مشاهدات كبير وبارز -->
-  <div class="btn-container">
-    <button class="watch-btn" onclick="alert('سيتم توجيهك إلى البث المباشر!')">مباريات اليوم</button>
+  <!-- زر لمشاهدة مباراة المغرب ضد فرنسا -->
+  <div class="btn-container" style="text-align:center; margin-bottom:20px;">
+    <button class="watch-btn" onclick="showMatch()">مشاهدة المغرب ضد فرنسا</button>
+  </div>
+
+  <!-- مكان عرض الفيديو -->
+  <div id="videoContainer">
+    <video id="matchVideo" controls></video>
   </div>
   
-  <!-- الكروت -->
+  <!-- باقي المباريات هنا إذا رغبت -->
   <div id="matches-container"></div>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
 // الوظائف الأساسية
 function toggleNav() {
@@ -297,73 +296,29 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
     document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
 });
 
-// بيانات المباريات
-const matches = [
-  {
-    title: "الصومال 🆚 الجزاءر",
-    imageUrl: "https://k.top4top.io/p_3569ckqcx0.jpg",
-    streamUrl: "https://sportzonline.st/channels/hd/hd3.php"
-  },
-  {
-    title: "كرواتيا 🆚 التشيك",
-    imageUrl: "https://k.top4top.io/p_3569ckqcx0.jpg",
-    streamUrl: "https://sportzonline.st/channels/pt/sporttv3.php"
-  },
-  {
-    title: "هولاندا 🆚 مالطا",
-    imageUrl: "https://k.top4top.io/p_3569ckqcx0.jpg",
-    streamUrl: "https://sportzonline.st/channels/pt/sporttv1.php"
-  },
-  {
-    title: "البحرين 🆚 المغرب",
-    imageUrl: "https://k.top4top.io/p_3569ckqcx0.jpg",
-    streamUrl: "https://sportzonline.st/channels/hd/hd6.php"
-  },
-  {
-    title: "ايطاليا u20 🆚 امريكا u20",
-    imageUrl: "https://k.top4top.io/p_3569ckqcx0.jpg",
-    streamUrl: "https://homosportt.shop/online/stream-136.php"
-  },
-  {
-    title: "كوريا الجنوبية u20 🆚 المغرب u20",
-    imageUrl: "https://k.top4top.io/p_3569ckqcx0.jpg",
-    streamUrl: "https://homosportt.shop/online/stream-578.php"
-  },
-  {
-    title: " 🆚 ",
-    imageUrl: "https://k.top4top.io/p_3569ckqcx0.jpg",
-    streamUrl: "https://sportzonline.st/channels/bra/br1.php"
-  },
-  {
-    title: " 🆚 ",
-    imageUrl: "https://k.top4top.io/p_3569ckqcx0.jpg",
-    streamUrl: "https://sportzonline.st/channels/hd/hd8.php"
+// وظيفة عرض المباراة
+function showMatch() {
+  const video = document.getElementById('matchVideo');
+  const src = 'https://cnfobm.5606087801.art:8443/hls/kw6ef0n921mnbf0.m3u8?s=ISoXmqInxoNW-yC7bOVVqw&e=1760572856&__PROXY_IDENTIFIER__=true';
+
+  // إظهار الفيديو
+  video.style.display = 'block';
+
+  if (Hls.isSupported()) {
+    const hls = new Hls();
+    hls.loadSource(src);
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      video.play();
+    });
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    // دعم مباشر من Safari
+    video.src = src;
+    video.play();
+  } else {
+    alert('متصفحك لا يدعم تشغيل فيديوهات HLS.');
   }
-];
-
-const container = document.getElementById('matches-container');
-matches.forEach(match => {
-  const card = document.createElement('div');
-  card.className = 'card';
-
-  const img = document.createElement('img');
-  img.src = match.imageUrl;
-  img.alt = match.title;
-  card.appendChild(img);
-
-  const title = document.createElement('h3');
-  title.textContent = match.title;
-  card.appendChild(title);
-
-  // زر مشاهد
-  const btn = document.createElement('button');
-  btn.className = 'watch-btn';
-  btn.textContent = 'اضغط هنا لمشاهدة المباراة';
-  btn.onclick = () => { window.open(match.streamUrl, '_blank'); };
-  card.appendChild(btn);
-
-  container.appendChild(card);
-});
+}
 </script>
 
 </body>
