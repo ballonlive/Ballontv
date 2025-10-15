@@ -50,6 +50,28 @@ main {
   padding: 20px;
 }
 
+/* العد التنازلي قبل البث */
+#countdownOverlay {
+  position: fixed;
+  top:0; left:0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  flex-direction: column;
+}
+#countdownMsg {
+  font-size: 2em;
+  color: #fff;
+}
+#countdownNumber {
+  font-size: 3em;
+  margin-top: 15px;
+  color: #ffd700;
+}
+
 /* إعلان بانر داخل البث */
 #adBanner {
   position: absolute;
@@ -59,7 +81,7 @@ main {
   background: rgba(34,34,34,0.8);
   border-radius: 8px;
   padding: 10px;
-  display: none; /* مبدئي مخفي */
+  display: none; /* مخفي مبدئيًا */
   z-index: 9999;
   text-align: center;
 }
@@ -83,7 +105,7 @@ main {
 
 /* مشغل البث بعد */
 #playerContainer {
-  display: none; /* يظهر بعد الإعلانات */
+  display: none; /* يظهر بعد العد التنازلي */
   width: 100%;
   max-width: 1000px;
   height: 600px;
@@ -95,6 +117,33 @@ main {
   height: 100%;
   border-radius: 10px;
 }
+
+/* إعلانات الفيديو داخل البث */
+#videoAdContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  max-width: 600px;
+  background: rgba(0,0,0,0.8);
+  padding: 10px;
+  border-radius: 10px;
+  display: none;
+  z-index: 9998;
+}
+#videoAd {
+  width: 100%;
+  height: auto;
+}
+#closeVideoAd {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #ffd700;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -105,6 +154,11 @@ main {
 </header>
 
 <main>
+  <!-- العد التنازلي قبل البث -->
+  <div id="countdownOverlay">
+    <div id="countdownMsg">سيبدأ البث خلال <span id="countdownNumber">5</span> ثانية</div>
+  </div>
+
   <!-- إعلان بانر داخل البث -->
   <div id="adBanner">
     <div>إعلان ربحي - اضغط هنا للربح</div>
@@ -116,6 +170,12 @@ main {
   <div id="playerContainer">
     <div id="player"></div>
   </div>
+
+  <!-- إعلان فيديو داخل البث -->
+  <div id="videoAdContainer">
+    <video id="videoAd" controls></video>
+    <button id="closeVideoAd">إغلاق الإعلان</button>
+  </div>
 </main>
 
 <footer>
@@ -125,7 +185,7 @@ main {
 <script>
 const streamUrl = "http://135.125.109.73:9000/beinsportglobal_.m3u8";
 
-// إعدادات الإعلانات
+// روابط الإعلانات
 const adLinks = [
   "https://otieu.com/4/9093521",
   "https://otieu.com/4/9047517",
@@ -134,75 +194,68 @@ const adLinks = [
 
 const adIntervalSeconds = 30; // كل 30 ثانية تظهر
 const adDisplayTime = 15; // مدة ظهور الإعلان
-
-const adElement = document.getElementById('adBanner');
-const closeBtn = document.getElementById('closeAdBtn');
+const adBanner = document.getElementById('adBanner');
+const closeAdBtn = document.getElementById('closeAdBtn');
+const videoAdContainer = document.getElementById('videoAdContainer');
+const videoAd = document.getElementById('videoAd');
+const closeVideoAdBtn = document.getElementById('closeVideoAd');
 
 let adCycle;
 
-// وظيفة لعرض إعلان عشوائي
+// وظيفة لعرض إعلان عشوائي بانر
 function showAd() {
   const index = Math.floor(Math.random() * adLinks.length);
-  adElement.querySelector('a').href = adLinks[index];
-  adElement.style.display = 'block';
+  adBanner.querySelector('a').href = adLinks[index];
+  adBanner.style.display = 'block';
 
-  // إخفاؤه بعد مدة
   setTimeout(() => {
-    adElement.style.display = 'none';
+    adBanner.style.display = 'none';
   }, adDisplayTime * 1000);
 }
 
-// بدء عرض الإعلانات بشكل دوري
+// وظيفة لعرض إعلان فيديو
+function showVideoAd() {
+  // اختر رابط فيديو إعلاني حقيقي هنا
+  // مثال: رابط فيديو إعلاني
+  const videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4"; // استبدله برابط إعلان فيديو حقيقي
+  videoAd.src = videoUrl;
+  videoAdContainer.style.display = 'block';
+}
+
+// بدء دورة الإعلانات
 function startAdCycle() {
-  showAd(); // أول إعلان مباشرة عند بداية الدورة
-  adCycle = setInterval(() => {
+  showAd(); // بانر
+  setInterval(() => {
     showAd();
   }, adIntervalSeconds * 1000);
 }
 
-// زر إغلاق الإعلان
-// الآن عند النقر عليه، الإعلان سيظل يظهر بشكل دائم
-document.getElementById("closeAdBtn").onclick = () => {
-  adElement.style.display = 'block'; // تأكد أنه سيظل ظاهرًا
-  // إيقاف دورة الإعلانات حتى لا تتكرر
+// زر إغلاق بانر الإعلان
+closeAdBtn.onclick = () => {
+  adBanner.style.display='none'; // يمكن تعديله ليظل يظهر دائمًا إذا رغبت
+  // يمكنك إيقاف الدورة هنا إذا أردت
   clearInterval(adCycle);
 };
 
-// العد التنازلي لبدء البث بعد 3 ثواني
-const countdownSeconds = 3;
+// زر إغلاق إعلان الفيديو
+closeVideoAdBtn.onclick = () => {
+  videoAdContainer.style.display='none';
+};
+
+// العد التنازلي قبل البث (5 ثواني)
+const countdownSeconds = 5;
 let countdown = countdownSeconds;
-const countdownNumber = document.createElement('div');
-countdownNumber.style.fontSize = '3em';
-countdownNumber.style.marginTop = '20px';
-countdownNumber.style.color = '#fff';
-
-const overlay = document.createElement('div');
-overlay.id = 'countdownOverlay';
-overlay.style.position = 'fixed';
-overlay.style.top = '0'; overlay.style.left = '0';
-overlay.style.width = '100%'; overlay.style.height = '100%';
-overlay.style.background = 'rgba(0,0,0,0.9)';
-overlay.style.display = 'flex';
-overlay.style.justifyContent = 'center';
-overlay.style.alignItems = 'center';
-overlay.style.zIndex = '9999';
-overlay.style.flexDirection = 'column';
-
-const msgDiv = document.createElement('div');
-msgDiv.innerHTML = `سيبدأ البث خلال <span id="countdownNumber">5</span> ثانية`;
-msgDiv.style.fontSize = '2em';
-msgDiv.style.color = '#fff';
-
-overlay.appendChild(msgDiv);
-document.body.appendChild(overlay);
-
-const countdownSpan = overlay.querySelector('#countdownNumber');
+const overlay = document.getElementById('countdownOverlay');
+const countdownNumber = document.getElementById('countdownNumber');
 
 const countdownInterval = setInterval(() => {
   if (countdown <= 0) {
     clearInterval(countdownInterval);
-    overlay.style.display='none'; // إخفاء العد
+    overlay.style.display='none';
     document.querySelector('#playerContainer').style.display='block';
+
+    // بدء دورة الإعلانات بعد 5 ثواني
+    startAdCycle();
 
     // تشغيل البث
     new Clappr.Player({
@@ -213,16 +266,20 @@ const countdownInterval = setInterval(() => {
       width: "100%"
     });
   } else {
-    countdownSpan.innerText = countdown;
+    countdownNumber.innerText = countdown;
     countdown--;
   }
 }, 1000);
 
-// نبدأ دورة الإعلانات بعد 5 ثواني
-setTimeout(() => {
-  startAdCycle();
-}, 5000);
-</script>
+// عرض إعلانات داخل البث كل 30 ثانية
+setInterval(() => {
+  showVideoAd();
+  // إخفاء بعد 10 ثوانٍ
+  setTimeout(() => {
+    videoAdContainer.style.display='none';
+  }, 10 * 1000);
+}, adIntervalSeconds * 1000);
 
+</script>
 </body>
 </html>
