@@ -1,602 +1,376 @@
-<!DOCTYPE html>
+
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BALLONLIVE-مباريات اليوم</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #28a745; /* أخضر جذاب */
-            --secondary-color: #007bff; /* أزرق مميز */
-            --accent-color: #ffc107; /* أصفر للتأكيد */
-            --background-dark: #2c3e50; /* خلفية داكنة للفوتر والهيدر */
-            --background-light: #ecf0f1; /* خلفية فاتحة للجسم */
-            --card-background: #ffffff; /* خلفية البطاقات */
-            --text-dark: #34495e; /* لون النص الغامق */
-            --text-light: #ecf0f1; /* لون النص الفاتح */
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BALLONLIVE-مباريات اليوم</title>
+<!-- روابط الخطوط -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+    :root {
+        --primary-color: #28a745; /* أخضر جذاب */
+        --secondary-color: #007bff; /* أزرق مميز */
+        --accent-color: #ffc107; /* أصفر للتأكيد */
+        --background-dark: #2c3e50; /* خلفية داكنة للفوتر والهيدر */
+        --background-light: #ecf0f1; /* خلفية فاتحة للجسم */
+        --card-background: #ffffff; /* خلفية البطاقات */
+        --text-dark: #34495e; /* لون النص الغامق */
+        --text-light: #ecf0f1; /* لون النص الفاتح */
+    }
 
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--background-light);
-            color: var(--text-dark);
-            margin: 0;
-            padding: 0;
-            direction: rtl;
-            text-align: right;
-            line-height: 1.6;
-        }
+    body {
+        font-family: 'Cairo', sans-serif;
+        background-color: var(--background-light);
+        color: var(--text-dark);
+        margin: 0;
+        padding: 0;
+        direction: rtl;
+        text-align: right;
+        line-height: 1.6;
+    }
 
-        /* رأس الصفحة */
-        header {
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            padding: 25px 0;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            position: relative;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 3em;
-            letter-spacing: 1px;
-            color: var(--primary-color);
-        }
-        header p {
-            margin: 10px 0 0;
-            font-size: 1.3em;
-            color: var(--text-light);
-        }
+    /* رأس الصفحة */
+    header {
+        background-color: var(--background-dark);
+        color: var(--text-light);
+        padding: 25px 0;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        position: relative;
+    }
+    header h1 {
+        margin: 0;
+        font-size: 3em;
+        letter-spacing: 1px;
+        color: var(--primary-color);
+    }
+    header p {
+        margin: 10px 0 0;
+        font-size: 1.3em;
+        color: var(--text-light);
+    }
 
-        /* ساعة غرينتش */
-        #gmt-clock {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: var(--accent-color);
-            margin-top: 15px;
-            padding: 8px 15px;
-            background-color: rgba(0, 0, 0, 0.3);
-            display: inline-block;
-            border-radius: 5px;
-        }
+    /* ساعة غرينتش */
+    #gmt-clock {
+        font-size: 1.1em;
+        font-weight: bold;
+        color: var(--accent-color);
+        margin-top: 15px;
+        padding: 8px 15px;
+        background-color: rgba(0, 0, 0, 0.3);
+        display: inline-block;
+        border-radius: 5px;
+    }
 
-        /* شريط التنقل */
-        nav {
-            background-color: var(--primary-color);
-            overflow: hidden;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        nav a {
-            display: inline-block;
-            color: var(--text-light);
-            text-align: center;
-            padding: 16px 20px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            font-size: 1.1em;
-        }
-        nav a:hover {
-            background-color: var(--secondary-color);
-            color: var(--text-light);
-        }
+    /* شريط التنقل */
+    nav {
+        background-color: var(--primary-color);
+        overflow: hidden;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    nav a {
+        display: inline-block;
+        color: var(--text-light);
+        text-align: center;
+        padding: 16px 20px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        font-size: 1.1em;
+    }
+    nav a:hover {
+        background-color: var(--secondary-color);
+        color: var(--text-light);
+    }
 
-        /* الحاوية الرئيسية */
-        .container {
-            max-width: 1100px;
-            margin: 30px auto;
-            padding: 0 25px;
-        }
+    /* الحاوية الرئيسية */
+    .container {
+        max-width: 1100px;
+        margin: 30px auto;
+        padding: 0 25px;
+    }
 
-        /* أقسام إعلانية (متروكة فارغة حاليًا) */
-        .ad-space {
-            background-color: #f7f7f7;
-            border: 2px dashed #ccc;
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 30px 0;
-            color: #888;
-            font-size: 1.1em;
-            text-align: center;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        .ad-space:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-            background-color: #f0fdf2;
-        }
+    /* أقسام إعلانية (متروكة فارغة حاليًا) */
+    .ad-space {
+        background-color: #f7f7f7;
+        border: 2px dashed #ccc;
+        min-height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 30px 0;
+        color: #888;
+        font-size: 1.1em;
+        text-align: center;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    .ad-space:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        background-color: #f0fdf2;
+    }
 
-        /* بطاقة القسم */
-        .section-card {
-            background-color: var(--card-background);
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            padding: 30px;
-            text-align: right;
-            border-right: 5px solid var(--primary-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .section-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-        .section-card h2 {
-            color: var(--primary-color);
-            margin-top: 0;
-            margin-bottom: 25px;
-            border-bottom: 3px solid var(--accent-color);
-            padding-bottom: 15px;
-            font-size: 2em;
-            display: flex;
-            align-items: center;
-        }
-        .section-card h2 i {
-            margin-left: 10px;
-            color: var(--secondary-color);
-        }
-        .section-card h3 {
-            color: var(--secondary-color);
-            margin-top: 30px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            font-size: 1.6em;
-            display: flex;
-            align-items: center;
-        }
-        .section-card h3 i {
-            margin-left: 10px;
-            color: var(--primary-color);
-        }
+    /* بطاقة القسم */
+    .section-card {
+        background-color: var(--card-background);
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+        padding: 30px;
+        text-align: right;
+        border-right: 5px solid var(--primary-color);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .section-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    .section-card h2 {
+        color: var(--primary-color);
+        margin-top: 0;
+        margin-bottom: 25px;
+        border-bottom: 3px solid var(--accent-color);
+        padding-bottom: 15px;
+        font-size: 2em;
+        display: flex;
+        align-items: center;
+    }
+    .section-card h2 i {
+        margin-left: 10px;
+        color: var(--secondary-color);
+    }
+    .section-card h3 {
+        color: var(--secondary-color);
+        margin-top: 30px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        font-size: 1.6em;
+        display: flex;
+        align-items: center;
+    }
+    .section-card h3 i {
+        margin-left: 10px;
+        color: var(--primary-color);
+    }
 
-        /* مقالة الدوري الإنجليزي */
-        .article-content {
-            font-size: 1.1em;
-            color: #444;
-        }
-        .article-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .article-content p {
-            margin-bottom: 1em;
-        }
-        .article-content ul {
-            list-style: disc inside;
-            margin-bottom: 1em;
-            padding-right: 20px;
-        }
-        .article-content li {
-            margin-bottom: 0.5em;
-        }
+    /* مقالة الدوري الإنجليزي */
+    .article-content {
+        font-size: 1.1em;
+        color: #444;
+    }
+    .article-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .article-content p {
+        margin-bottom: 1em;
+    }
+    .article-content ul {
+        list-style: disc inside;
+        margin-bottom: 1em;
+        padding-right: 20px;
+    }
+    .article-content li {
+        margin-bottom: 0.5em;
+    }
 
-        /* Player specific styles */
-        #player-wrapper {
-            background-color: #1a1a1a; /* Darker background for the player section */
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            margin-top: 30px;
-            border-right: 5px solid var(--secondary-color);
-            text-align: center; /* Center player and buttons */
-        }
-        #player-wrapper h2 {
-            color: var(--text-light); /* Light text for dark background */
-            margin-bottom: 25px;
-            border-bottom: 3px solid var(--accent-color);
-            padding-bottom: 15px;
-            font-size: 2em;
-            display: flex;
-            align-items: center;
-            justify-content: center; /* Center the heading icon and text */
-        }
-        #player-wrapper h2 i {
-            margin-left: 10px;
-            color: var(--primary-color);
-        }
+    /* ستايل المشغل */
+    #player-wrapper {
+        background-color: #1a1a1a;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        margin-top: 30px;
+        border-right: 5px solid var(--secondary-color);
+        text-align: center;
+    }
+    #player-wrapper h2 {
+        color: var(--text-light);
+        margin-bottom: 25px;
+        border-bottom: 3px solid var(--accent-color);
+        padding-bottom: 15px;
+        font-size: 2em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #player-wrapper h2 i {
+        margin-left: 10px;
+        color: var(--primary-color);
+    }
 
-        #player-container {
-            width: 98%; /* عرض أكبر للمشغل */
-            max-width: 900px; /* تحديد أقصى عرض */
-            aspect-ratio: 16 / 9; /* الحفاظ على نسبة العرض إلى الارتفاع */
-            background: #2c2c2c; /* Darker gray background */
-            margin: 20px auto; /* Center the player */
-            border-radius: 8px; /* حواف مستديرة */
-            overflow: hidden; /* لمنع تجاوز محتوى المشغل */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* ظل جذاب */
-            position: relative;
-        }
-        #player {
-            width: 100%;
-            height: 100%;
-        }
+    #player-container {
+        width: 98%;
+        max-width: 900px;
+        aspect-ratio: 16/9;
+        background: #2c2c2c;
+        margin: 20px auto;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        position: relative;
+    }
+    #player {
+        width: 100%;
+        height: 100%;
+    }
 
-        /* تنسيقات الأزرار الجديدة والمتحركة */
-        #server-buttons-container {
-            width: 98%;
-            max-width: 900px;
-            margin: 20px auto; /* Center the buttons */
-            overflow-x: auto; /* تمكين التمرير الأفقي */
-            white-space: nowrap; /* منع الأزرار من الالتفاف لأسفل */
-            padding: 10px 0;
-            scrollbar-width: none; /* إخفاء شريط التمرير في Firefox */
-            -ms-overflow-style: none; /* إخفاء شريط التمرير في IE/Edge */
-        }
-        /* إخفاء شريط التمرير في Webkit (Chrome, Safari) */
-        #server-buttons-container::-webkit-scrollbar {
-            display: none;
-        }
+    /* أزرار السيرفرات */
+    #server-buttons-container {
+        width: 98%;
+        max-width: 900px;
+        margin: 20px auto;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 10px 0;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE */
+    }
+    #server-buttons-container::-webkit-scrollbar {
+        display: none; /* Chrome, Safari */
+    }
 
-        #server-buttons {
-            display: inline-flex; /* لجعل الأزرار تظهر على سطر واحد ويمكن تمريرها */
-            gap: 10px; /* مسافة بين الأزرار */
-            padding: 0 10px; /* مسافة داخلية من الجوانب */
-        }
+    #server-buttons {
+        display: inline-flex;
+        gap: 10px;
+        padding: 0 10px;
+    }
 
-        #server-buttons button {
-            background-color: #e50914; /* لون أحمر زاهي (مثل Netflix) */
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            cursor: pointer;
-            border-radius: 25px; /* أزرار بيضاوية */
-            font-weight: bold;
-            font-size: 1rem;
-            transition: all 0.3s ease; /* انتقال سلس لجميع الخصائص */
-            flex-shrink: 0; /* منع الأزرار من الانكماش */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            text-align: center;
-        }
+    #server-buttons button {
+        background-color: #e50914;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        cursor: pointer;
+        border-radius: 25px;
+        font-weight: bold;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        text-align: center;
+    }
 
-        #server-buttons button:hover {
-            background-color: #ff0000; /* أحمر أغمق عند التمرير */
-            transform: translateY(-2px); /* تأثير ارتفاع طفيف */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-        }
+    #server-buttons button:hover {
+        background-color: #ff0000;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
 
-        #server-buttons button.active {
-            background-color: var(--secondary-color); /* لون مختلف للسيرفر النشط */
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
-            transform: scale(1.05); /* تكبير طفيف للسيرفر النشط */
-        }
+    #server-buttons button.active {
+        background-color: var(--secondary-color);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+        transform: scale(1.05);
+    }
 
-
-        /* تذييل الصفحة */
-        footer {
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 50px;
-            box-shadow: 0 -4px 8px rgba(0,0,0,0.2);
-        }
-        footer p {
-            margin: 0;
-            font-size: 1em;
-        }
-        footer a {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        footer a:hover {
-            color: var(--accent-color);
-            text-decoration: underline;
-        }
-
-        /* رسالة التنبيه الجديدة */
-        .attention-message {
-            background-color: #ffeb3b; /* أصفر فاتح */
-            color: #333;
-            padding: 15px 25px;
-            margin-bottom: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            font-size: 1.2em;
-            font-weight: bold;
-            text-align: center;
-            border-right: 5px solid #fbc02d; /* شريط جانبي بلون أغمق */
-        }
-        .attention-message i {
-            margin-left: 10px;
-            color: #fbc02d;
-        }
-
-
-        /* الاستجابة (Responsive Design) */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.2em;
-            }
-            header p {
-                font-size: 1em;
-            }
-            #gmt-clock {
-                font-size: 0.9em;
-            }
-            nav a {
-                padding: 12px 15px;
-                font-size: 1em;
-            }
-            .container {
-                margin: 20px auto;
-                padding: 0 15px;
-            }
-            .section-card {
-                padding: 20px;
-                border-right-width: 3px;
-            }
-            .section-card h2 {
-                font-size: 1.8em;
-                margin-bottom: 20px;
-            }
-            .ad-space {
-                min-height: 80px;
-                font-size: 1em;
-                margin: 20px 0;
-            }
-            #player-wrapper {
-                padding: 20px;
-            }
-            #player-wrapper h2 {
-                font-size: 1.8em;
-            }
-            #player-container, #server-buttons-container {
-                width: 100%;
-                margin: 15px auto;
-            }
-            #server-buttons button {
-                padding: 8px 14px;
-                font-size: 0.9rem;
-                border-radius: 20px;
-            }
-            .attention-message {
-                font-size: 1em;
-                padding: 12px 18px;
-            }
-        }
-    </style>
-    <!-- Font Awesome Icons for better visual appeal -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <!-- Clappr and Plugins -->
-    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/level-selector@0.2.0/dist/level-selector.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@clappr/hlsjs-playback@1.0.1/dist/hlsjs-playback.min.js"></script>
+    /* تذييل الصفحة */
+    footer {
+        background-color: var(--background-dark);
+        color: var(--text-light);
+        text-align: center;
+        padding: 30px 0;
+        margin-top: 50px;
+        box-shadow: 0 -4px 8px rgba(0,0,0,0.2);
+    }
+    footer p {
+        margin: 0;
+        font-size: 1em;
+    }
+    footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    footer a:hover {
+        color: var(--accent-color);
+        text-decoration: underline;
+    }
+</style>
 </head>
 <body>
-    <header>
-        <h1>BallonTV</h1>
-        <p> بث مباشر وحصري لاقوى المباريات العالمية</p>
-        <div id="gmt-clock"></div>
-    </header>
 
-    <nav>
-        <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
-        <a href="tomorrow_matches.html"><i class="fas fa-futbol"></i> مباريات الغد</a>
-        <a href="news.html"><i class="fas fa-newspaper"></i> آخر الأخبار</a>
-        <a href="analysis.html"><i class="fas fa-chart-line"></i> تحليلات</a>
-        <a href="contact.html"><i class="fas fa-envelope"></i> اتصل بنا</a>
-        <a href="application.html"><i class="fas fa-envelope"></i> تحميل تطبيق ballon TV</a>
-    </nav>
+<header>
+    <h1>BALLONLIVE - مباريات اليوم</h1>
+    <p>موقع خاص بمباريات اليوم</p>
+    <!-- ساعة غرينتش -->
+    <div id="gmt-clock"></div>
+</header>
 
-    <div class="container">
-        <!-- مكان مخصص للإعلانات (العليا) -->
-        <div class="ad-space">
-            مكان للإعلان هنا (يمكنك إضافة كود إعلانك لاحقًا)
-        </div>
+<!-- شريط التنقل -->
+<nav>
+    <a href="#">الرئيسية</a>
+    <a href="#">مباريات</a>
+    <a href="#">الدوري الإنجليزي</a>
+</nav>
 
-        <section id="premier-league-article" class="section-card">
-            <!-- رسالة التنبيه الجديدة -->
-            <div class="attention-message">
-                <i class="fas fa-info-circle"></i> يرجى النزول لأسفل الصفحة لمشاهدة البث المباشر للمباراة.
-            </div>
+<!-- المحتوى الرئيسي -->
+<div class="container">
 
-            <h2><i class="fas fa-star"></i> الدوري الإنجليزي الممتاز: تاريخ، إثارة، ومنافسة لا تنتهي</h2>
-            <div class="article-content">
-                <p>يُعتبر الدوري الإنجليزي الممتاز (Premier League) واحدًا من أقوى وأشهر الدوريات الكروية في العالم، ويحظى بمتابعة جماهيرية هائلة من مختلف أنحاء المعمورة. منذ انطلاقته بصيغته الحالية عام 1992، تحول إلى ساحة للمنافسة الشرسة واللحظات التاريخية التي لا تُنسى.</p>
-                
-                <h3><i class="fas fa-history"></i> نبذة تاريخية</h3>
-                <p>قبل ظهور البريميرليج، كان الدوري الإنجليزي يُعرف بالدوري الإنجليزي للدرجة الأولى. جاء التغيير في أوائل التسعينيات بهدف تحديث كرة القدم الإنجليزية وجذب المزيد من الاستثمارات وحقوق البث التلفزيوني، مما أدى إلى تأسيس الدوري الممتاز ككيان مستقل عن الاتحاد الإنجليزي لكرة القدم ورابطة كرة القدم.</p>
-                
-                <h3><i class="fas fa-fire-alt"></i> الإثارة والمنافسة</h3>
-                <p>ما يميز الدوري الإنجليزي هو مستوى المنافسة العالي والتقلبات المستمرة. غالبًا ما يكون سباق اللقب محتدمًا حتى الأمتار الأخيرة، ولا تقتصر الإثارة على صراع الصدارة فحسب، بل تمتد لتشمل معركة المراكز المؤهلة للمسابقات الأوروبية وصراع البقاء في الدوري الممتاز.</p>
-                <p>تشتهر الأندية الإنجليزية بقوتها البدنية والسرعة العالية في اللعب، مما يجعل المباريات ممتعة ومليئة بالأهداف. كما أن التكتيكات المتنوعة للمدربين والنجوم العالميين الذين يزخر بهم الدوري يضيفون نكهة خاصة لكل موسم.</p>
-                
-                <h3><i class="fas fa-trophy"></i> الأندية الكبرى والنجوم</h3>
-                <p>على مر السنين، شهد الدوري الإنجليزي هيمنة فرق كبرى مثل:</p>
-                <ul>
-                    <li><strong>مانشستر يونايتد:</strong> الأكثر تتويجًا باللقب في عهد البريميرليج تحت قيادة السير أليكس فيرغسون.</li>
-                    <li><strong>ليفربول:</strong> أحد أقطاب كرة القدم الإنجليزية والأوروبية، صاحب العودة القوية والمنافسة الشرسة في السنوات الأخيرة.</li>
-                    <li><strong>أرسنال:</strong> فريق "اللا هزيمة" وأحد الفرق التي تقدم كرة قدم جميلة وممتعة.</li>
-                    <li><strong>تشيلسي:</strong> القوة اللندنية التي حققت نجاحات كبيرة محليًا وأوروبيًا.</li>
-                    <li><strong>مانشستر سيتي:</strong> القوة الصاعدة التي سيطرت على المشهد في العقد الأخير بفضل الاستثمار الكبير واللعب الهجومي.</li>
-                </ul>
-                <p>كما مر على الدوري الإنجليزي العديد من الأساطير والنجوم البارزين الذين تركوا بصماتهم، مثل تييري هنري، كريستيانو رونالدو، ستيفن جيرارد، فرانك لامبارد، واين روني، وغيرهم الكثير.</p>
-                
-                <h3><i class="fas fa-chart-line"></i> التأثير الاقتصادي والجماهيري</h3>
-                <p>يعتبر الدوري الإنجليزي الممتاز قوة اقتصادية ضخمة، حيث تجذب حقوق البث والرعاية ملايين الدولارات سنويًا. هذا يساهم في قدرة الأندية على جذب أفضل اللاعبين والمدربين من جميع أنحاء العالم. هذا يساهم في قدرة الأندية على جذب أفضل اللاعبين والمدربين من جميع أنحاء العالم. كما أن القاعدة الجماهيرية للدوري لا تقتصر على المملكة المتحدة فحسب، بل تمتد لتشمل آسيا، أفريقيا، الأمريكتين، وأوروبا، مما يجعله ظاهرة عالمية حقيقية.</p>
-
-                <p>باختصار، الدوري الإنجليزي الممتاز ليس مجرد مسابقة كروية، بل هو تجربة متكاملة تجمع بين التاريخ، الشغف، الإثارة، والنجومية، مما يجعله دائمًا في صدارة اهتمامات عشاق كرة القدم.</p>
-                
-            </div>
-        </section>
-
-        <!-- قسم المشغل الجديد -->
-        <section id="live-player-section" class="section-card" style="background-color: var(--background-dark);">
-            <h2><i class="fas fa-play-circle"></i> شاهد بث مباشر</h2>
-            <div id="player-container">
-                <div id="player"></div>
-            </div>
-
-            <!-- حاوية للأزرار المتحركة -->
-            <div id="server-buttons-container">
-                <div id="server-buttons">
-                    <!-- الأزرار ستتم إضافتها هنا بواسطة JavaScript -->
-                </div>
-            </div>
-        </section>
-
-        <!-- مكان مخصص للإعلانات (وسط الصفحة) -->
-        <div class="ad-space">
-            مكان إعلان آخر هنا (يمكنك إضافة كود إعلانك لاحقًا)
-        </div>
-
-        <section id="news-section" class="section-card">
-            <h2><i class="fas fa-newspaper"></i> آخر الأخبار</h2>
-            <p>
-                هنا يمكنك إضافة آخر أخبار كرة القدم، مقالات تحليلية، أو تحديثات حول الفرق واللاعبين.
-                يمكنك عرض عناوين الأخبار وروابط لقراءتها بالكامل.
-            </p>
-            <ul>
-                <li><a href="news.html#article1">مقال: أبرز الانتقالات الصيفية التي هزت الميركاتو</a></li>
-                <li><a href="news.html#article2">تقرير: فرص الأندية العربية في البطولات القارية</a></li>
-                <li><a href="news.html#article3">تحليل: لماذا يعاني هذا الفريق من تذبذب النتائج؟</a></li>
-            </ul>
-        </section>
-
-        <section id="analysis-section" class="section-card">
-            <h2><i class="fas fa-chart-line"></i> تحليلات ومقالات</h2>
-            <p>
-                قسم خاص بالمقالات والتحليلات العميقة للمباريات والبطولات.
-                استكشف آراء الخبراء وتوقعاتهم للمواجهات القادمة.
-            </p>
-            <ul>
-                <li><a href="analysis.html#analysis1">تحليل فني لمباراة القمة بين ... و ...</a></li>
-                <li><a href="analysis.html#analysis2">تكتيكات المدربين: كيف يخططون للفوز؟</a></li>
-                <li><a href="analysis.html#analysis3">أبرز النجوم الصاعدة في الدوريات الأوروبية</a></li>
-            </ul>
-        </section>
-        
-        <!-- مكان مخصص للإعلانات (أسفل الصفحة) -->
-        <div class="ad-space">
-            مكان إعلان سفلي هنا (يمكنك إضافة كود إعلانك لاحقًا)
+    <!-- قسم المشغل -->
+    <div id="player-wrapper">
+        <h2><i class="fas fa-tv"></i> المشغل</h2>
+        <div id="player-container">
+            <!-- محتوى المشغل (مثلاً iframe أو فيديو) -->
+            <iframe id="player" src="http://135.125.109.73:9000/beinsportglobal_.m3u8" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
 
-    <footer id="contact-section">
-        <p>للدعم أو الاستفسار، تواصل معنا عبر: <a href="mailto:info@ballontv.com">info@ballontv.com</a></p>
-        <p>&copy; 2023 BallonTV. جميع الحقوق محفوظة.</p>
-    </footer>
+    <!-- أزرار السيرفرات فقط للسرفر الأول -->
+    <div id="server-buttons-container">
+        <div id="server-buttons">
+            <button id="server1" class="active">السيرفر 1</button>
+            <!-- يمكن إضافة أزرار أخرى إذا رغبت -->
+            <!-- <button id="server2">السيرفر 2</button>
+            <button id="server3">السيرفر 3</button> -->
+        </div>
+    </div>
 
-    <script>
-        // دالة لتحديث ساعة غرينتش
-        function updateGMTClock() {
-            const now = new Date();
-            const utcHours = now.getUTCHours();
-            const utcMinutes = now.getUTCMinutes();
-            const utcSeconds = now.getUTCSeconds();
+    <!-- باقي المحتوى ... -->
 
-            const formattedTime =
-                (utcHours < 10 ? '0' : '') + utcHours + ':' +
-                (utcMinutes < 10 ? '0' : '') + utcMinutes + ':' +
-                (utcSeconds < 10 ? '0' : '') + utcSeconds;
+</div>
 
-            document.getElementById('gmt-clock').textContent = 'توقيت غرينتش (GMT): ' + formattedTime;
-        }
+<!-- تذييل الصفحة -->
+<footer>
+    <p>حقوق النشر &copy; 2024</p>
+</footer>
 
-        // تحديث الساعة كل ثانية
-        setInterval(updateGMTClock, 1000);
-        // تشغيلها فوراً عند تحميل الصفحة
-        updateGMTClock();
+<!-- جافاسكريبت للتحكم في تشغيل السيرفرات -->
+<script>
+    // وظيفة عرض الوقت بتوقيت غرينتش
+function updateGMT() {
+    const now = new Date();
+    const options = { timeZone: 'GMT', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    const formatter = new Intl.DateTimeFormat([], options);
+    document.getElementById('gmt-clock').textContent = formatter.format(now);
+}
+setInterval(updateGMT, 1000);
+updateGMT();
 
-        // Player specific JavaScript
-        const primaryStreamUrl = "http://135.125.109.73:9000/beinsportglobal_.m3u8";
+// التحكم في أزرار السيرفر
+const server1Btn = document.getElementById('server1');
+// إذا أضفت أزرار أخرى، يمكنك تفعيلها هنا
 
-        const streamUrls = [
-            primaryStreamUrl, // السيرفر 1
-            primaryStreamUrl, // السيرفر 2
-            primaryStreamUrl, // السيرفر 3
-            primaryStreamUrl, // السيرفر 4
-            primaryStreamUrl, // السيرفر 5
-            primaryStreamUrl, // السيرفر 6
-            primaryStreamUrl, // السيرفر 7
-            primaryStreamUrl  // السيرفر 8
-        ];
+// عند الضغط على زر السيرفر 1
+server1Btn.addEventListener('click', () => {
+    // تفعيل الزر
+    document.querySelectorAll('#server-buttons button').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    server1Btn.classList.add('active');
 
-        let clapprPlayer;
-        let currentServerIndex = 0;
-        const serverButtonsDiv = document.getElementById('server-buttons');
+    // هنا يمكنك إضافة كود لتشغيل السيرفر 1 فقط
+    // مثلا تغيير رابط المشغل، أو إظهار/إخفاء محتوى معين
+    // كمثال، لنغير عنوان المشغل:
+    document.getElementById('player').src = "http://135.125.109.73:9000/beinsportglobal_.m3u8"; // مثال
+});
+</script>
 
-        function createPlayer(url) {
-            if (clapprPlayer) {
-                clapprPlayer.destroy();
-                document.getElementById("player").innerHTML = "";
-            }
-
-            clapprPlayer = new Clappr.Player({
-                source: url,
-                width: '100%',
-                height: '100%',
-                autoPlay: true,
-                plugins: [HlsjsPlayback, LevelSelector],
-                mimeType: "application/x-mpegURL",
-                mediacontrol: { seekbar: "#e50914", buttons: "#e50914" },
-                parentId: "#player",
-                playbackNotSupportedMessage: "للأسف، لا يدعم متصفحك هذا النوع من الفيديوهات. يرجى تحديث متصفحك أو استخدام متصفح آخر يدعم HLS."
-            });
-
-            clapprPlayer.on(Clappr.Events.PLAYER_ERROR, function(error) {
-                console.error('Player error occurred:', error);
-                // محاولة التبديل إلى السيرفر التالي عند حدوث خطأ
-                switchToNextServer();
-            });
-
-            updateActiveButton();
-        }
-
-        function changeStream(index) {
-            currentServerIndex = index;
-            createPlayer(streamUrls[currentServerIndex]);
-        }
-
-        function switchToNextServer() {
-            let nextIndex = (currentServerIndex + 1) % streamUrls.length;
-            console.log(`Switching from Server ${currentServerIndex + 1} to Server ${nextIndex + 1} due to error.`);
-            changeStream(nextIndex);
-        }
-
-        function updateActiveButton() {
-            const buttons = serverButtonsDiv.querySelectorAll('button');
-            buttons.forEach((btn, idx) => {
-                if (idx === currentServerIndex) {
-                    btn.classList.add('active');
-                    btn.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-        }
-
-        function initializeServerButtons() {
-            serverButtonsDiv.innerHTML = '';
-            streamUrls.forEach((url, index) => {
-                const button = document.createElement('button');
-                button.textContent = `سيرفر ${index + 1}`;
-                button.onclick = function() {
-                    changeStream(index);
-                };
-                serverButtonsDiv.appendChild(button);
-            });
-            updateActiveButton();
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeServerButtons();
-            createPlayer(streamUrls[currentServerIndex]);
-        });
-    </script>
-    <!-- لا تنس إزالة أو تحديث هذا السكريبت إذا لم تكن بحاجة إليه -->
-    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a6babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"3900066222d4427da06357c43b19f364","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
