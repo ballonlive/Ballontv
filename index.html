@@ -8,142 +8,131 @@
 <!-- مكتبة Clappr للبث -->
 <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
 
-<!-- خط جوجل -->
+<!-- خط جميل من Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
 
 <style>
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Amiri', serif;
-  background: #000;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  position: relative;
-}
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Amiri', serif;
+    background: #000;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
 
-/* رأس الصفحة */
-header {
-  background-color: rgba(0,0,0,0.6);
-  padding: 20px;
-  text-align: center;
-}
-h1 {
-  margin: 0;
-  font-size: 2.5em;
-  color: #ffd700;
-}
-.match-title {
-  margin-top: 10px;
-  font-size: 2em;
-}
+  /* رأس الصفحة */
+  header {
+    background-color: rgba(0,0,0,0.6);
+    padding: 20px;
+    text-align: center;
+  }
+  h1 {
+    margin: 0;
+    font-size: 2.5em;
+    color: #ffd700;
+  }
+  .match-title {
+    margin-top: 10px;
+    font-size: 2em;
+  }
 
-/* المحتوى */
-main {
-  flex: 1;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
+  /* المحتوى الرئيسي */
+  main {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
 
-/* العد التنازلي قبل البث */
-#countdownOverlay {
-  position: fixed;
-  top:0; left:0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  flex-direction: column;
-}
-#countdownMsg {
-  font-size: 2em;
-  color: #fff;
-}
-#countdownNumber {
-  font-size: 3em;
-  margin-top: 15px;
-  color: #ffd700;
-}
+  /* إعلان قبل البث - شاشة كاملة */
+  #preAdOverlay {
+    position: fixed;
+    top:0; left:0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+  }
+  #preAdBox {
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+  }
+  #preAdBox img {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+  #preCountDown {
+    margin-top: 15px;
+    font-size: 1.2em;
+    color: #fff;
+  }
 
-/* إعلان بانر داخل البث */
-#adBanner {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 300px;
-  background: rgba(34,34,34,0.8);
-  border-radius: 8px;
-  padding: 10px;
-  display: none; /* مخفي مبدئيًا */
-  z-index: 9999;
-  text-align: center;
-}
-#adBanner a {
-  display: block;
-  color: #fff;
-  background-color: #ffd700;
-  padding: 8px;
-  border-radius: 4px;
-  text-decoration: none;
-  margin-top: 8px;
-}
-#closeAdBtn {
-  margin-top: 8px;
-  padding: 5px 10px;
-  background-color: #ccc;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+  /* إعلانات داخل البث - تظهر فوق الفيديو */
+  #adBanner {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    background: rgba(34,34,34,0.8);
+    border-radius: 8px;
+    padding: 10px;
+    display: none; /* تظهر عند الحاجة */
+    z-index: 9999;
+    text-align: center;
+  }
+  #adBanner a {
+    display: block;
+    color: #fff;
+    background-color: #ffd700;
+    padding: 8px;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-top: 8px;
+  }
+  #closeAdBtn {
+    margin-top: 8px;
+    padding: 5px 10px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
 
-/* مشغل البث بعد */
-#playerContainer {
-  display: none; /* يظهر بعد العد التنازلي */
-  width: 100%;
-  max-width: 1000px;
-  height: 600px;
-  margin-top: 60px;
-  position: relative;
-}
-#player {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-}
+  /* مشغل الفيديو بعد */
+  #playerContainer {
+    display: none; /* يظهر بعد الإعلان */
+    width: 100%;
+    max-width: 1000px;
+    height: 600px;
+    margin-top: 20px;
+    position: relative;
+  }
+  #player {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+  }
 
-/* إعلانات الفيديو داخل البث */
-#videoAdContainer {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60%;
-  max-width: 600px;
-  background: rgba(0,0,0,0.8);
-  padding: 10px;
-  border-radius: 10px;
-  display: none;
-  z-index: 9998;
-}
-#videoAd {
-  width: 100%;
-  height: auto;
-}
-#closeVideoAd {
-  margin-top: 10px;
-  padding: 8px 12px;
-  background-color: #ffd700;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+  footer {
+    background-color: rgba(0,0,0,0.6);
+    padding: 15px;
+    text-align: center;
+    font-size: 1em;
+    color: #ccc;
+    margin-top: 20px;
+  }
 </style>
 </head>
 <body>
@@ -154,27 +143,25 @@ main {
 </header>
 
 <main>
-  <!-- العد التنازلي قبل البث -->
-  <div id="countdownOverlay">
-    <div id="countdownMsg">سيبدأ البث خلال <span id="countdownNumber">5</span> ثانية</div>
+  <!-- شاشة إعلان قبل البث -->
+  <div id="preAdOverlay">
+    <div id="preAdBox">
+      <h2>إعلان مهم</h2>
+      <img src="https://via.placeholder.com/600x400?text=إعلان+مهم+انتظر+القليل" />
+      <div id="preCountDown">10</div>
+    </div>
   </div>
 
-  <!-- إعلان بانر داخل البث -->
+  <!-- إعلان داخل البث (ظهور مؤقت) -->
   <div id="adBanner">
     <div>إعلان ربحي - اضغط هنا للربح</div>
     <a href="https://otieu.com/4/9093521" target="_blank">نقر للترويج</a>
     <button id="closeAdBtn">إغلاق الإعلان</button>
   </div>
 
-  <!-- مشغل البث بعد العد التنازلي -->
+  <!-- مشغل البث بعد الإعلان -->
   <div id="playerContainer">
     <div id="player"></div>
-  </div>
-
-  <!-- إعلان فيديو داخل البث -->
-  <div id="videoAdContainer">
-    <video id="videoAd" controls></video>
-    <button id="closeVideoAd">إغلاق الإعلان</button>
   </div>
 </main>
 
@@ -185,101 +172,81 @@ main {
 <script>
 const streamUrl = "http://135.125.109.73:9000/beinsportglobal_.m3u8";
 
-// روابط الإعلانات
+// إعدادات الإعلان قبل البث
+const adDuration = 10; // ثانية
+const adVideoUrl = "https://www.w3schools.com/html/mov_bbb.mp4"; // استبدل برابط إعلان حقيقي
+
+// إعلانات داخل البث - روابط إعلانات ربحية
 const adLinks = [
   "https://otieu.com/4/9093521",
   "https://otieu.com/4/9047517",
   "https://otieu.com/4/9047433"
 ];
 
-const adIntervalSeconds = 30; // كل 30 ثانية تظهر
-const adDisplayTime = 15; // مدة ظهور الإعلان
-const adBanner = document.getElementById('adBanner');
-const closeAdBtn = document.getElementById('closeAdBtn');
-const videoAdContainer = document.getElementById('videoAdContainer');
-const videoAd = document.getElementById('videoAd');
-const closeVideoAdBtn = document.getElementById('closeVideoAd');
+const preOverlay = document.getElementById("preAdOverlay");
+const preCountDownEl = document.getElementById("preCountDown");
+const adBanner = document.getElementById("adBanner");
+const closeAdBtn = document.getElementById("closeAdBtn");
+const playerContainer = document.getElementById("playerContainer");
 
-let adCycle;
+let countdown = adDuration;
+let timer;
 
-// وظيفة لعرض إعلان عشوائي بانر
+// عرض الإعلان قبل البث
+function startPreAd() {
+  countdown = adDuration;
+  preCountDownEl.innerText = countdown;
+  const intervalId = setInterval(() => {
+    if (countdown <= 0) {
+      clearInterval(intervalId);
+      // إخفاء شاشة الإعلان وبدء البث
+      preOverlay.style.display = "none";
+      startStream();
+    } else {
+      countdown--;
+      preCountDownEl.innerText = countdown;
+    }
+  }, 1000);
+}
+
+// بدء البث
+function startStream() {
+  document.querySelector("#playerContainer").style.display = "block";
+  // تهيئة مشغل الفيديو
+  new Clappr.Player({
+    parent: "#player",
+    source: streamUrl,
+    autoPlay: true,
+    height: "100%",
+    width: "100%"
+  });
+}
+
+// إظهار إعلانات داخل البث بشكل دوري
 function showAd() {
   const index = Math.floor(Math.random() * adLinks.length);
   adBanner.querySelector('a').href = adLinks[index];
-  adBanner.style.display = 'block';
+  adBanner.style.display = "block";
 
+  // إخفاؤه بعد مدة
   setTimeout(() => {
-    adBanner.style.display = 'none';
-  }, adDisplayTime * 1000);
+    adBanner.style.display = "none";
+  }, 15000); // 15 ثانية
 }
 
-// وظيفة لعرض إعلان فيديو
-function showVideoAd() {
-  // اختر رابط فيديو إعلاني حقيقي هنا
-  // مثال: رابط فيديو إعلاني
-  const videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4"; // استبدله برابط إعلان فيديو حقيقي
-  videoAd.src = videoUrl;
-  videoAdContainer.style.display = 'block';
-}
-
-// بدء دورة الإعلانات
-function startAdCycle() {
-  showAd(); // بانر
-  setInterval(() => {
-    showAd();
-  }, adIntervalSeconds * 1000);
-}
-
-// زر إغلاق بانر الإعلان
-closeAdBtn.onclick = () => {
-  adBanner.style.display='none'; // يمكن تعديله ليظل يظهر دائمًا إذا رغبت
-  // يمكنك إيقاف الدورة هنا إذا أردت
-  clearInterval(adCycle);
+// زر إغلاق الإعلان
+document.getElementById("closeAdBtn").onclick = () => {
+  adBanner.style.display = "none";
 };
 
-// زر إغلاق إعلان الفيديو
-closeVideoAdBtn.onclick = () => {
-  videoAdContainer.style.display='none';
-};
+// بدء العد التنازلي قبل البث
+startPreAd();
 
-// العد التنازلي قبل البث (5 ثواني)
-const countdownSeconds = 5;
-let countdown = countdownSeconds;
-const overlay = document.getElementById('countdownOverlay');
-const countdownNumber = document.getElementById('countdownNumber');
-
-const countdownInterval = setInterval(() => {
-  if (countdown <= 0) {
-    clearInterval(countdownInterval);
-    overlay.style.display='none';
-    document.querySelector('#playerContainer').style.display='block';
-
-    // بدء دورة الإعلانات بعد 5 ثواني
-    startAdCycle();
-
-    // تشغيل البث
-    new Clappr.Player({
-      parent: "#player",
-      source: streamUrl,
-      autoPlay: true,
-      height: "100%",
-      width: "100%"
-    });
-  } else {
-    countdownNumber.innerText = countdown;
-    countdown--;
-  }
-}, 1000);
-
-// عرض إعلانات داخل البث كل 30 ثانية
+// بدء دورة عرض الإعلانات كل 30 ثانية
 setInterval(() => {
-  showVideoAd();
-  // إخفاء بعد 10 ثوانٍ
-  setTimeout(() => {
-    videoAdContainer.style.display='none';
-  }, 10 * 1000);
-}, adIntervalSeconds * 1000);
-
+  showAd();
+}, 30000); // كل 30 ثانية
 </script>
+
 </body>
 </html>
