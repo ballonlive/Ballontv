@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>مشاهدة البث المباشر</title>
+<title>مباريات اليوم - صفحة جذابة</title>
 
 <!-- خطوط جوجل -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" />
@@ -11,289 +11,316 @@
 <!-- أيقونات Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
-<!-- Shaka Player CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.ui.min.css" />
-
-<!-- أنماط تصميم احترافية -->
+<!-- أنماط الصفحة -->
 <style>
-  body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #111;
-    color: #fff;
-    margin: 0;
-    padding: 0;
-  }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b); /* ألوان زاهية وجذابة */
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  text-align: center;
+}
 
-  h1 {
-    text-align: center;
-    padding: 20px;
-    font-size: 2em;
-    margin-bottom: 10px;
-  }
+/* زر تحميل التطبيق في الأعلى */
+#top-download {
+  padding: 15px;
+  background-color: rgba(0,0,0,0.3);
+}
 
-  /* حاوية الفيديو */
-  .video-container {
-    position: relative;
-    width: 98%;
-    max-width: 950px;
-    margin: 0 auto 20px auto;
-    aspect-ratio: 16 / 9;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 3px solid #00c853;
-    background-color: #1a1a1a;
-  }
+#top-download a {
+  padding: 12px 25px;
+  background: linear-gradient(135deg, #f39c12, #f1c40f);
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: all 0.3s;
+}
 
-  /* مشغل Shaka */
-  #shaka-container {
-    width: 100%;
-    height: 100%;
-    display: none; /* يظهر عند اختيارها */
-  }
-  #shaka-video {
-    width: 100%;
-    height: 100%;
-  }
+#top-download a:hover {
+  background: linear-gradient(135deg, #f39c12, #f1c40f, #e67e22);
+}
 
-  /* مشغل OPlayer */
-  #oplayer-container {
-    width: 100%;
-    height: 100%;
-    display: none; /* يظهر عند اختيارها */
-  }
+/* عنوان الصفحة */
+h1 {
+  margin-top: 10px;
+  font-size: 2.5em;
+  padding: 10px 0;
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+}
 
-  /* أزرار التبديل */
-  .btn-group {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 20px;
-  }
+/* ساعة توقيت غرينيتش */
+#clock {
+  font-size: 20px;
+  margin: 10px 0;
+  font-weight: bold;
+  padding: 5px 20px;
+  background: rgba(0,0,0,0.2);
+  display: inline-block;
+  border-radius: 8px;
+}
 
-  button.control-btn {
-    background: linear-gradient(135deg, #4b6cb7, #182848);
-    border: none;
-    padding: 12px 25px;
-    border-radius: 8px;
-    color: #fff;
-    font-size: 14px;
-    cursor: pointer;
-    transition: 0.3s all;
-  }
-  button.control-btn:hover {
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-  }
+/* الشريط المتحرك مع وميض */
+.marquee-container {
+  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  overflow: hidden;
+  width: 100%;
+  height: 60px; /* حجم جذاب واحترافي */
+  position: relative;
+  margin-top: 15px;
+  border-top: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  display: flex;
+  align-items: center;
+}
 
-  /* أزرار الروابط */
-  #links-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    padding: 0 20px 20px 20px;
-  }
+/* النص المتحرك مع تأثير وميض */
+.marquee {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 18px;
+  color: #fff;
+  padding-left: 100%;
+  animation: scroll-right 40s linear infinite;
+  font-weight: bold;
+  position: relative;
+}
 
-  #links-buttons button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 6px;
-    background-color: #222;
-    color: #fff;
-    cursor: pointer;
-    font-size: 14px;
-    transition: 0.3s all;
-  }
-  #links-buttons button:hover, #links-buttons button.active {
-    background-color: #ff0000;
-  }
+@keyframes scroll-right {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
 
-  /* النبضات */
-  .notice {
-    background: linear-gradient(90deg, #181e21, #2a5298);
-    border: 2px solid #ff0000;
-    border-radius: 8px;
-    margin: 20px auto;
-    max-width: 950px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    height: 40px;
-  }
+/* وميض على النص */
+.marquee span {
+  animation: blink 1.5s infinite;
+  margin: 0 10px;
+}
 
-  .notice span {
-    background: #ff0000;
-    color: #fff;
-    font-weight: bold;
-    padding: 0 15px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
 
-  .scroll-text {
-    white-space: nowrap;
-    padding-left: 20px;
-    font-weight: bold;
-    font-size: 14px;
-    display: inline-block;
-    animation: scroll-left 15s linear infinite;
-  }
+/* محتوى المباريات */
+.matches {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 15px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
 
-  @keyframes scroll-left {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-  }
+/* كل مباراة */
+.match {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  color: #000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
 
-  /* إخلاء المسؤولية */
-  .disclaimer {
-    background-color: #222;
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 950px;
-    border-radius: 8px;
-    font-size: 14px;
-    line-height: 1.5;
-  }
-  .disclaimer strong {
-    display: block;
-    font-size: 16px;
-    margin-bottom: 10px;
-    text-align: center;
-  }
+.match:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+}
+
+/* تفاصيل المباراة */
+.match-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.match-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.match-time {
+  font-size: 14px;
+  color: #555;
+}
+
+/* زر المشاهدة */
+.match-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #f12711, #f5af19);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: background 0.3s, transform 0.2s;
+}
+.match-btn:hover {
+  background: linear-gradient(135deg, #f5af19, #f12711);
+  transform: scale(1.05);
+}
+
+/* زر العودة للصفحة الرئيسية - اختياري */
+.back-button {
+  display: block;
+  margin: 30px auto;
+  padding: 12px 25px;
+  background: linear-gradient(135deg, #4b6cb7, #182848);
+  color: #fff;
+  font-weight: bold;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: background 0.3s, transform 0.2s;
+}
+.back-button:hover {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  transform: scale(1.05);
+}
 </style>
 </head>
 <body>
 
-<h1>مشاهدة البث المباشر</h1>
-
-<!-- النبضات -->
-<div class="notice">
-  <span>ملاحظة</span>
-  <div class="scroll-text">
-    🚀 يرجى اختيار رابط البث المفضل وتشغيله. إذا واجهت أي مشكلة، تواصل معنا!
-  </div>
+<!-- رابط تحميل التطبيق -->
+<div id="top-download">
+  <a href="https://www.mediafire.com/file/oyendv6rjwecvk6/app3387489-hp95l0-1-1.apk/file" target="_blank">تحميل تطبيق BALLON TV</a>
 </div>
 
-<!-- حاوية الفيديو -->
-<div class="video-container">
-  <!-- مشغل Shaka -->
-  <div id="shaka-container">
-    <video id="shaka-video" controls></video>
-  </div>
-  <!-- مشغل OPlayer -->
-  <div id="oplayer-container">
-    <div id="oplayer"></div>
-  </div>
-</div>
+<!-- العنوان -->
+<h1>مباريات اليوم</h1>
 
-<!-- أزرار التحكم -->
-<div class="btn-group">
-  <button class="control-btn" onclick="showShaka()">مشغل Shaka</button>
-  <button class="control-btn" onclick="showOplayer()">مشغل OPlayer</button>
-</div>
-
-<!-- روابط البث -->
-<div id="links-buttons">
-  <button onclick="loadStream('https://cdn01.oplay.tv/espn/index.m3u8')">ESPN 1</button>
-  <button onclick="loadStream('https://cdn01.oplay.tv/espn2/index.m3u8')">ESPN 2</button>
-  <button onclick="loadStream('https://cdn01.oplay.tv/espn3/index.m3u8')">ESPN 3</button>
-  <button onclick="loadStream('https://cdn01.oplay.tv/cinecanal/index.m3u8')">CineCanal</button>
-  <button onclick="loadStream('https://cdn01.oplay.tv/tnt/index.m3u8')">TNT</button>
-</div>
-
-<!-- إخلاء المسؤولية -->
-<div class="disclaimer">
-  <strong>إخلاء المسؤولية القانونية</strong>
-  <p>هذا الموقع لا يستضيف أو يرفع أي محتوى فيديو. جميع البثوث من مصادر خارجية.</p>
-  <p>جميع الحقوق محفوظة © 2024</p>
-</div>
-
-<!-- مكتبة Shaka Player -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.6/shaka-player.min.js"></script>
+<!-- الساعة بتوقيت غرينيتش -->
+<div id="clock"></div>
 
 <script>
-  let shakaPlayer;
-
-  // تهيئة المشغل عند تحميل الصفحة
-  document.addEventListener('DOMContentLoaded', () => {
-    shaka.polyfill.installAll();
-
-    if (shaka.Player.isBrowserSupported()) {
-      const video = document.getElementById('shaka-video');
-      shakaPlayer = new shaka.Player(video);
-
-      window.loadStream = async function(url) {
-        try {
-          await shakaPlayer.load(url);
-        } catch (e) {
-          console.error('خطأ في تحميل البث:', e);
-        }
-      };
-
-      // تحميل أول رابط بشكل افتراضي
-      loadStream('https://cdn01.oplay.tv/espn/index.m3u8');
-
-      // وظائف التبديل بين المشغلين
-      window.showShaka = () => {
-        document.getElementById('shaka-container').style.display = 'block';
-        document.getElementById('oplayer-container').style.display = 'none';
-      };
-
-      window.showOplayer = () => {
-        document.getElementById('shaka-container').style.display = 'none';
-        document.getElementById('oplayer-container').style.display = 'block';
-        initOPlayer();
-      };
-
-      // تهيئة OPlayer
-      function initOPlayer() {
-        const currentButton = document.querySelector('#links-buttons button.active') || document.querySelector('#links-buttons button');
-        const url = currentButton ? currentButton.getAttribute('onclick').match(/'(.*?)'/)[1] : '';
-        document.getElementById('oplayer').innerHTML = `
-          <iframe src="https://player.oplay.tv/?url=${encodeURIComponent(url)}" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
-        `;
-      }
-
-    } else {
-      alert('متصفحك لا يدعم مشغل Shaka Player');
-    }
-  });
-
-  // تحميل الرابط عند الضغط على زر
-  function loadStream(url) {
-    // تحديث الزر النشط
-    document.querySelectorAll('#links-buttons button').forEach(btn => btn.classList.remove('active'));
-    // تفعيل الزر الذي تم الضغط عليه
-    const btns = Array.from(document.querySelectorAll('#links-buttons button'));
-    const currentBtn = btns.find(b => b.getAttribute('onclick')?.includes(`'${url}'`));
-    if (currentBtn) currentBtn.classList.add('active');
-
-    // تحميل الرابط في Shaka
-    if (shakaPlayer) {
-      shakaPlayer.load(url).catch(e => console.error('خطأ في التحميل:', e));
-    }
-
-    // إذا كانت OPlayer مفعلة، نحدث الرابط
-    if (document.getElementById('oplayer-container').style.display === 'block') {
-      initOPlayer();
-    }
-  }
-
-  // أزرار التبديل
-  function showShaka() {
-    document.getElementById('shaka-container').style.display = 'block';
-    document.getElementById('oplayer-container').style.display = 'none';
-  }
-
-  function showOplayer() {
-    document.getElementById('shaka-container').style.display = 'none';
-    document.getElementById('oplayer-container').style.display = 'block';
-    initOPlayer();
-  }
+// وظيفة عرض الساعة بتوقيت غرينيتش
+function updateClock() {
+  const now = new Date();
+  const options = { timeZone: 'GMT', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+  const timeString = now.toLocaleTimeString('en-GB', options);
+  document.getElementById('clock').innerText = 'توقيت غرينيتش: ' + timeString;
+}
+setInterval(updateClock, 1000);
+updateClock();
 </script>
+
+<!-- الشريط المتحرك مع وميض -->
+<div class="marquee-container">
+  <div class="marquee">
+    🚀 تطبيق BALLON TV هو الحل لمشاهدة القنوات الرياضية والعالمية بجودة عالية! حمل التطبيق الآن واستمتع بالمباريات مباشرة. <span>🎉</span> 
+    <strong>أخبار رياضية عاجلة:</strong> نتائج المباريات، تغطيات حية، وتحليلات مباشرة! تابع كل جديد وكن على اطلاع دائم. 
+    <span>🔴</span> حمل التطبيق من هنا: 
+    <a href="https://www.mediafire.com/file/oyendv6rjwecvk6/app3387489-hp95l0-1-1.apk/file" target="_blank" style="color:#000; font-weight:bold;">اضغط هنا</a>
+  </div>
+</div>
+
+<!-- قائمة المباريات -->
+<div class="matches">
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title">تشيلسي × نوتنغهام</div>
+      <div class="match-time">2:30</div>
+    </div>
+    <a class="match-btn" href="player1.html">اضغط هنا لمشاهدة المباراة</a>
+  </div>
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title">نيوكاسل × برايتون</div>
+      <div class="match-time">5:00</div>
+    </div>
+    <a class="match-btn" href="player1.html">اضغط هنا لمشاهدة المباراة</a>
+  </div>
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title">مان سيتي × إيفرتون</div>
+      <div class="match-time">5:00</div>
+    </div>
+    <a class="match-btn" href="player1.html">اضغط هنا لمشاهدة المباراة</a>
+  </div>
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title">ٱرسنال × فولهام</div>
+      <div class="match-time">7:30</div>
+    </div>
+    <a class="match-btn" href="player1.html">اضغط هنا لمشاهدة المباراة</a>
+  </div>
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title">برشلونة × جيرونا</div>
+      <div class="match-time">5:15</div>
+    </div>
+    <a class="match-btn" href="player1.html">اضغط هنا لمشاهدة المباراة</a>
+  </div>
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title">أتليتكو مدريد × أوساسونا</div>
+      <div class="match-time">10:00</div>
+    </div>
+    <a class="match-btn" href="player1.html">اضغط هنا لمشاهدة المباراة</a>
+  </div>
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title">نابولي × تورينو</div>
+      <div class="match-time">7:00</div>
+    </div>
+    <a class="match-btn" href="player1.html">اضغط هنا لمشاهدة المباراة</a>
+  </div>
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title">إنتر ميلان × روما</div>
+      <div class="match-time">9:45</div>
+    </div>
+    <a class="match-btn" href="player1.html">اضغط هنا لمشاهدة المباراة</a>
+  </div>
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title">الهلال × الإتفاق</div>
+      <div class="match-time">5:45</div>
+    </div>
+    <a class="match-btn" href="player1.html">اضغط هنا لمشاهدة المباراة</a>
+  </div>
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title">النصر × الفتح</div>
+      <div class="match-time">9:00</div>
+    </div>
+    <a class="match-btn" href="player1.html">اضغط هنا لمشاهدة المباراة</a>
+  </div>
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title">بايرن ميونخ × دورتموند</div>
+      <div class="match-time">7:30</div>
+    </div>
+    <a class="match-btn" href="player1.html">اضغط هنا لمشاهدة المباراة</a>
+  </div>
+
+</div>
+
+<!-- زر العودة للصفحة الرئيسية (اختياري) -->
+<div style="text-align:center; margin-top:20px;">
+  <a class="back-button" href="index.html">الصفحة الرئيسية</a>
+</div>
 
 </body>
 </html>
