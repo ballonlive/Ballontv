@@ -1,156 +1,255 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+
+<html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>DRM Player - Auto Fullscreen with Controls</title>
-  <link rel="icon" href="//alraqi-tv.com/DRM/shakaplayer/shaka.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="referrer" content="no-referrer">
-  
-  <!-- Shaka Player UI library and default CSS -->
-  <script src="https://shaka-player-demo.appspot.com/dist/shaka-player.ui.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://shaka-player-demo.appspot.com/dist/controls.css">
-  
-  <!-- Chromecast SDK (optional) -->
-  <script defer src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BALLON LIVE - مشغل احترافي</title>
 
-  <style>
-    html, body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden; /* لمنع ظهور أشرطة التمرير */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #000;
-    }
-    .player-container {
-      width: 100vw; /* عرض 100% من عرض النافذة */
-      height: 100vh; /* ارتفاع 100% من ارتفاع النافذة */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #000; /* خلفية سوداء للحاوية */
-    }
-    video {
-      width: 100%;
-      height: 100%;
-      object-fit: contain; /* للحفاظ على نسبة العرض إلى الارتفاع */
-      background-color: #000;
-    }
-    /* إخفاء أي عناصر غير ضرورية، ولكن لا تتدخل في عناصر تحكم Shaka Player */
-    h1, input[type="text"], button, .footer {
-      display: none !important;
-    }
+<!-- خطوط جوجل -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" />
 
-    /* أنماط الشاكا بلاير الأساسية (حافظ عليها كما هي) */
-    .shaka-video-container .material-icons-round {
-      color: #00abe2;
-    }
-    .shaka-seek-bar-container .shaka-seek-bar {
-      background: linear-gradient(to right, #051937, #00205b, #00247e, #22229f, #510dbc);
-    }
-    .shaka-volume-bar-container .shaka-volume-bar {
-      background: linear-gradient(to right, #051937, #00205b, #00247e, #22229f, #510dbc);
-    }
-    .shaka-spinner-path {
-      stroke: #d62d20;
-      stroke-linecap: round;
-      animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
-    }
-    @keyframes dash {
-      0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; }
-      50% { stroke-dasharray: 89, 200; stroke-dashoffset: -35px; }
-      100% { stroke-dasharray: 89, 200; stroke-dashoffset: -124px; }
-    }
-    @keyframes color {
-      100%, 0% { stroke: #d62d20; }
-      40% { stroke: #0057e7; }
-      66% { stroke: #008744; }
-      80%, 90% { stroke: #ffa700; }
-    }
-  </style>
+<!-- أيقونات Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+
+<!-- CSS Plyr -->
+<link rel="stylesheet" href="https://cdn.plyr.io/3.8.3/plyr.css" />
+
+<!-- أنماط مخصصة -->
+<style>
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #111;
+  color: #fff;
+}
+
+/* زر التحميل أعلى الصفحة */
+#top-download {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  background-color: #222;
+}
+
+#top-download a {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #f39c12, #f1c40f);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+#top-download a:hover {
+  background: linear-gradient(135deg, #f39c12, #f1c40f, #e67e22);
+}
+
+/* العنوان */
+h1 {
+  text-align: center;
+  padding: 10px 0;
+  font-size: 2em;
+  background-color: #222;
+  margin-bottom: 0;
+}
+
+/* الشريط المتحرك - حجم أصغر وبلون أحمر متدرج */
+.marquee-container {
+  background: linear-gradient(45deg, #e52d27, #b31217);
+  overflow: hidden;
+  width: 100%;
+  height: 50px; /* حجم أصغر */
+  position: relative;
+  border-top: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  display: flex;
+  align-items: center;
+}
+
+/* النص المتحرك من اليمين لليسار بشكل متصل */
+.marquee {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 16px;
+  color: #000; /* لون النص أسود */
+  background-color: #fff; /* خلفية النص بيضاء لوضوح أكبر */
+  padding: 0 10px;
+  margin-left: 10px;
+  animation: scroll-right 40s linear infinite;
+}
+
+/* حركة من اليمين إلى اليسار بشكل مستمر */
+@keyframes scroll-right {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* محتوى الصفحة */
+#player-container {
+  max-width: 960px;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #222;
+  border-radius: 8px;
+  border: 3px solid #00c853;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* أزرار التشغيل */
+#controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px;
+}
+
+button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #4b6cb7, #182848);
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+button:hover,
+button.active {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+}
+
+/* تنبيهات وأخبار عاجلة */
+.notice {
+  background: linear-gradient(90deg, #181e21, #2a5298);
+  border: 2px solid #ff0000;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 960px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 80px;
+  padding: 0 20px;
+}
+
+.notice span {
+  background: #ff0000;
+  color: #fff;
+  font-weight: bold;
+  padding: 0 15px;
+  border-radius: 4px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.scroll-text {
+  white-space: nowrap;
+  font-weight: bold;
+  font-size: 14px;
+  color: #fff;
+  margin-top: 10px;
+  animation: scroll-left 40s linear infinite;
+}
+
+/* إخلاء المسؤولية */
+.disclaimer {
+  background-color: #222;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 960px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+</style>
 </head>
 <body>
-  <div class="player-container">
-    <video autoplay data-shaka-player poster="https://images5.alphacoders.com/133/1338700.png" id="video"></video>
+
+<!-- زر تحميل التطبيق -->
+<div id="top-download">
+  <a href="https://www.mediafire.com/file/oyendv6rjwecvk6/app3387489-hp95l0-1-1.apk/file" target="_blank">
+    تحميل تطبيق BALLON TV
+  </a>
+</div>
+
+<!-- العنوان -->
+<h1>BALLON LIVE</h1>
+
+<!-- الشريط المتحرك - من اليسار إلى اليمين -->
+<div class="marquee-container">
+  <div class="marquee">
+    🚀 تطبيق BALLON TV هو الحل الأمثل لمشاهدة القنوات الرياضية والعالمية بجودة عالية! حمل التطبيق الآن واستمتع بالمباريات والبرامج مباشرة على هاتفك. <span>🎉</span> 
+    <strong>أخبار رياضية عاجلة:</strong> آخر الأخبار، نتائج المباريات، وتحليلات مباشرة! تابع كل جديد وكن على اطلاع دائم بأهم الأحداث الرياضية. 
+    <span>🔴</span> حمل التطبيق من هنا: 
+    <a href="https://www.mediafire.com/file/oyendv6rjwecvk6/app3387489-hp95l0-1-1.apk/file" target="_blank" style="color:#000; font-weight:bold;">اضغط هنا</a>
   </div>
+</div>
 
-  <script>
-    document.addEventListener('shaka-ui-loaded', () => {
-        initPlayer();
+<!-- مشغل الفيديو -->
+<div id="player-container">
+  <video id="player" controls></video>
+</div>
+
+<!-- زر تشغيل البث -->
+<div style="text-align: center; padding: 20px;">
+  <button onclick="loadStream()">تشغيل البث</button>
+</div>
+
+<!-- أخبار عاجلة -->
+<div class="notice">
+  <span>🚨 أخبار رياضية عاجلة</span>
+  <div class="scroll-text">
+    🔥 آخر التحديثات، نتائج المباريات، والبث المباشر مباشرة هنا! تابع كل جديد على مدار الساعة.
+  </div>
+</div>
+
+<!-- إخلاء المسؤولية -->
+<div class="disclaimer">
+  <strong>إخلاء المسؤولية القانونية</strong>
+  <p>هذا الموقع لا يستضيف أو يرفع أي محتوى فيديو. جميع البثوث من مصادر خارجية.</p>
+  <p>جميع الحقوق محفوظة © 2024</p>
+</div>
+
+<!-- المكتبات -->
+<script src="https://cdn.plyr.io/3.8.3/plyr.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<script>
+const player = new Plyr('#player');
+let hls = null;
+
+function loadStream() {
+  const url = 'https://d2r2z59u1oym0n.cloudfront.net/kooora/d4f9ab7dsd5sabeins1111?ts=1760796778&nonce=4c0Q22oa&token=2095700288';
+
+  if (hls) {
+    hls.destroy();
+    hls = null;
+  }
+
+  if (Hls.isSupported()) {
+    hls = new Hls();
+    hls.loadSource(url);
+    hls.attachMedia(document.querySelector('#player'));
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      player.play();
     });
+  } else if (document.querySelector('#player').canPlayType('application/vnd.apple.mpegurl')) {
+    player.source = {
+      type: 'video',
+      sources: [{ src: url, type: 'application/x-mpegURL' }]
+    };
+    player.play();
+  } else {
+    alert('متصفحك لا يدعم تشغيل هذا الفيديو.');
+  }
+}
 
-    function initPlayer() {
-      const video = document.getElementById('video');
-      const ui = video['ui'];
-      const controls = ui.getControls();
-      const player = controls.getPlayer();
+window.onload = loadStream;
+</script>
 
-      // إعدادات واجهة التحكم: فقط play/pause, volume, fullscreen
-      // تأكدنا هنا من تضمين 'fullscreen'
-      const config = {
-          'controlPanelElements': ['play_pause', 'spacer', 'volume', 'fullscreen'],
-          'overflowMenuButtons': [],
-          'statisticsList': [],
-          'playbackRates': [1],
-          'fastForwardRates': [],
-          'rewindRates': []
-      };
-      ui.configure(config);
-
-      window.player = player;
-      window.ui = ui;
-
-      player.addEventListener("error", onErrorEvent);
-      controls.addEventListener("error", onErrorEvent);
-
-      const manifestUri = "https://ssc-3-enc.edgenextcdn.net/out/v1/42e86125555242aaa2a12056832e7814/index.mpd?|drmScheme=clearkey&drmLicense=7de5dd08ad8041d586c2f16ccc9490a1:5e1503f3398b34f5099933fedab847ef";
-      const clearKeyInput = "7de5dd08ad8041d586c2f16ccc9490a1:5e1503f3398b34f5099933fedab847ef";
-      const [keyId, key] = clearKeyInput.split(':');
-
-      player.configure({
-          drm: {
-              clearKeys: {}
-          }
-      });
-      
-      if (keyId && key) {
-          player.configure({
-              drm: {
-                  clearKeys: {
-                      [keyId]: key
-                  }
-              }
-          });
-      }
-
-      player.load(manifestUri).then(() => {
-          console.log('The video has been loaded successfully!');
-          // محاولة تفعيل وضع ملء الشاشة على عنصر "html" بعد التحميل الناجح
-          // لا تزال قيود المتصفح قائمة، وقد تحتاج إلى تفاعل المستخدم.
-          if (document.documentElement.requestFullscreen) {
-              document.documentElement.requestFullscreen();
-          } else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
-              document.documentElement.mozRequestFullScreen();
-          } else if (document.documentElement.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-              document.documentElement.webkitRequestFullscreen();
-          } else if (document.documentElement.msRequestFullscreen) { /* IE/Edge */
-              document.documentElement.msRequestFullscreen();
-          }
-      }).catch(onError);
-    }
-
-    function onErrorEvent(event) {
-        onError(event.detail);
-    }
-
-    function onError(error) {
-        console.error('Error code', error.code, 'object', error);
-        alert('حدث خطأ أثناء تشغيل الفيديو: ' + error.code);
-    }
-  </script>
 </body>
 </html>
