@@ -223,7 +223,7 @@ const player = new Plyr('#player');
 let hls = null;
 
 function loadStream() {
-  const url = 'https://prod-fastly-eu-central-1.video.pscp.tv/Transcoding/v1/hls/XaIhwYE-0YWdAax62dW2jv8yX7W197hG29jftjOu40NTCjq-j1UfON_YxKotc3xZGGK1ycmafgKFcl2bdMXLaQ/non_transcode/eu-central-1/periscope-replay-direct-prod-eu-central-1-public/master_dynamic_highlatency.m3u8';
+  const url = 'https://prod-fastly-eu-central-1.video.pscp.tv/Transcoding/v1/hls/XaIhwYE-0YWdAax62dW2jv8yX7W197hG29jftjOu40NTCjq-j1UfON_YxKotc3xZGGK1ycmafgKFcl2bdMXLaQ/non_transcode/eu-central-1/periscope-replay-direct-prod-eu-central-1-public/master_dynamic_highlatency.m3u8?type=live';
 
   if (hls) {
     hls.destroy();
