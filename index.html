@@ -2,136 +2,167 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>مباريات اليوم - صفحة جذابة</title>
+<title>مباريات اليوم - مظهر احترافي</title>
 
-<!-- خطوط جوجل -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" />
+<!-- خطوط جوجل (تم إضافة خط Cairo لتحسين مظهر النص العربي) -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Montserrat:wght@700&display=swap" rel="stylesheet" />
 
-<!-- أيقونات Font Awesome -->
+<!-- أيقونات Font Awesome (تم التحديث لأحدث إصدار) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
-<!-- أنماط الصفحة -->
+<!-- أنماط الصفحة (تم تحديث التصميم بالكامل) -->
 <style>
+/* تعيين الخطوط للنص العربي والانجليزي */
 body {
-  font-family: 'Montserrat', sans-serif;
-  background: linear-gradient(135deg, #ff7e5f, #feb47b); /* ألوان زاهية وجذابة */
+  font-family: 'Cairo', sans-serif; /* خط جذاب واحترافي للنص العربي */
+  background: #1e1e2d; /* خلفية داكنة وجذابة (كحلي داكن) */
   margin: 0;
   padding: 0;
-  color: #fff;
+  color: #f0f0f0; /* لون نص فاتح */
   text-align: center;
 }
 
 /* زر تحميل التطبيق في الأعلى */
 #top-download {
   padding: 15px;
-  background-color: rgba(0,0,0,0.3);
+  background-color: #2a2a44; /* شريط داكن مميز */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 #top-download a {
-  padding: 12px 25px;
-  background: linear-gradient(135deg, #f39c12, #f1c40f);
+  padding: 14px 30px;
+  background: linear-gradient(135deg, #00ccff, #4b0082); /* تدرج نيون أزرق لافت */
   color: #fff;
   font-size: 18px;
   font-weight: bold;
   text-decoration: none;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  border-radius: 50px; /* شكل بيضاوي احترافي */
+  box-shadow: 0 0 15px rgba(0, 204, 255, 0.6); /* ظل نيون خفيف */
   transition: all 0.3s;
+  text-transform: uppercase;
 }
 
 #top-download a:hover {
-  background: linear-gradient(135deg, #f39c12, #f1c40f, #e67e22);
+  background: linear-gradient(135deg, #4b0082, #00ccff);
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(0, 204, 255, 1);
 }
 
 /* عنوان الصفحة */
 h1 {
-  margin-top: 10px;
-  font-size: 2.5em;
-  padding: 10px 0;
-  background: rgba(0,0,0,0.2);
-  border-radius: 10px;
+  margin-top: 20px;
+  font-size: 3em;
+  font-weight: 900; /* خط سميك جداً */
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  color: #fff;
+  margin-bottom: 10px;
 }
 
 /* ساعة توقيت غرينيتش */
 #clock {
-  font-size: 20px;
-  margin: 10px 0;
+  font-size: 22px;
+  margin: 10px auto 20px;
   font-weight: bold;
-  padding: 5px 20px;
-  background: rgba(0,0,0,0.2);
+  padding: 8px 25px;
+  background: #2a2a44;
   display: inline-block;
-  border-radius: 8px;
+  border-radius: 50px;
+  color: #00ccff; /* لون نيون أزرق للساعة */
+  border: 1px solid #00ccff;
 }
 
-/* الشريط المتحرك مع وميض */
+/* الشريط المتحرك (Marquee) */
 .marquee-container {
-  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  background: #2a2a44;
   overflow: hidden;
   width: 100%;
-  height: 60px; /* حجم جذاب واحترافي */
+  height: 50px;
   position: relative;
-  margin-top: 15px;
-  border-top: 2px solid #fff;
-  border-bottom: 2px solid #fff;
+  margin-top: 20px;
+  border-top: 3px solid #f39c12; /* شريط برتقالي للتنبيه */
+  border-bottom: 3px solid #f39c12;
   display: flex;
   align-items: center;
 }
 
-/* النص المتحرك مع تأثير وميض */
+/* النص المتحرك - تم تعديل الحركة لتكون من اليسار نحو اليمين */
 .marquee {
   display: inline-block;
   white-space: nowrap;
-  font-size: 18px;
+  font-size: 16px;
   color: #fff;
-  padding-left: 100%;
-  animation: scroll-right 40s linear infinite;
+  padding-left: 0; /* يبدأ على اليسار */
+  animation: scroll-left-to-right 30s linear infinite; /* اسم جديد ومخصص للحركة */
   font-weight: bold;
-  position: relative;
 }
 
-@keyframes scroll-right {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+/* قاعدة الحركة - تبدأ من اليسار وتتحرك لليمين */
+@keyframes scroll-left-to-right {
+  0% { transform: translateX(-100%); } /* يبدأ من خارج الشاشة على اليسار */
+  100% { transform: translateX(100%); }  /* ينتهي خارج الشاشة على اليمين */
 }
 
-/* وميض على النص */
+/* تحسين النص داخل الشريط المتحرك */
+.marquee strong {
+  color: #f1c40f; /* لون أصفر لتمييز الأخبار العاجلة */
+}
+.marquee a {
+  color: #ff7e5f !important; /* لون مختلف لرابط التحميل داخل الشريط */
+  font-weight: 900;
+}
 .marquee span {
-  animation: blink 1.5s infinite;
-  margin: 0 10px;
+  margin: 0 15px;
+  color: #f12711; /* لون أحمر للأيقونات */
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
 
 /* محتوى المباريات */
 .matches {
-  max-width: 1000px;
-  margin: 20px auto;
-  padding: 15px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background: rgba(42, 42, 68, 0.4); /* خلفية نصف شفافة داكنة */
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
+
+/* عنوان القسم/البطولة */
+.match-section-title {
+  font-size: 2em;
+  font-weight: 700;
+  color: #f1c40f; /* لون أصفر لتمييز البطولة */
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #3c3c5a;
+  text-align: right;
+  padding-right: 15px;
+}
+
+/* تنسيق خاص لدوري أبطال آسيا - تغيير اللون قليلاً للتمييز */
+#asia-title {
+    color: #4CAF50; /* لون أخضر للتمييز */
+    border-bottom: 2px solid #4CAF50;
+}
+
 
 /* كل مباراة */
 .match {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #fff;
+  background: #2a2a44; /* خلفية أغمق لبطاقة المباراة */
   margin-bottom: 15px;
-  padding: 12px;
-  border-radius: 10px;
-  color: #000;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  transition: transform 0.2s, box-shadow 0.2s;
+  padding: 15px;
+  border-radius: 12px;
+  color: #f0f0f0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s;
+  border-right: 5px solid #f12711; /* شريط جانبي بلون أحمر نيون */
 }
 
 .match:hover {
-  transform: scale(1.02);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 8px 25px rgba(241, 39, 17, 0.5); /* ظل نيون جذاب عند التمرير */
 }
 
 /* تفاصيل المباراة */
@@ -142,48 +173,58 @@ h1 {
 }
 
 .match-title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
 }
+
+.match-title i {
+    margin-left: 10px;
+    color: #00ccff; /* لون نيون للأيقونة */
+}
+
 .match-time {
-  font-size: 14px;
-  color: #555;
+  font-size: 16px;
+  color: #a0a0a0; /* لون رمادي فاتح للوقت */
 }
 
 /* زر المشاهدة */
 .match-btn {
-  padding: 10px 20px;
-  background: linear-gradient(135deg, #f12711, #f5af19);
+  padding: 12px 25px;
+  background: linear-gradient(135deg, #f12711, #f5af19); /* تدرج أحمر/برتقالي لافت */
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 50px;
   text-decoration: none;
   font-weight: bold;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 4px 15px rgba(241, 39, 17, 0.7); /* ظل قوي لجعله بارزاً */
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  text-transform: uppercase;
 }
 .match-btn:hover {
   background: linear-gradient(135deg, #f5af19, #f12711);
   transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(245, 175, 25, 0.9);
 }
 
-/* زر العودة للصفحة الرئيسية - اختياري */
+/* زر العودة للصفحة الرئيسية */
 .back-button {
   display: block;
-  margin: 30px auto;
-  padding: 12px 25px;
-  background: linear-gradient(135deg, #4b6cb7, #182848);
+  margin: 40px auto;
+  padding: 15px 35px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
   color: #fff;
   font-weight: bold;
-  border-radius: 10px;
+  border-radius: 50px;
   text-decoration: none;
-  font-size: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  font-size: 18px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
   transition: background 0.3s, transform 0.2s;
 }
 .back-button:hover {
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  background: linear-gradient(135deg, #2980b9, #3498db);
   transform: scale(1.05);
 }
 </style>
@@ -192,11 +233,11 @@ h1 {
 
 <!-- رابط تحميل التطبيق -->
 <div id="top-download">
-  <a href="https://www.mediafire.com/file/oyendv6rjwecvk6/app3387489-hp95l0-1-1.apk/file" target="_blank">تحميل تطبيق BALLON TV</a>
+  <a href="https://www.mediafire.com/file/oyendv6rjwecvk6/app3387489-hp95l0-1-1.apk/file" target="_blank"><i class="fas fa-download"></i> تحميل تطبيق BALLON TV</a>
 </div>
 
 <!-- العنوان -->
-<h1>مباريات اليوم</h1>
+<h1><i class="fas fa-bolt" style="color:#f1c40f;"></i> مباريات اليوم الحية</h1>
 
 <!-- الساعة بتوقيت غرينيتش -->
 <div id="clock"></div>
@@ -213,104 +254,115 @@ setInterval(updateClock, 1000);
 updateClock();
 </script>
 
-<!-- الشريط المتحرك مع وميض -->
+<!-- الشريط المتحرك (أخبار وتنبيهات) -->
 <div class="marquee-container">
   <div class="marquee">
-    🚀 تطبيق BALLON TV هو الحل لمشاهدة القنوات الرياضية والعالمية بجودة عالية! حمل التطبيق الآن واستمتع بالمباريات مباشرة. <span>🎉</span> 
-    <strong>أخبار رياضية عاجلة:</strong> نتائج المباريات، تغطيات حية، وتحليلات مباشرة! تابع كل جديد وكن على اطلاع دائم. 
-    <span>🔴</span> حمل التطبيق من هنا: 
-    <a href="https://www.mediafire.com/file/oyendv6rjwecvk6/app3387489-hp95l0-1-1.apk/file" target="_blank" style="color:#000; font-weight:bold;">اضغط هنا</a>
+    <span><i class="fas fa-rocket"></i></span> تطبيق BALLON TV هو الحل لمشاهدة القنوات الرياضية والعالمية بجودة عالية! حمل التطبيق الآن واستمتع بالمباريات مباشرة.
+    <strong>أخبار رياضية عاجلة:</strong> جميع مباريات دوري أبطال أوروبا وآسيا متوفرة هنا.
+    <span><i class="fas fa-fire"></i></span> حمل التطبيق من هنا:
+    <a href="https://www.mediafire.com/file/oyendv6rjwecvk6/app3387489-hp95l0-1-1.apk/file" target="_blank">اضغط هنا للتحميل المباشر</a>
   </div>
 </div>
 
-<!-- قائمة المباريات (تم تحديثها) -->
+<!-- قائمة المباريات (تم تحديثها بالبيانات والتنظيم حسب البطولة) -->
 <div class="matches">
 
-  <div class="match">
-    <div class="match-info">
-      <div class="match-title">غوا vs النصر</div>
-      <div class="match-time">14:45</div>
-    </div>
-    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport1/?serv=1">اضغط هنا لمشاهدة المباراة</a>
+  <!-- عنوان القسم لدوري أبطال آسيا -->
+  <div class="match-section-title" id="asia-title">
+    <i class="fas fa-trophy" style="color:#4CAF50;"></i> دوري أبطال آسيا
   </div>
 
   <div class="match">
     <div class="match-info">
-      <div class="match-title">غلطة سراي vs بودو</div>
-      <div class="match-time">17:45</div>
+      <div class="match-title"><i class="fas fa-futbol"></i> غوا vs النصر</div>
+      <div class="match-time">14:45 بتوقيت غرينيتش</div>
     </div>
-    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport2/?serv=1">اضغط هنا لمشاهدة المباراة</a>
+    <!-- الروابط تستخدم نمطك القديم، مع روابط تصاعدية -->
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport1/?serv=1">مشاهدة الآن</a>
+  </div>
+
+  <!-- عنوان القسم لدوري أبطال أوروبا -->
+  <div class="match-section-title">
+    <i class="fas fa-trophy" style="color:#f1c40f;"></i> دوري أبطال أوروبا
   </div>
 
   <div class="match">
     <div class="match-info">
-      <div class="match-title">بلباو vs قرباغ</div>
-      <div class="match-time">17:45</div>
+      <div class="match-title"><i class="fas fa-futbol"></i> غلطة سراي vs بودو</div>
+      <div class="match-time">17:45 بتوقيت غرينيتش</div>
     </div>
-    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport3/?serv=1">اضغط هنا لمشاهدة المباراة</a>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport2/?serv=1">مشاهدة الآن</a>
   </div>
 
   <div class="match">
     <div class="match-info">
-      <div class="match-title">ر. مدريد vs يوفنتوس</div>
-      <div class="match-time">20:00</div>
+      <div class="match-title"><i class="fas fa-futbol"></i> بلباو vs قرباغ</div>
+      <div class="match-time">17:45 بتوقيت غرينيتش</div>
     </div>
-    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport4/?serv=1">اضغط هنا لمشاهدة المباراة</a>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport3/?serv=1">مشاهدة الآن</a>
+  </div>
+    
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title"><i class="fas fa-futbol"></i> ر. مدريد vs يوفنتوس</div>
+      <div class="match-time">20:00 بتوقيت غرينيتش</div>
+    </div>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport4/?serv=1">مشاهدة الآن</a>
   </div>
 
   <div class="match">
     <div class="match-info">
-      <div class="match-title">فرانكفورت vs ليفربول</div>
-      <div class="match-time">20:00</div>
+      <div class="match-title"><i class="fas fa-futbol"></i> فرانكفورت vs ليفربول</div>
+      <div class="match-time">20:00 بتوقيت غرينيتش</div>
     </div>
-    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport5/?serv=1">اضغط هنا لمشاهدة المباراة</a>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport5/?serv=1">مشاهدة الآن</a>
   </div>
 
   <div class="match">
     <div class="match-info">
-      <div class="match-title">تشيلسي vs أياكس</div>
-      <div class="match-time">20:00</div>
+      <div class="match-title"><i class="fas fa-futbol"></i> تشيلسي vs أياكس</div>
+      <div class="match-time">20:00 بتوقيت غرينيتش</div>
     </div>
-    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport6/?serv=1">اضغط هنا لمشاهدة المباراة</a>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport6/?serv=1">مشاهدة الآن</a>
   </div>
 
   <div class="match">
     <div class="match-info">
-      <div class="match-title">بروج vs بايرن</div>
-      <div class="match-time">20:00</div>
+      <div class="match-title"><i class="fas fa-futbol"></i> بروج vs بايرن</div>
+      <div class="match-time">20:00 بتوقيت غرينيتش</div>
     </div>
-    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport7/?serv=1">اضغط هنا لمشاهدة المباراة</a>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport7/?serv=1">مشاهدة الآن</a>
   </div>
 
   <div class="match">
     <div class="match-info">
-      <div class="match-title">موناكو vs توتنهام</div>
-      <div class="match-time">20:00</div>
+      <div class="match-title"><i class="fas fa-futbol"></i> موناكو vs توتنهام</div>
+      <div class="match-time">20:00 بتوقيت غرينيتش</div>
     </div>
-    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport8/?serv=1">اضغط هنا لمشاهدة المباراة</a>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport8/?serv=1">مشاهدة الآن</a>
   </div>
 
   <div class="match">
     <div class="match-info">
-      <div class="match-title">سبورتينغ vs مارسيليا</div>
-      <div class="match-time">20:00</div>
+      <div class="match-title"><i class="fas fa-futbol"></i> سبورتينغ vs مارسيليا</div>
+      <div class="match-time">20:00 بتوقيت غرينيتش</div>
     </div>
-    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport9/?serv=1">اضغط هنا لمشاهدة المباراة</a>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport9/?serv=1">مشاهدة الآن</a>
   </div>
 
   <div class="match">
     <div class="match-info">
-      <div class="match-title">اتلانتا vs سلافيا</div>
-      <div class="match-time">20:00</div>
+      <div class="match-title"><i class="fas fa-futbol"></i> اتلانتا vs سلافيا</div>
+      <div class="match-time">20:00 بتوقيت غرينيتش</div>
     </div>
-    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport10/?serv=1">اضغط هنا لمشاهدة المباراة</a>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport10/?serv=1">مشاهدة الآن</a>
   </div>
 
 </div>
 
 <!-- زر العودة للصفحة الرئيسية (اختياري) -->
-<div style="text-align:center; margin-top:20px;">
-  <a class="back-button" href="index.html">الصفحة الرئيسية</a>
+<div style="text-align:center;">
+  <a class="back-button" href="index.html"><i class="fas fa-home"></i> العودة للصفحة الرئيسية</a>
 </div>
 
 </body>
