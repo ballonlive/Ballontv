@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>مباريات اليوم - مظهر احترافي</title>
+<title>مباريات اليوم - مباشر ومحلي</title>
 
 <!-- خطوط جوجل (تم إضافة خط Cairo لتحسين مظهر النص العربي) -->
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Montserrat:wght@700&display=swap" rel="stylesheet" />
@@ -40,6 +40,7 @@ body {
   box-shadow: 0 0 15px rgba(0, 204, 255, 0.6); /* ظل نيون خفيف */
   transition: all 0.3s;
   text-transform: uppercase;
+  display: inline-block; /* لضمان عمل التحويل بشكل جيد */
 }
 
 #top-download a:hover {
@@ -48,7 +49,7 @@ body {
   box-shadow: 0 0 25px rgba(0, 204, 255, 1);
 }
 
-/* عنوان الصفحة */
+/* عنوان الصفحة - تم إضافة تحريك بسيط */
 h1 {
   margin-top: 20px;
   font-size: 3em;
@@ -56,12 +57,24 @@ h1 {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
   color: #fff;
   margin-bottom: 10px;
+  /* تأثير وميض خفيف للعنوان */
+  animation: pulse 4s infinite; 
+}
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.9; }
+    100% { opacity: 1; }
 }
 
-/* ساعة توقيت غرينيتش */
+/* ساعة توقيت غرينيتش والمحلي */
+#clock-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* فاصل بين الساعتين */
+    margin: 10px auto 20px;
+}
 #clock {
-  font-size: 22px;
-  margin: 10px auto 20px;
+  font-size: 20px;
   font-weight: bold;
   padding: 8px 25px;
   background: #2a2a44;
@@ -70,6 +83,11 @@ h1 {
   color: #00ccff; /* لون نيون أزرق للساعة */
   border: 1px solid #00ccff;
 }
+#local-time-display {
+    color: #f1c40f; /* لون أصفر مميز للتوقيت المحلي */
+    border: 1px solid #f1c40f;
+}
+
 
 /* الشريط المتحرك (Marquee) */
 .marquee-container {
@@ -85,18 +103,19 @@ h1 {
   align-items: center;
 }
 
-/* النص المتحرك - تم تعديل الحركة لتكون من اليسار نحو اليمين */
+/* النص المتحرك - تم تعديل الحركة لتكون من اليسار إلى اليمين */
 .marquee {
   display: inline-block;
   white-space: nowrap;
   font-size: 16px;
   color: #fff;
-  padding-left: 0; /* يبدأ على اليسار */
+  /* يبدأ من خارج الشاشة على اليسار بقيمة سلبية */
+  transform: translateX(-100%); 
   animation: scroll-left-to-right 30s linear infinite; /* اسم جديد ومخصص للحركة */
   font-weight: bold;
 }
 
-/* قاعدة الحركة - تبدأ من اليسار وتتحرك لليمين */
+/* قاعدة الحركة - تبدأ من اليسار وتتحرك لليمين بشكل مستمر */
 @keyframes scroll-left-to-right {
   0% { transform: translateX(-100%); } /* يبدأ من خارج الشاشة على اليسار */
   100% { transform: translateX(100%); }  /* ينتهي خارج الشاشة على اليمين */
@@ -104,15 +123,15 @@ h1 {
 
 /* تحسين النص داخل الشريط المتحرك */
 .marquee strong {
-  color: #f1c40f; /* لون أصفر لتمييز الأخبار العاجلة */
+  color: #f1c40f; 
 }
 .marquee a {
-  color: #ff7e5f !important; /* لون مختلف لرابط التحميل داخل الشريط */
+  color: #ff7e5f !important; 
   font-weight: 900;
 }
 .marquee span {
   margin: 0 15px;
-  color: #f12711; /* لون أحمر للأيقونات */
+  color: #f12711; 
 }
 
 
@@ -121,7 +140,7 @@ h1 {
   max-width: 900px;
   margin: 30px auto;
   padding: 20px;
-  background: rgba(42, 42, 68, 0.4); /* خلفية نصف شفافة داكنة */
+  background: rgba(42, 42, 68, 0.4); 
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
@@ -130,7 +149,7 @@ h1 {
 .match-section-title {
   font-size: 2em;
   font-weight: 700;
-  color: #f1c40f; /* لون أصفر لتمييز البطولة */
+  color: #f1c40f; 
   margin-bottom: 20px;
   padding-bottom: 10px;
   border-bottom: 2px solid #3c3c5a;
@@ -138,9 +157,9 @@ h1 {
   padding-right: 15px;
 }
 
-/* تنسيق خاص لدوري أبطال آسيا - تغيير اللون قليلاً للتمييز */
+/* تنسيق خاص لدوري أبطال آسيا */
 #asia-title {
-    color: #4CAF50; /* لون أخضر للتمييز */
+    color: #4CAF50; 
     border-bottom: 2px solid #4CAF50;
 }
 
@@ -150,19 +169,20 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #2a2a44; /* خلفية أغمق لبطاقة المباراة */
+  background: #2a2a44; 
   margin-bottom: 15px;
   padding: 15px;
   border-radius: 12px;
   color: #f0f0f0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   transition: all 0.3s;
-  border-right: 5px solid #f12711; /* شريط جانبي بلون أحمر نيون */
+  border-right: 5px solid #f12711; 
+  position: relative;
 }
 
 .match:hover {
   transform: translateY(-3px) scale(1.01);
-  box-shadow: 0 8px 25px rgba(241, 39, 17, 0.5); /* ظل نيون جذاب عند التمرير */
+  box-shadow: 0 8px 25px rgba(241, 39, 17, 0.5); 
 }
 
 /* تفاصيل المباراة */
@@ -170,6 +190,7 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  text-align: right;
 }
 
 .match-title {
@@ -182,32 +203,103 @@ h1 {
 
 .match-title i {
     margin-left: 10px;
-    color: #00ccff; /* لون نيون للأيقونة */
+    color: #00ccff; 
 }
 
 .match-time {
-  font-size: 16px;
-  color: #a0a0a0; /* لون رمادي فاتح للوقت */
+  font-size: 14px; /* تصغير الخط قليلاً لاستيعاب التوقيتين */
+  color: #a0a0a0; 
+}
+
+/* شارة البث المباشر الجديدة */
+.live-badge {
+    background: linear-gradient(45deg, #ff0000, #990000);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 10px;
+    box-shadow: 0 0 5px red;
+    animation: blink 1s infinite;
+    display: none; /* يتم إظهاره عبر JavaScript */
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
 /* زر المشاهدة */
 .match-btn {
   padding: 12px 25px;
-  background: linear-gradient(135deg, #f12711, #f5af19); /* تدرج أحمر/برتقالي لافت */
+  background: linear-gradient(135deg, #f12711, #f5af19); 
   color: #fff;
   border: none;
   border-radius: 50px;
   text-decoration: none;
   font-weight: bold;
-  box-shadow: 0 4px 15px rgba(241, 39, 17, 0.7); /* ظل قوي لجعله بارزاً */
+  box-shadow: 0 4px 15px rgba(241, 39, 17, 0.7); 
   transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
   text-transform: uppercase;
+  min-width: 120px; /* لتوحيد حجم الأزرار */
+  text-align: center;
 }
 .match-btn:hover {
   background: linear-gradient(135deg, #f5af19, #f12711);
   transform: scale(1.05);
   box-shadow: 0 6px 20px rgba(245, 175, 25, 0.9);
 }
+
+/* =================================
+   روابط التواصل الاجتماعي الجديدة
+   ================================= */
+.social-links {
+    margin: 30px auto;
+    padding: 20px;
+    max-width: 900px;
+    background: rgba(42, 42, 68, 0.4); 
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+}
+
+.social-links h2 {
+    font-size: 1.8em;
+    color: #00ccff;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #3c3c5a;
+    padding-bottom: 10px;
+}
+
+.social-link-icon {
+    display: inline-block;
+    margin: 0 15px;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.social-link-icon i {
+    font-size: 40px;
+    color: #f0f0f0;
+    padding: 10px;
+    border-radius: 50%;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.social-link-icon:hover {
+    transform: translateY(-5px);
+}
+
+/* ألوان مخصصة للتواصل الاجتماعي */
+.social-link-icon.telegram i {
+    color: #0088cc; /* لون تلغرام */
+    box-shadow: 0 0 15px rgba(0, 136, 204, 0.8);
+}
+
+.social-link-icon.youtube i {
+    color: #ff0000; /* لون يوتيوب */
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+}
+
 
 /* زر العودة للصفحة الرئيسية */
 .back-button {
@@ -227,6 +319,56 @@ h1 {
   background: linear-gradient(135deg, #2980b9, #3498db);
   transform: scale(1.05);
 }
+
+/* =================================
+   الأنماط المتجاوبة (Mobile Responsiveness)
+   ================================= */
+@media (max-width: 650px) {
+    h1 {
+        font-size: 2em;
+        margin-top: 10px;
+    }
+    .match-section-title {
+        font-size: 1.5em;
+    }
+    .matches, .social-links {
+        margin: 20px 10px;
+        padding: 10px;
+    }
+    .match {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+    }
+    .match-info {
+        align-items: center;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    .match-title {
+        font-size: 16px;
+        flex-direction: column;
+        margin-bottom: 5px;
+    }
+    .match-title i {
+        margin-bottom: 5px;
+        margin-left: 0;
+    }
+    .match-btn {
+        width: 100%;
+        max-width: 250px;
+        padding: 10px 20px;
+    }
+    .live-badge {
+        margin-right: 0;
+        margin-top: 5px;
+    }
+    #clock-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
 </style>
 </head>
 <body>
@@ -239,24 +381,89 @@ h1 {
 <!-- العنوان -->
 <h1><i class="fas fa-bolt" style="color:#f1c40f;"></i> مباريات اليوم الحية</h1>
 
-<!-- الساعة بتوقيت غرينيتش -->
-<div id="clock"></div>
+<!-- الساعة بتوقيت غرينيتش والتوقيت المحلي -->
+<div id="clock-container">
+    <div id="clock" class="clock-display"></div>
+    <div id="local-time-display" class="clock-display"></div>
+</div>
 
 <script>
-// وظيفة عرض الساعة بتوقيت غرينيتش
-function updateClock() {
-  const now = new Date();
-  const options = { timeZone: 'GMT', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-  const timeString = now.toLocaleTimeString('en-GB', options);
-  document.getElementById('clock').innerText = 'توقيت غرينيتش: ' + timeString;
-}
-setInterval(updateClock, 1000);
-updateClock();
+    // ===================================
+    // وظيفة عرض الساعة بتوقيت غرينيتش والتوقيت المحلي
+    // ===================================
+    function updateClock() {
+        const now = new Date();
+        const gmtOptions = { timeZone: 'GMT', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const localOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+
+        // تحديث توقيت غرينيتش
+        const gmtTimeString = now.toLocaleTimeString('en-GB', gmtOptions);
+        document.getElementById('clock').innerText = 'توقيت GMT: ' + gmtTimeString;
+
+        // تحديث التوقيت المحلي للزائر
+        const localTimeString = now.toLocaleTimeString('ar-EG', localOptions); // استخدام 'ar-EG' لعرض الأرقام العربية
+        document.getElementById('local-time-display').innerText = 'توقيتك المحلي: ' + localTimeString;
+
+        // وظيفة تحديد المباريات المباشرة
+        checkLiveMatches();
+    }
+    
+    // ===================================
+    // وظيفة تحويل وعرض التوقيت المحلي وتحديد البث المباشر
+    // ===================================
+    function checkLiveMatches() {
+        const matches = document.querySelectorAll('.match-time');
+        const now = new Date();
+        
+        matches.forEach(timeElement => {
+            const gmtTime = timeElement.getAttribute('data-gmt-time'); // قراءة الوقت من الخاصية الجديدة
+            const [hours, minutes] = gmtTime.split(':').map(Number);
+            
+            // حساب الوقت المحلي
+            const matchTimeGMT = new Date();
+            matchTimeGMT.setUTCFullYear(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+            matchTimeGMT.setUTCHours(hours, minutes, 0, 0);
+
+            // تحويل إلى التوقيت المحلي للزائر
+            const localTime = matchTimeGMT.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', hour12: false });
+            
+            // عرض التوقيتين
+            timeElement.innerHTML = `<i class="fas fa-clock"></i> ${localTime} (توقيتك المحلي) / ${gmtTime} (GMT)`;
+
+            // منطق "البث المباشر"
+            const timeDifferenceMinutes = (now.getTime() - matchTimeGMT.getTime()) / 60000;
+            const liveBadge = timeElement.parentElement.querySelector('.live-badge');
+
+            // المباراة تعتبر "مباشرة" إذا كانت ضمن 90 دقيقة قبل البداية وحتى 120 دقيقة (ساعتين) بعد البداية
+            if (timeDifferenceMinutes >= -90 && timeDifferenceMinutes <= 120) {
+                // إضافة شارة البث المباشر (LIVE)
+                if (!liveBadge) {
+                    const newBadge = document.createElement('span');
+                    newBadge.className = 'live-badge';
+                    newBadge.innerText = 'مباشر LIVE';
+                    // إضافة الشارة بعد عنوان المباراة
+                    timeElement.parentElement.querySelector('.match-title').appendChild(newBadge); 
+                    newBadge.style.display = 'inline-block';
+                }
+            } else if (liveBadge) {
+                // إخفاء الشارة إذا انتهت أو لم تبدأ بعد
+                liveBadge.remove();
+            }
+        });
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock(); // تشغيل فوري
 </script>
 
 <!-- الشريط المتحرك (أخبار وتنبيهات) -->
 <div class="marquee-container">
+    <!-- تم تكرار المحتوى لجعل الحركة مستمرة دون انقطاع -->
   <div class="marquee">
+    <span><i class="fas fa-rocket"></i></span> تطبيق BALLON TV هو الحل لمشاهدة القنوات الرياضية والعالمية بجودة عالية! حمل التطبيق الآن واستمتع بالمباريات مباشرة.
+    <strong>أخبار رياضية عاجلة:</strong> جميع مباريات دوري أبطال أوروبا وآسيا متوفرة هنا.
+    <span><i class="fas fa-fire"></i></span> حمل التطبيق من هنا:
+    <a href="https://www.mediafire.com/file/oyendv6rjwecvk6/app3387489-hp95l0-1-1.apk/file" target="_blank">اضغط هنا للتحميل المباشر</a>
     <span><i class="fas fa-rocket"></i></span> تطبيق BALLON TV هو الحل لمشاهدة القنوات الرياضية والعالمية بجودة عالية! حمل التطبيق الآن واستمتع بالمباريات مباشرة.
     <strong>أخبار رياضية عاجلة:</strong> جميع مباريات دوري أبطال أوروبا وآسيا متوفرة هنا.
     <span><i class="fas fa-fire"></i></span> حمل التطبيق من هنا:
@@ -264,7 +471,7 @@ updateClock();
   </div>
 </div>
 
-<!-- قائمة المباريات (تم تحديثها بالبيانات والتنظيم حسب البطولة) -->
+<!-- قائمة المباريات -->
 <div class="matches">
 
   <!-- عنوان القسم لدوري أبطال آسيا -->
@@ -275,9 +482,9 @@ updateClock();
   <div class="match">
     <div class="match-info">
       <div class="match-title"><i class="fas fa-futbol"></i> غوا vs النصر</div>
-      <div class="match-time">14:45 بتوقيت غرينيتش</div>
+      <!-- تم استخدام خاصية data-gmt-time للاستخدام في JavaScript -->
+      <div class="match-time" data-gmt-time="14:45"></div> 
     </div>
-    <!-- الروابط تستخدم نمطك القديم، مع روابط تصاعدية -->
     <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport1/?serv=1">مشاهدة الآن</a>
   </div>
 
@@ -289,15 +496,15 @@ updateClock();
   <div class="match">
     <div class="match-info">
       <div class="match-title"><i class="fas fa-futbol"></i> غلطة سراي vs بودو</div>
-      <div class="match-time">17:45 بتوقيت غرينيتش</div>
+      <div class="match-time" data-gmt-time="17:45"></div>
     </div>
-    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport2/?serv=1">مشاهدة الآن</a>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport6/?serv=1">مشاهدة الآن</a>
   </div>
 
   <div class="match">
     <div class="match-info">
       <div class="match-title"><i class="fas fa-futbol"></i> بلباو vs قرباغ</div>
-      <div class="match-time">17:45 بتوقيت غرينيتش</div>
+      <div class="match-time" data-gmt-time="17:45"></div>
     </div>
     <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport3/?serv=1">مشاهدة الآن</a>
   </div>
@@ -305,65 +512,83 @@ updateClock();
   <div class="match">
     <div class="match-info">
       <div class="match-title"><i class="fas fa-futbol"></i> ر. مدريد vs يوفنتوس</div>
-      <div class="match-time">20:00 بتوقيت غرينيتش</div>
+      <div class="match-time" data-gmt-time="20:00"></div>
+    </div>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport1/?serv=1">مشاهدة الآن</a>
+  </div>
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title"><i class="fas fa-futbol"></i> فرانكفورت vs ليفربول</div>
+      <div class="match-time" data-gmt-time="20:00"></div>
+    </div>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport2/?serv=1">مشاهدة الآن</a>
+  </div>
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title"><i class="fas fa-futbol"></i> تشيلسي vs أياكس</div>
+      <div class="match-time" data-gmt-time="20:00"></div>
     </div>
     <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport4/?serv=1">مشاهدة الآن</a>
   </div>
 
   <div class="match">
     <div class="match-info">
-      <div class="match-title"><i class="fas fa-futbol"></i> فرانكفورت vs ليفربول</div>
-      <div class="match-time">20:00 بتوقيت غرينيتش</div>
+      <div class="match-title"><i class="fas fa-futbol"></i> بروج vs بايرن</div>
+      <div class="match-time" data-gmt-time="20:00"></div>
     </div>
     <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport5/?serv=1">مشاهدة الآن</a>
   </div>
 
   <div class="match">
     <div class="match-info">
-      <div class="match-title"><i class="fas fa-futbol"></i> تشيلسي vs أياكس</div>
-      <div class="match-time">20:00 بتوقيت غرينيتش</div>
+      <div class="match-title"><i class="fas fa-futbol"></i> موناكو vs توتنهام</div>
+      <div class="match-time" data-gmt-time="20:00"></div>
+    </div>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport3/?serv=1">مشاهدة الآن</a>
+  </div>
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title"><i class="fas fa-futbol"></i> سبورتينغ vs مارسيليا</div>
+      <div class="match-time" data-gmt-time="20:00"></div>
     </div>
     <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport6/?serv=1">مشاهدة الآن</a>
   </div>
 
   <div class="match">
     <div class="match-info">
-      <div class="match-title"><i class="fas fa-futbol"></i> بروج vs بايرن</div>
-      <div class="match-time">20:00 بتوقيت غرينيتش</div>
+      <div class="match-title"><i class="fas fa-futbol"></i> اتلانتا vs سلافيا</div>
+      <div class="match-time" data-gmt-time="20:00"></div>
     </div>
     <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport7/?serv=1">مشاهدة الآن</a>
   </div>
 
-  <div class="match">
-    <div class="match-info">
-      <div class="match-title"><i class="fas fa-futbol"></i> موناكو vs توتنهام</div>
-      <div class="match-time">20:00 بتوقيت غرينيتش</div>
-    </div>
-    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport8/?serv=1">مشاهدة الآن</a>
-  </div>
+</div>
 
-  <div class="match">
-    <div class="match-info">
-      <div class="match-title"><i class="fas fa-futbol"></i> سبورتينغ vs مارسيليا</div>
-      <div class="match-time">20:00 بتوقيت غرينيتش</div>
+<!-- قسم روابط التواصل الاجتماعي الجديدة -->
+<div class="social-links">
+    <h2>تابعنا على منصات التواصل</h2>
+    <div>
+        <!-- رابط تلغرام -->
+        <a href="https://t.me/Ballonlivecontact" target="_blank" class="social-link-icon telegram">
+            <i class="fab fa-telegram-plane"></i>
+        </a>
+        <!-- رابط يوتيوب -->
+        <a href="https://www.youtube.com/@molballonsports" target="_blank" class="social-link-icon youtube">
+            <i class="fab fa-youtube"></i>
+        </a>
     </div>
-    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport9/?serv=1">مشاهدة الآن</a>
-  </div>
-
-  <div class="match">
-    <div class="match-info">
-      <div class="match-title"><i class="fas fa-futbol"></i> اتلانتا vs سلافيا</div>
-      <div class="match-time">20:00 بتوقيت غرينيتش</div>
-    </div>
-    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport10/?serv=1">مشاهدة الآن</a>
-  </div>
-
 </div>
 
 <!-- زر العودة للصفحة الرئيسية (اختياري) -->
 <div style="text-align:center;">
   <a class="back-button" href="index.html"><i class="fas fa-home"></i> العودة للصفحة الرئيسية</a>
 </div>
+
+<!-- كود الإعلان من otieu.com -->
+<script async src="https://otieu.com/js/ads.js" data-cfasync="false"></script> 
 
 </body>
 </html>
