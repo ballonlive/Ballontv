@@ -1,568 +1,654 @@
-<!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BALLONLIVE - بث مباشر للمباريات والتحليلات</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons for better visual appeal -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #007bff; /* أزرق مميز وجذاب */
-            --secondary-color: #28a745; /* أخضر للإبراز */
-            --accent-color: #ffc107; /* أصفر للتأكيد */
-            --background-dark: #212529; /* خلفية داكنة للفوتر والهيدر */
-            --background-light: #f8f9fa; /* خلفية فاتحة للجسم */
-            --card-background: #ffffff; /* خلفية البطاقات */
-            --text-dark: #343a40; /* لون النص الغامق */
-            --text-light: #f8f9fa; /* لون النص الفاتح */
-            --border-color: #e9ecef; /* لون الحدود الفاتح */
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>مباريات اليوم - مباشر ومحلي</title>
 
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--background-light);
-            color: var(--text-dark);
-            margin: 0;
-            padding: 0;
-            direction: rtl;
-            text-align: right;
-            line-height: 1.7;
-        }
+<!-- خطوط جوجل (تم إضافة خط Cairo لتحسين مظهر النص العربي) -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Montserrat:wght@700&display=swap" rel="stylesheet" />
 
-        /* رأس الصفحة */
-        header {
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            padding: 30px 0;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-            position: relative;
-            z-index: 100;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 3.5em;
-            letter-spacing: 2px;
-            color: var(--primary-color);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        header p {
-            margin: 10px 0 0;
-            font-size: 1.4em;
-            color: var(--text-light);
-            opacity: 0.9;
-        }
+<!-- أيقونات Font Awesome (تم التحديث لأحدث إصدار) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
-        /* ساعة غرينتش */
-        #gmt-clock {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: var(--accent-color);
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: rgba(0, 0, 0, 0.4);
-            display: inline-block;
-            border-radius: 8px;
-            box-shadow: inset 0 0 10px rgba(255,193,7,0.3);
-        }
+<!-- أنماط الصفحة (تم تحديث التصميم بالكامل) -->
+<style>
+/* تعيين الخطوط للنص العربي والانجليزي */
+body {
+  font-family: 'Cairo', sans-serif; /* خط جذاب واحترافي للنص العربي */
+  background: #1e1e2d; /* خلفية داكنة وجذابة (كحلي داكن) */
+  margin: 0;
+  padding: 0;
+  color: #f0f0f0; /* لون نص فاتح */
+  text-align: center;
+}
 
-        /* شريط التنقل */
-        nav {
-            background-color: var(--primary-color);
-            overflow: hidden;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-            padding: 5px 0;
-            position: sticky;
-            top: 0;
-            z-index: 99;
-        }
-        nav a {
-            display: inline-block;
-            color: var(--text-light);
-            text-align: center;
-            padding: 18px 25px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-            font-size: 1.15em;
-            border-radius: 5px;
-            margin: 0 5px;
-        }
-        nav a:hover {
-            background-color: var(--secondary-color);
-            color: var(--text-light);
-            transform: translateY(-3px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        nav a i {
-            margin-left: 8px;
-        }
+/* زر تحميل التطبيق في الأعلى */
+#top-download {
+  padding: 15px;
+  background-color: #2a2a44; /* شريط داكن مميز */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
 
-        /* الحاوية الرئيسية */
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 30px;
-        }
+#top-download a {
+  padding: 14px 30px;
+  background: linear-gradient(135deg, #00ccff, #4b0082); /* تدرج نيون أزرق لافت */
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 50px; /* شكل بيضاوي احترافي */
+  box-shadow: 0 0 15px rgba(0, 204, 255, 0.6); /* ظل نيون خفيف */
+  transition: all 0.3s;
+  text-transform: uppercase;
+  display: inline-block; /* لضمان عمل التحويل بشكل جيد */
+}
 
-        /* بطاقة القسم */
-        .section-card {
-            background-color: var(--card-background);
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            margin-bottom: 40px;
-            padding: 35px;
-            text-align: right;
-            border-right: 6px solid var(--primary-color);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-        }
-        .section-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.18);
-        }
-        .section-card h2 {
-            color: var(--primary-color);
-            margin-top: 0;
-            margin-bottom: 30px;
-            border-bottom: 4px solid var(--accent-color);
-            padding-bottom: 18px;
-            font-size: 2.5em;
-            display: flex;
-            align-items: center;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-        .section-card h2 i {
-            margin-left: 12px;
-            color: var(--secondary-color);
-            font-size: 0.9em;
-        }
-        .section-card h3 {
-            color: var(--secondary-color);
-            margin-top: 35px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 12px;
-            font-size: 1.8em;
-            display: flex;
-            align-items: center;
-        }
-        .section-card h3 i {
-            margin-left: 10px;
-            color: var(--primary-color);
-            font-size: 0.9em;
-        }
+#top-download a:hover {
+  background: linear-gradient(135deg, #4b0082, #00ccff);
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(0, 204, 255, 1);
+}
 
-        /* قائمة المباريات */
-        .match-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 25px;
-        }
-        .match-list li {
-            background-color: #fefefe;
-            margin-bottom: 18px;
-            padding: 20px 30px;
-            border-radius: 10px;
-            border-right: 5px solid var(--secondary-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-        .match-list li:hover {
-            background-color: #eef7ff;
-            transform: translateX(-8px);
-        }
-        .match-list li .match-details {
-            flex-grow: 1;
-        }
-        .match-list li .match-time {
-            font-weight: bold;
-            color: var(--primary-color);
-            font-size: 1.3em;
-            margin-right: 25px;
-            white-space: nowrap;
-        }
-        .match-list li .teams {
-            font-weight: bold;
-            font-size: 1.25em;
-            color: var(--text-dark);
-        }
-        .match-list li .league {
-            font-size: 1em;
-            color: #6c757d;
-            margin-top: 6px;
-        }
+/* حاوية الإعلانات لتحسين التباعد والتموضع */
+.ad-container {
+    max-width: 900px;
+    margin: 15px auto;
+    padding: 0 10px;
+}
 
-        .match-list li a {
-            background-color: var(--secondary-color);
-            color: var(--text-light);
-            padding: 12px 20px;
-            border-radius: 7px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-            white-space: nowrap;
-            margin-left: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .match-list li a:hover {
-            background-color: #218838;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
+/* عنوان الصفحة - تم إضافة تحريك بسيط */
+h1 {
+  margin-top: 20px;
+  font-size: 3em;
+  font-weight: 900; /* خط سميك جداً */
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  color: #fff;
+  margin-bottom: 10px;
+  /* تأثير وميض خفيف للعنوان */
+  animation: pulse 4s infinite; 
+}
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.9; }
+    100% { opacity: 1; }
+}
 
-        /* Ads specific styling */
-        .ad-container {
-            margin: 40px auto;
-            text-align: center;
-            border: 2px dashed var(--accent-color);
-            padding: 15px;
-            border-radius: 10px;
-            background-color: #fff9e6; /* Light yellow background for ads */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 90%;
-        }
-        .ad-container p {
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-        .ad-container iframe, .ad-container div[id^="container-"] {
-            margin: 0 auto;
-            display: block; /* Center iframes/ad containers */
-        }
-        /* Style for the ad scripts that might create divs */
-        div[id^="container-"] {
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
+/* ساعة توقيت غرينيتش والمحلي */
+#clock-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* فاصل بين الساعتين */
+    margin: 10px auto 20px;
+}
+#clock {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 8px 25px;
+  background: #2a2a44;
+  display: inline-block;
+  border-radius: 50px;
+  color: #00ccff; /* لون نيون أزرق للساعة */
+  border: 1px solid #00ccff;
+}
+#local-time-display {
+    color: #f1c40f; /* لون أصفر مميز للتوقيت المحلي */
+    border: 1px solid #f1c40f;
+}
 
 
-        /* تذييل الصفحة */
-        footer {
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            text-align: center;
-            padding: 40px 0;
-            margin-top: 60px;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.25);
-        }
-        footer p {
-            margin: 0;
-            font-size: 1.1em;
-        }
-        footer a {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: color 0.3s ease;
-            font-weight: bold;
-        }
-        footer a:hover {
-            color: var(--accent-color);
-            text-decoration: underline;
-        }
+/* الشريط المتحرك (Marquee) */
+.marquee-container {
+  background: #2a2a44;
+  overflow: hidden;
+  width: 100%;
+  height: 50px;
+  position: relative;
+  margin-top: 20px;
+  border-top: 3px solid #f39c12; /* شريط برتقالي للتنبيه */
+  border-bottom: 3px solid #f39c12;
+  display: flex;
+  align-items: center;
+}
 
-        /* الاستجابة (Responsive Design) */
-        @media (max-width: 992px) {
-            header h1 {
-                font-size: 2.8em;
-            }
-            header p {
-                font-size: 1.2em;
-            }
-            #gmt-clock {
-                font-size: 1.1em;
-                padding: 8px 15px;
-            }
-            nav a {
-                padding: 15px 18px;
-                font-size: 1.05em;
-            }
-            .container {
-                margin: 30px auto;
-                padding: 0 20px;
-            }
-            .section-card {
-                padding: 25px;
-                border-right-width: 4px;
-            }
-            .section-card h2 {
-                font-size: 2.2em;
-                margin-bottom: 25px;
-                padding-bottom: 15px;
-            }
-            .section-card h3 {
-                font-size: 1.6em;
-                margin-top: 30px;
-            }
-            .match-list li {
-                padding: 18px 25px;
-                border-right-width: 4px;
-            }
-            .match-list li .match-time {
-                font-size: 1.2em;
-                margin-right: 20px;
-            }
-            .match-list li .teams {
-                font-size: 1.15em;
-            }
-            .match-list li .league {
-                font-size: 0.95em;
-            }
-            .match-list li a {
-                padding: 10px 16px;
-                font-size: 0.95em;
-                margin-left: 15px;
-            }
-        }
+/* النص المتحرك - تم تعديل الحركة لت تكون من اليسار إلى اليمين */
+.marquee {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 16px;
+  color: #fff;
+  /* يبدأ من خارج الشاشة على اليسار بقيمة سلبية */
+  transform: translateX(-100%); 
+  animation: scroll-left-to-right 30s linear infinite; /* اسم جديد ومخصص للحركة */
+  font-weight: bold;
+}
 
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.2em;
-            }
-            header p {
-                font-size: 1em;
-            }
-            #gmt-clock {
-                font-size: 0.9em;
-            }
-            nav a {
-                padding: 12px 15px;
-                font-size: 1em;
-                margin: 0 3px;
-            }
-            .container {
-                margin: 20px auto;
-                padding: 0 15px;
-            }
-            .section-card {
-                padding: 20px;
-                border-right-width: 3px;
-            }
-            .section-card h2 {
-                font-size: 1.8em;
-                margin-bottom: 20px;
-                padding-bottom: 12px;
-            }
-            .section-card h3 {
-                font-size: 1.4em;
-                margin-top: 25px;
-            }
-            .match-list li {
-                flex-direction: column;
-                align-items: flex-end;
-                padding: 15px;
-                border-right-width: 3px;
-            }
-            .match-list li .match-time {
-                margin-right: 0;
-                margin-bottom: 10px;
-                font-size: 1.1em;
-                width: 100%;
-                text-align: right;
-            }
-            .match-list li .teams {
-                font-size: 1.05em;
-                text-align: right;
-                width: 100%;
-            }
-            .match-list li .league {
-                font-size: 0.9em;
-                text-align: right;
-                width: 100%;
-                margin-bottom: 10px;
-            }
-            .match-list li a {
-                width: calc(100% - 30px);
-                text-align: center;
-                margin-left: 0;
-                margin-top: 15px;
-                padding: 10px 0;
-            }
-        }
-        @media (max-width: 480px) {
-            header h1 {
-                font-size: 1.8em;
-            }
-            header p {
-                font-size: 0.9em;
-            }
-            nav a {
-                font-size: 0.9em;
-                padding: 10px 8px;
-            }
-            .section-card h2 {
-                font-size: 1.5em;
-            }
-            .section-card h3 {
-                font-size: 1.2em;
-            }
-        }
-    </style>
+/* قاعدة الحركة - تبدأ من اليسار وتتحرك لليمين بشكل مستمر */
+@keyframes scroll-left-to-right {
+  0% { transform: translateX(-100%); } /* يبدأ من خارج الشاشة على اليسار */
+  100% { transform: translateX(100%); }  /* ينتهي خارج الشاشة على اليمين */
+}
+
+/* تحسين النص داخل الشريط المتحرك */
+.marquee strong {
+  color: #f1c40f; 
+}
+.marquee a {
+  color: #ff7e5f !important; 
+  font-weight: 900;
+}
+.marquee span {
+  margin: 0 15px;
+  color: #f12711; 
+}
+
+
+/* محتوى المباريات */
+.matches {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background: rgba(42, 42, 68, 0.4); 
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* عنوان القسم/البطولة */
+.match-section-title {
+  font-size: 2em;
+  font-weight: 700;
+  color: #f1c40f; 
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #3c3c5a;
+  text-align: right;
+  padding-right: 15px;
+}
+
+/* تنسيق خاص لدوري المؤتمر الأوروبي */
+#conference-title {
+    color: #e67e22; 
+    border-bottom: 2px solid #e67e22;
+}
+
+
+/* كل مباراة */
+.match {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2a2a44; 
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 12px;
+  color: #f0f0f0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s;
+  border-right: 5px solid #f12711; 
+  position: relative;
+}
+
+.match:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 8px 25px rgba(241, 39, 17, 0.5); 
+}
+
+/* تفاصيل المباراة */
+.match-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: right;
+}
+
+.match-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.match-title i {
+    margin-left: 10px;
+    color: #00ccff; 
+}
+
+.match-time {
+  font-size: 14px; /* تصغير الخط قليلاً لاستيعاب التوقيتين */
+  color: #a0a0a0; 
+}
+
+/* شارة البث المباشر الجديدة */
+.live-badge {
+    background: linear-gradient(45deg, #ff0000, #990000);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 10px;
+    box-shadow: 0 0 5px red;
+    animation: blink 1s infinite;
+    display: none; /* يتم إظهاره عبر JavaScript */
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* زر المشاهدة */
+.match-btn {
+  padding: 12px 25px;
+  background: linear-gradient(135deg, #f12711, #f5af19); 
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(241, 39, 17, 0.7); 
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  text-transform: uppercase;
+  min-width: 120px; /* لتوحيد حجم الأزرار */
+  text-align: center;
+}
+.match-btn:hover {
+  background: linear-gradient(135deg, #f5af19, #f12711);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(245, 175, 25, 0.9);
+}
+
+/* =================================
+   روابط التواصل الاجتماعي الجديدة
+   ================================= */
+.social-links {
+    margin: 30px auto;
+    padding: 20px;
+    max-width: 900px;
+    background: rgba(42, 42, 68, 0.4); 
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+}
+
+.social-links h2 {
+    font-size: 1.8em;
+    color: #00ccff;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #3c3c5a;
+    padding-bottom: 10px;
+}
+
+.social-link-icon {
+    display: inline-block;
+    margin: 0 15px;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.social-link-icon i {
+    font-size: 40px;
+    color: #f0f0f0;
+    padding: 10px;
+    border-radius: 50%;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.social-link-icon:hover {
+    transform: translateY(-5px);
+}
+
+/* ألوان مخصصة للتواصل الاجتماعي */
+.social-link-icon.telegram i {
+    color: #0088cc; /* لون تلغرام */
+    box-shadow: 0 0 15px rgba(0, 136, 204, 0.8);
+}
+
+.social-link-icon.youtube i {
+    color: #ff0000; /* لون يوتيوب */
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+}
+
+
+/* زر العودة للصفحة الرئيسية */
+.back-button {
+  display: block;
+  margin: 40px auto;
+  padding: 15px 35px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: #fff;
+  font-weight: bold;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 18px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  transition: background 0.3s, transform 0.2s;
+}
+.back-button:hover {
+  background: linear-gradient(135deg, #2980b9, #3498db);
+  transform: scale(1.05);
+}
+
+/* =================================
+   الأنماط المتجاوبة (Mobile Responsiveness)
+   ================================= */
+@media (max-width: 650px) {
+    h1 {
+        font-size: 2em;
+        margin-top: 10px;
+    }
+    .match-section-title {
+        font-size: 1.5em;
+    }
+    .matches, .social-links {
+        margin: 20px 10px;
+        padding: 10px;
+    }
+    .match {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+    }
+    .match-info {
+        align-items: center;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    .match-title {
+        font-size: 16px;
+        flex-direction: column;
+        margin-bottom: 5px;
+    }
+    .match-title i {
+        margin-bottom: 5px;
+        margin-left: 0;
+    }
+    .match-btn {
+        width: 100%;
+        max-width: 250px;
+        padding: 10px 20px;
+    }
+    .live-badge {
+        margin-right: 0;
+        margin-top: 5px;
+    }
+    #clock-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+</style>
 </head>
 <body>
-    <header>
-        <h1><i class="fas fa-futbol"></i> BallonTV</h1>
-        <p>بث مباشر وحصري لأقوى المباريات العالمية</p>
-        <div id="gmt-clock"></div>
-    </header>
 
-    <nav>
-        <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
-        <a href="tomorrow_matches.html"><i class="fas fa-calendar-alt"></i> مباريات اليوم</a>
-        <a href="news.html"><i class="fas fa-newspaper"></i> آخر الأخبار</a>
-        <a href="application.html"><i class="fas fa-chart-line"></i> تحميل تطبيق BALLON TV</a>
-        <a href="contact.html"><i class="fas fa-envelope"></i> اتصل بنا</a>
-    </nav>
+<!-- رابط تحميل التطبيق -->
+<div id="top-download">
+  <a href="https://www.mediafire.com/file/oyendv6rjwecvk6/app3387489-hp95l0-1-1.apk/file" target="_blank"><i class="fas fa-download"></i> تحميل تطبيق BALLON TV</a>
+</div>
 
-    <!-- Ad Placement 1: Below Navbar -->
-    <div class="ad-container">
-        <p>انزل الى الاسفل و شاهد البث المباشر للمباريات</p>
-        <script type="text/javascript">
-            atOptions = {
-                'key' : '2e39edd968fd8ee9c837d284ceae7e23',
-                'format' : 'iframe',
-                'height' : 300,
-                'width' : 160,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/2e39edd968fd8ee9c837d284ceae7e23/invoke.js"></script>
-    </div>
+<!-- كود الإعلان في مكان (1) - أسفل رابط التحميل العلوي -->
+<div class="ad-container">
+    <script async src="https://otieu.com/js/ads.js" data-cfasync="false"></script> 
+</div>
+<!-- نهاية كود الإعلان (1) -->
 
-    <div class="container">
-        <section id="matches-today" class="section-card">
-            <h2><i class="fas fa-football-ball"></i> جدول مباريات اليوم</h2>
+<!-- العنوان -->
+<h1><i class="fas fa-bolt" style="color:#f1c40f;"></i> مباريات اليوم الحية</h1>
 
-            <h3><i class="fas fa-globe-africa"></i> إقصائيات كأس العالم - إفريقيا</h3>
-            <ul class="match-list">
-                <li>
-                    <div class="match-details">
-                        <div class="teams">المغرب 🆚 زامبيا</div>
-                        <div class="league">إقصائيات كأس العالم - إفريقيا</div>
-                    </div>
-                    <div class="match-time">14:00 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
-                    <a href="player1.html" target="_blank">شاهد الآن</a>
-                </li>
-                <li>
-                    <div class="match-details">
-                        <div class="teams">تونس 🆚 غينيا الاستوائية</div>
-                        <div class="league">إقصائيات كأس العالم - إفريقيا</div>
-                    </div>
-                    <div class="match-time">14:00 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
-                    <a href="player2.html" target="_blank">شاهد الآن</a>
-                </li>
-                <li>
-                    <div class="match-details">
-                        <div class="teams">الجزائر 🆚 غينيا</div>
-                        <div class="league">إقصائيات كأس العالم - إفريقيا</div>
-                    </div>
-                    <div class="match-time">17:00 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
-                    <a href="player1.html" target="_blank">شاهد الآن</a>
-                </li>
-                <li>
-                    <div class="match-details">
-                        <div class="teams">غانا 🆚 مالي</div>
-                        <div class="league">إقصائيات كأس العالم - إفريقيا</div>
-                    </div>
-                    <div class="match-time">20:00 <span style="font-size:0.8em;">بتوقيت غرينتش</span></div>
-                    <a href="player2.html" target="_blank">شاهد الآن</a>
-                </li>
-            </ul>
+<!-- الساعة بتوقيت غرينيتش والتوقيت المحلي -->
+<div id="clock-container">
+    <div id="clock" class="clock-display"></div>
+    <div id="local-time-display" class="clock-display"></div>
+</div>
 
+<script>
+    // ===================================
+    // وظيفة عرض الساعة بتوقيت غرينيتش والتوقيت المحلي
+    // (لم يتم تغيير هذا الجزء - يرجى عدم تعديل الأكواد البرمجية)
+    // ===================================
+    function updateClock() {
+        const now = new Date();
+        const gmtOptions = { timeZone: 'GMT', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const localOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+
+        // تحديث توقيت غرينيتش
+        const gmtTimeString = now.toLocaleTimeString('en-GB', gmtOptions);
+        document.getElementById('clock').innerText = 'توقيت GMT: ' + gmtTimeString;
+
+        // تحديث التوقيت المحلي للزائر
+        const localTimeString = now.toLocaleTimeString('ar-EG', localOptions); // استخدام 'ar-EG' لعرض الأرقام العربية
+        document.getElementById('local-time-display').innerText = 'توقيتك المحلي: ' + localTimeString;
+
+        // وظيفة تحديد المباريات المباشرة
+        checkLiveMatches();
+    }
+    
+    // ===================================
+    // وظيفة تحويل وعرض التوقيت المحلي وتحديد البث المباشر
+    // (لم يتم تغيير هذا الجزء - يرجى عدم تعديل الأكواد البرمجية)
+    // ===================================
+    function checkLiveMatches() {
+        const matches = document.querySelectorAll('.match-time');
+        const now = new Date();
+        
+        matches.forEach(timeElement => {
+            const gmtTime = timeElement.getAttribute('data-gmt-time'); // قراءة الوقت من الخاصية الجديدة
+            const [hours, minutes] = gmtTime.split(':').map(Number);
             
+            // حساب الوقت المحلي
+            const matchTimeGMT = new Date();
+            matchTimeGMT.setUTCFullYear(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+            matchTimeGMT.setUTCHours(hours, minutes, 0, 0);
+
+            // تحويل إلى التوقيت المحلي للزائر
+            const localTime = matchTimeGMT.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', hour12: false });
+            
+            // عرض التوقيتين
+            timeElement.innerHTML = `<i class="fas fa-clock"></i> ${localTime} (توقيتك المحلي) / ${gmtTime} (GMT)`;
+
+            // منطق "البث المباشر"
+            const timeDifferenceMinutes = (now.getTime() - matchTimeGMT.getTime()) / 60000;
+            const liveBadge = timeElement.parentElement.querySelector('.live-badge');
+
+            // المباراة تعتبر "مباشرة" إذا كانت ضمن 90 دقيقة قبل البداية وحتى 120 دقيقة (ساعتين) بعد البداية
+            if (timeDifferenceMinutes >= -90 && timeDifferenceMinutes <= 120) {
+                // إضافة شارة البث المباشر (LIVE)
+                if (!liveBadge) {
+                    const newBadge = document.createElement('span');
+                    newBadge.className = 'live-badge';
+                    newBadge.innerText = 'مباشر LIVE';
+                    // إضافة الشارة بعد عنوان المباراة
+                    timeElement.parentElement.querySelector('.match-title').appendChild(newBadge); 
+                    newBadge.style.display = 'inline-block';
+                }
+            } else if (liveBadge) {
+                // إخفاء الشارة إذا انتهت أو لم تبدأ بعد
+                liveBadge.remove();
+            }
+        });
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock(); // تشغيل فوري
+</script>
+
+<!-- الشريط المتحرك (أخبار وتنبيهات) -->
+<div class="marquee-container">
+    <!-- تم تكرار المحتوى لجعل الحركة مستمرة دون انقطاع -->
+  <div class="marquee">
+    <span><i class="fas fa-rocket"></i></span> تطبيق BALLON TV هو الحل لمشاهدة القنوات الرياضية والعالمية بجودة عالية! حمل التطبيق الآن واستمتع بالمباريات مباشرة.
+    <strong>أخبار رياضية عاجلة:</strong> جميع مباريات دوري أبطال أوروبا وآسيا متوفرة هنا.
+    <span><i class="fas fa-fire"></i></span> حمل التطبيق من هنا:
+    <a href="https://www.mediafire.com/file/oyendv6rjwecvk6/app3387489-hp95l0-1-1.apk/file" target="_blank">اضغط هنا للتحميل المباشر</a>
+    <span><i class="fas fa-rocket"></i></span> تطبيق BALLON TV هو الحل لمشاهدة القنوات الرياضية والعالمية بجودة عالية! حمل التطبيق الآن واستمتع بالمباريات مباشرة.
+    <strong>أخبار رياضية عاجلة:</strong> جميع مباريات دوري أبطال أوروبا وآسيا متوفرة هنا.
+    <span><i class="fas fa-fire"></i></span> حمل التطبيق من هنا:
+    <a href="https://www.mediafire.com/file/oyendv6rjwecvk6/app3387489-hp95l0-1-1.apk/file" target="_blank">اضغط هنا للتحميل المباشر</a>
+  </div>
+</div>
+
+<!-- كود الإعلان في مكان (2) - أعلى قائمة المباريات -->
+<div class="ad-container">
+    <script async src="https://otieu.com/js/ads.js" data-cfasync="false"></script> 
+</div>
+<!-- نهاية كود الإعلان (2) -->
 
 
-        </section>
+<!-- قائمة المباريات (تم التحديث بالبيانات الجديدة) -->
+<div class="matches">
 
-        <!-- Ad Placement 2: Between Sections -->
-        <div class="ad-container">
-            <p></p>
-            <script type='text/javascript' src='//pl27548673.revenuecpmgate.com/f1/8d/b6/f18db6d5da5ac1c3b54898787afd4e43.js'></script>
-            <script type='text/javascript' src='//pl27548528.revenuecpmgate.com/f4/63/dd/f463dd1a9f569afe4443e26e8a0b3037.js'></script>
-            <script async="async" data-cfasync="false" src="//pl27548677.revenuecpmgate.com/dd616bebb010b900d99e73fe7b12eb90/invoke.js"></script>
-            <div id="container-dd616bebb010b900d99e73fe7b12eb90"></div>
-        </div>
+  <!-- ===================================
+        الدوري الإنجليزي الممتاز 🏆
+       =================================== -->
+  <div class="match-section-title">
+    <i class="fas fa-trophy" style="color:#ff0000;"></i> الدوري الإنجليزي الممتاز 🏆
+  </div>
 
-
-        <section id="news-section" class="section-card">
-            <h2><i class="fas fa-newspaper"></i> آخر الأخبار</h2>
-            <p>
-                تابع أحدث المستجدات في عالم كرة القدم، من أخبار الانتقالات الحصرية إلى تغطية شاملة لأهم الأحداث والبطولات العالمية.
-            </p>
-            <ul>
-                <li><a href="news.html#article1"><i class="fas fa-chevron-circle-left"></i> مقال: أبرز الانتقالات الصيفية التي هزت الميركاتو</a></li>
-                <li><a href="news.html#article2"><i class="fas fa-chevron-circle-left"></i> تقرير: فرص الأندية العربية في البطولات القارية</a></li>
-                <li><a href="news.html#article3"><i class="fas fa-chevron-circle-left"></i> تحليل: لماذا يعاني هذا الفريق من تذبذب النتائج؟</a></li>
-            </ul>
-        </section>
-
-        <section id="analysis-section" class="section-card">
-            <h2><i class="fas fa-chart-line"></i> تحليلات ومقالات عميقة</h2>
-            <p>
-                نقدم لك تحليلات فنية وتكتيكية معمقة للمباريات، تقارير عن أداء اللاعبين، واستعراضات للبطولات الكبرى.
-                ابقَ على اطلاع دائم بآراء الخبراء وتوقعاتهم!
-            </p>
-            <ul>
-                <li><a href="analysis.html#analysis1"><i class="fas fa-chevron-circle-left"></i> تحليل فني لمباراة القمة بين ريال مدريد وبرشلونة</a></li>
-                <li><a href="analysis.html#analysis2"><i class="fas fa-chevron-circle-left"></i> تكتيكات المدربين: كيف يخططون للفوز بأصعب المواجهات؟</a></li>
-                <li><a href="analysis.html#analysis3"><i class="fas fa-chevron-circle-left"></i> أبرز النجوم الصاعدة في الدوريات الأوروبية الخمس الكبرى</a></li>
-            </ul>
-        </section>
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title"><i class="fas fa-futbol"></i>أرسنال vs كريستال</div>
+      <div class="match-time" data-gmt-time="15:00"></div> 
     </div>
-
-    <!-- Ad Placement 3: Above Footer -->
-    <div class="ad-container">
-        <p>لا تفوت أفضل العروض!</p>
-        <script type="text/javascript">
-            atOptions = {
-                'key' : '0e7dc812c18362bbd1aff82fbd22154e',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/0e7dc812c18362bbd1aff82fbd22154e/invoke.js"></script>
-        <p>
-            <a href="https://www.revenuecpmgate.com/hhmkuhystv?key=8b753c781f6905261bba48bde927e4a4" target="_blank">
-                انقر هنا لمشاهدة المزيد!
-            </a>
-        </p>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport3/?serv=1">مشاهدة الآن</a>
+  </div>
+  
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title"><i class="fas fa-futbol"></i>أ.فيلا vs مان سيتي</div>
+      <div class="match-time" data-gmt-time="15:00"></div> 
     </div>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport2/?serv=1">مشاهدة الآن</a>
+  </div>
+    <div class="match">
+    <div class="match-info">
+      <div class="match-title"><i class="fas fa-futbol"></i>إيفرتون vs توتنهام</div>
+      <div class="match-time" data-gmt-time="17:30"></div> 
+    </div>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport2/?serv=1">مشاهدة الآن</a>
+  </div>
+  
+  <!-- ===================================
+        الدوري الإسباني 🏆
+       =================================== -->
+  <div class="match-section-title">
+    <i class="fas fa-trophy" style="color:#f1c40f;"></i> الدوري الإسباني 🏆
+  </div>
 
-    <footer id="contact-section">
-        <p>للدعم أو الاستفسار، تواصل معنا عبر: <a href="mailto:contact@ballontv.com">contact@ballontv.com</a></p>
-        <p>أو عبر تلغرام: <a href="https://t.me/Ballonlivecontact" target="_blank">Ballonlivecontact</a></p>
-        <p>&copy; 2025 BallonTV. جميع الحقوق محفوظة.</p>
-    </footer>
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title"><i class="fas fa-futbol"></i> ر.مدريد vs برشلونة</div>
+      <div class="match-time" data-gmt-time="16:15"></div>
+    </div>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport1/?serv=1">مشاهدة الآن</a>
+  </div>
+    
+  <!-- ===================================
+        الدوري الإيطالي 🏆
+       =================================== -->
+  <div class="match-section-title">
+    <i class="fas fa-trophy" style="color:#2ecc71;"></i> الدوري الإيطالي 🏆
+  </div>
 
-    <script>
-        // دالة لتحديث ساعة غرينتش
-        function updateGMTClock() {
-            const now = new Date();
-            const utcHours = now.getUTCHours();
-            const utcMinutes = now.getUTCMinutes();
-            const utcSeconds = now.getUTCSeconds();
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title"><i class="fas fa-futbol"></i> تورينو vs جنوى</div>
+      <div class="match-time" data-gmt-time="12:30"></div>
+    </div>
+    <a class="match-btn" href="https://sportzonline.live/channels/pt/sporttv2.php">مشاهدة الآن</a>
+  </div>
+  
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title"><i class="fas fa-futbol"></i> ساسولو vs روما</div>
+      <div class="match-time" data-gmt-time="15:00"></div>
+    </div>
+    <a class="match-btn" href="https://sportzonline.live/channels/pt/sporttv1.php">مشاهدة الآن</a>
+  </div>
+  
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title"><i class="fas fa-futbol"></i> فيورنتينا vs نابولي</div>
+      <div class="match-time" data-gmt-time="18:00"></div>
+    </div>
+    <a class="match-btn" href="https://sportzonline.live/channels/hd/hd8.php">مشاهدة الآن</a>
+  </div>
 
-            const formattedTime =
-                (utcHours < 10 ? '0' : '') + utcHours + ':' +
-                (utcMinutes < 10 ? '0' : '') + utcMinutes + ':' +
-                (utcSeconds < 10 ? '0' : '') + utcSeconds;
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title"><i class="fas fa-futbol"></i> لاتسيو vs يوفنتوس</div>
+      <div class="match-time" data-gmt-time="20:45"></div>
+    </div>
+    <a class="match-btn" href="https://sportzonline.live/channels/hd/hd5.php">مشاهدة الآن</a>
+  </div>
 
-            document.getElementById('gmt-clock').textContent = 'توقيت غرينتش (GMT): ' + formattedTime;
-        }
 
-        // تحديث الساعة كل ثانية
-        setInterval(updateGMTClock, 1000);
-        // تشغيلها فوراً عند تحميل الصفحة
-        updateGMTClock();
-    </script>
+  <!-- ===================================
+        الدوري الألماني 🏆
+       =================================== -->
+  <div class="match-section-title">
+    <i class="fas fa-trophy" style="color:#f39c12;"></i> الدوري الألماني 🏆
+  </div>
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title"><i class="fas fa-futbol"></i> ليفركوزن vs فرايبورج</div>
+      <div class="match-time" data-gmt-time="15:30"></div>
+    </div>
+    <a class="match-btn" href="https://sportzonline.live/channels/hd/hd3.php">مشاهدة الآن</a>
+  </div>
+
+  <!-- ===================================
+        الدوري الفرنسي 🏆
+       =================================== -->
+  <div class="match-section-title">
+    <i class="fas fa-trophy" style="color:#3498db;"></i> الدوري الفرنسي 🏆
+  </div>
+
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title"><i class="fas fa-futbol"></i> رين vs نيس</div>
+      <div class="match-time" data-gmt-time="17:15"></div>
+    </div>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport4/?serv=1">مشاهدة الآن</a>
+  </div>
+  
+  <div class="match">
+    <div class="match-info">
+      <div class="match-title"><i class="fas fa-futbol"></i> ليون vs ستراسبورغ</div>
+      <div class="match-time" data-gmt-time="20:45"></div>
+    </div>
+    <a class="match-btn" href="https://spoort.vip-gx.online/albaplayer/sport4/?serv=1">مشاهدة الآن</a>
+  </div>
+  
+  <!-- تم إزالة قسم الدوري السعودي بناءً على القائمة الجديدة -->
+
+</div>
+
+<!-- كود الإعلان في مكان (3) - أسفل قائمة المباريات -->
+<div class="ad-container">
+    <script async src="https://otieu.com/js/ads.js" data-cfasync="false"></script> 
+</div>
+<!-- نهاية كود الإعلان (3) -->
+
+
+<!-- قسم روابط التواصل الاجتماعي الجديدة -->
+<div class="social-links">
+    <h2>تابعنا على منصات التواصل</h2>
+    <div>
+        <!-- رابط تلغرام -->
+        <a href="https://t.me/Ballonlivecontact" target="_blank" class="social-link-icon telegram">
+            <i class="fab fa-telegram-plane"></i>
+        </a>
+        <!-- رابط يوتيوب -->
+        <a href="https://www.youtube.com/@molballonsports" target="_blank" class="social-link-icon youtube">
+            <i class="fab fa-youtube"></i>
+        </a>
+    </div>
+</div>
+
+<!-- زر العودة للصفحة الرئيسية (اختياري) -->
+<div style="text-align:center;">
+  <a class="back-button" href="index.html"><i class="fas fa-home"></i> العودة للصفحة الرئيسية</a>
+</div>
+
 </body>
 </html>
