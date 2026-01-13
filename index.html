@@ -1,470 +1,111 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BALLON TV - قنوات رياضية ومنوعة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons for better visual appeal -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>BALLONTV - مولد المباريات</title>
     <style>
-        :root {
-            --primary-color: #007bff; /* أزرق مميز وجذاب */
-            --secondary-color: #28a745; /* أخضر للإبراز */
-            --accent-color: #ffc107; /* أصفر للتأكيد */
-            --background-dark: #212529; /* خلفية داكنة للفوتر والهيدر */
-            --background-light: #f8f9fa; /* خلفية فاتحة للجسم */
-            --card-background: #ffffff; /* خلفية البطاقات */
-            --text-dark: #343a40; /* لون النص الغامق */
-            --text-light: #f8f9fa; /* لون النص الفاتح */
-            --border-color: #e9ecef; /* لون الحدود الفاتح */
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--background-light);
-            color: var(--text-dark);
-            margin: 0;
-            padding: 0;
-            direction: rtl;
-            text-align: right;
-            line-height: 1.7;
-        }
-
-        /* رأس الصفحة */
-        header {
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            padding: 30px 0;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-            position: relative;
-            z-index: 100;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 3.5em;
-            letter-spacing: 2px;
-            color: var(--primary-color);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        header p {
-            margin: 10px 0 0;
-            font-size: 1.4em;
-            color: var(--text-light);
-            opacity: 0.9;
-        }
-
-        /* شريط التنقل */
-        nav {
-            background-color: var(--primary-color);
-            overflow: hidden;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-            padding: 5px 0;
-            position: sticky;
-            top: 0;
-            z-index: 99;
-        }
-        nav a {
-            display: inline-block;
-            color: var(--text-light);
-            text-align: center;
-            padding: 18px 25px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-            font-size: 1.15em;
-            border-radius: 5px;
-            margin: 0 5px;
-        }
-        nav a:hover {
-            background-color: var(--secondary-color);
-            color: var(--text-light);
-            transform: translateY(-3px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        nav a i {
-            margin-left: 8px;
-        }
-
-        /* الحاوية الرئيسية */
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 30px;
-        }
-
-        /* أقسام إعلانية */
-        .ad-space {
-            background-color: var(--background-light);
-            border: 2px dashed var(--border-color);
-            min-height: 100px; /* يمكن تعديل الارتفاع حسب الحاجة */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 35px auto; /* توسيط الإعلانات */
-            color: #888;
-            font-size: 1.2em;
-            text-align: center;
-            border-radius: 10px;
-            transition: all 0.4s ease;
-            overflow: hidden; /* لإخفاء أي تجاوزات من الإعلانات */
-            max-width: 100%; /* لضمان الاستجابة */
-        }
-        .ad-space:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-            background-color: #e6f7ff;
-        }
-        /* لتناسب الإعلانات ذات الارتفاع والعرض المحدد */
-        .ad-space iframe, .ad-space ins, .ad-space img {
-            display: block;
-            margin: 0 auto;
-            max-width: 100%;
-        }
-
-        /* بطاقة القسم */
-        .section-card {
-            background-color: var(--card-background);
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            margin-bottom: 40px;
-            padding: 35px;
-            text-align: right;
-            border-right: 6px solid var(--primary-color);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-        }
-        .section-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.18);
-        }
-        .section-card h2 {
-            color: var(--primary-color);
-            margin-top: 0;
-            margin-bottom: 30px;
-            border-bottom: 4px solid var(--accent-color);
-            padding-bottom: 18px;
-            font-size: 2.5em;
-            display: flex;
-            align-items: center;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-        .section-card h2 i {
-            margin-left: 12px;
-            color: var(--secondary-color);
-            font-size: 0.9em;
-        }
-        .section-card h3 {
-            color: var(--secondary-color);
-            margin-top: 35px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 12px;
-            font-size: 1.8em;
-            display: flex;
-            align-items: center;
-        }
-        .section-card h3 i {
-            margin-left: 10px;
-            color: var(--primary-color);
-            font-size: 0.9em;
-        }
-
-        /* زر التحميل */
-        .download-button-wrapper {
-            text-align: center;
-            margin: 50px 0;
-        }
-        .download-button {
-            display: inline-flex;
-            align-items: center;
-            background-color: var(--secondary-color);
-            color: var(--text-light);
-            padding: 20px 40px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 2.2em;
-            font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
-            letter-spacing: 1px;
-            border: none;
-            cursor: pointer;
-        }
-        .download-button:hover {
-            background-color: #218838;
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 12px 25px rgba(40, 167, 69, 0.6);
-        }
-        .download-button i {
-            margin-left: 15px;
-            font-size: 1.2em;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-10px);
-            }
-            60% {
-                transform: translateY(-5px);
-            }
-        }
-
-
-        /* تذييل الصفحة */
-        footer {
-            background-color: var(--background-dark);
-            color: var(--text-light);
-            text-align: center;
-            padding: 40px 0;
-            margin-top: 60px;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.25);
-        }
-        footer p {
-            margin: 0;
-            font-size: 1.1em;
-        }
-        footer a {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: color 0.3s ease;
-            font-weight: bold;
-        }
-        footer a:hover {
-            color: var(--accent-color);
-            text-decoration: underline;
-        }
-
-        /* الاستجابة (Responsive Design) */
-        @media (max-width: 992px) {
-            header h1 {
-                font-size: 2.8em;
-            }
-            header p {
-                font-size: 1.2em;
-            }
-            nav a {
-                padding: 15px 18px;
-                font-size: 1.05em;
-            }
-            .container {
-                margin: 30px auto;
-                padding: 0 20px;
-            }
-            .section-card {
-                padding: 25px;
-                border-right-width: 4px;
-            }
-            .section-card h2 {
-                font-size: 2.2em;
-                margin-bottom: 25px;
-                padding-bottom: 15px;
-            }
-            .section-card h3 {
-                font-size: 1.6em;
-                margin-top: 30px;
-            }
-            .download-button {
-                font-size: 1.8em;
-                padding: 15px 30px;
-            }
-            .download-button i {
-                font-size: 1em;
-            }
-            .ad-space {
-                min-height: 80px;
-                font-size: 1.1em;
-                margin: 25px auto;
-            }
-        }
-
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.2em;
-            }
-            header p {
-                font-size: 1em;
-            }
-            nav a {
-                padding: 12px 15px;
-                font-size: 1em;
-                margin: 0 3px;
-            }
-            .container {
-                margin: 20px auto;
-                padding: 0 15px;
-            }
-            .section-card {
-                padding: 20px;
-                border-right-width: 3px;
-            }
-            .section-card h2 {
-                font-size: 1.8em;
-                margin-bottom: 20px;
-                padding-bottom: 12px;
-            }
-            .section-card h3 {
-                font-size: 1.4em;
-                margin-top: 25px;
-            }
-            .download-button {
-                font-size: 1.5em;
-                padding: 12px 25px;
-                width: 90%;
-            }
-            .download-button i {
-                font-size: 0.9em;
-            }
-            .ad-space {
-                min-height: 60px;
-                font-size: 1em;
-                margin: 20px auto;
-            }
-        }
-        @media (max-width: 480px) {
-            header h1 {
-                font-size: 1.8em;
-            }
-            header p {
-                font-size: 0.9em;
-            }
-            nav a {
-                font-size: 0.9em;
-                padding: 10px 8px;
-            }
-            .section-card h2 {
-                font-size: 1.5em;
-            }
-            .section-card h3 {
-                font-size: 1.2em;
-            }
-            .download-button {
-                font-size: 1.2em;
-                padding: 10px 20px;
-                width: 100%;
-            }
-            .download-button i {
-                font-size: 0.8em;
-            }
-        }
+        /* التنسيقات الأساسية المستوحاة من القالب الأصلي */
+        body { background: #eceef2; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; color: #222; }
+        .app-container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 15px; }
+        .header { text-align: center; background: #1a1a1a; color: #ffd700; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-bottom: 3px solid #ffd700; }
+        .header h1 { margin: 0; font-size: 24px; letter-spacing: 2px; }
+        
+        /* شكل بطاقات المباريات داخل التطبيق */
+        .match-container { background: #f8f9fa; border: 1px solid #ddd; border-radius: 10px; margin-bottom: 15px; padding: 10px; position: relative; }
+        .match-main { display: flex; align-items: center; justify-content: space-between; text-align: center; }
+        .team { width: 35%; }
+        .team img { width: 50px; height: 50px; object-fit: contain; }
+        .team-name { font-size: 14px; font-weight: bold; margin-top: 5px; }
+        .match-center { width: 30%; }
+        .match-time { display: block; font-size: 16px; font-weight: bold; color: #b51200; }
+        .match-status { font-size: 11px; padding: 2px 8px; border-radius: 5px; background: #ddd; display: inline-block; margin-top: 5px; }
+        
+        /* أدوات التحكم للمدير */
+        .admin-box { background: #fff; border: 2px solid #b51200; border-radius: 10px; padding: 15px; margin-top: 20px; }
+        input, select, textarea { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; background: #b51200; color: #fff; border: none; padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        button:hover { background: #1a1a1a; color: #ffd700; }
+        
+        .live { background: #ff0000 !important; color: #fff; animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0.5; } }
     </style>
 </head>
 <body>
-    <header>
-        <h1><i class="fas fa-tv"></i> BallonTV</h1>
-        <p>تطبيقك الأمثل لمشاهدة القنوات الرياضية والترفيهية المتنوعة!</p>
-    </header>
 
-    <nav>
-        <a href="#about-app"><i class="fas fa-info-circle"></i> عن التطبيق</a>
-        <a href="#features-app"><i class="fas fa-star"></i> مميزات التطبيق</a>
-        <a href="#download-app"><i class="fas fa-download"></i> تحميل التطبيق</a>
-        <a href="#contact-section"><i class="fas fa-envelope"></i> اتصل بنا</a>
-    </nav>
-
-    <div class="container">
-        <!-- الإعلان الأول: بانر علوي (300x160) -->
-        <div class="ad-space" style="height: 300px; width: 160px;">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : '2e39edd968fd8ee9c837d284ceae7e23',
-                    'format' : 'iframe',
-                    'height' : 300,
-                    'width' : 160,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/2e39edd968fd8ee9c837d284ceae7e23/invoke.js"></script>
-        </div>
-
-        <section id="about-app" class="section-card">
-            <h2><i class="fas fa-info-circle"></i> عن تطبيق BallonTV</h2>
-            <p>
-                BallonTV هو تطبيقك المتكامل لمشاهدة القنوات التلفزيونية الرياضية والترفيهية المتنوعة مباشرة على جهازك. 
-                استمتع بتجربة مشاهدة فريدة لأبرز الأحداث الرياضية العالمية، بالإضافة إلى مجموعة واسعة من القنوات الترفيهية 
-                التي تناسب جميع الأذواق. نقدم لك جودة عالية في البث، سهولة في الاستخدام، وتحديثات مستمرة لضمان أفضل تجربة.
-            </p>
-            <p>
-                سواء كنت من عشاق كرة القدم، كرة السلة، التنس، أو تبحث عن أحدث الأفلام والمسلسلات، فإن BallonTV 
-                يضع عالم الترفيه بين يديك. لا تفوت لحظة واحدة من المتعة والإثارة!
-            </p>
-        </section>
-
-        <!-- الإعلان الثاني: إعلان وسطي (سكريبت كامل) -->
-        <div class="ad-space" style="min-height: 100px;">
-            <script type='text/javascript' src='//pl27548673.revenuecpmgate.com/f1/8d/b6/f18db6d5da5ac1c3b54898787afd4e43.js'></script>
-        </div>
-
-        <section id="features-app" class="section-card">
-            <h2><i class="fas fa-star"></i> مميزات تطبيق BallonTV</h2>
-            <ul>
-                <li><i class="fas fa-check-circle"></i> <strong>بث مباشر عالي الجودة:</strong> استمتع بمشاهدة قنواتك المفضلة بجودة صورة وصوت ممتازة.</li>
-                <li><i class="fas fa-check-circle"></i> <strong>مجموعة واسعة من القنوات:</strong> تشكيلة غنية من القنوات الرياضية العالمية والعربية، بالإضافة إلى قنوات الأفلام، المسلسلات، الوثائقيات، والأخبار.</li>
-                <li><i class="fas fa-check-circle"></i> <strong>واجهة مستخدم سهلة:</strong> تصميم أنيق وبسيط يضمن سهولة التصفح والوصول إلى المحتوى المفضل لديك.</li>
-                <li><i class="fas fa-check-circle"></i> <strong>تحديثات مستمرة:</strong> نلتزم بتحديث التطبيق والقنوات بانتظام لضمان أفضل أداء وتجربة.</li>
-                <li><i class="fas fa-check-circle"></i> <strong>دعم فني:</strong> فريق دعم متاح لمساعدتك في حال واجهت أي مشاكل.</li>
-            </ul>
-        </section>
-
-        <!-- الإعلان الثالث: إعلان بانر صغير (320x50) -->
-        <div class="ad-space" style="height: 50px; width: 320px;">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : '0e7dc812c18362bbd1aff82fbd22154e',
-                    'format' : 'iframe',
-                    'height' : 50,
-                    'width' : 320,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/0e7dc812c18362bbd1aff82fbd22154e/invoke.js"></script>
-        </div>
-        
-        <!-- الإعلان الرابع: إعلان وسطي آخر (سكريبت كامل) -->
-        <div class="ad-space" style="min-height: 100px;">
-             <script type='text/javascript' src='//pl27548528.revenuecpmgate.com/f4/63/dd/f463dd1a9f569afe4443e26e8a0b3037.js'></script>
-        </div>
-
-        <section id="download-app" class="section-card">
-            <h2><i class="fas fa-download"></i> حمّل تطبيق BallonTV الآن!</h2>
-            <p>
-                لا تضيّع فرصة الاستمتاع بأفضل تجربة مشاهدة للقنوات الرياضية والترفيهية. قم بتحميل تطبيق BallonTV الآن 
-                وانضم إلى الآلاف من المستخدمين الراضين!
-            </p>
-            <div class="download-button-wrapper">
-                <a href="https://www.mediafire.com/file/oyendv6rjwecvk6/app3387489-hp95l0-1-1.apk/file" target="_blank" class="download-button">
-                    <i class="fas fa-cloud-download-alt"></i> حمل التطبيق الآن (APK)
-                </a>
-            </div>
-            <p style="text-align: center; margin-top: 30px; font-size: 0.9em; color: #6c757d;">
-                ملاحظة: تأكد من تفعيل "المصادر غير المعروفة" في إعدادات جهازك لتثبيت التطبيق.
-            </p>
-        </section>
-
-        <!-- الإعلان الخامس: إعلان أسفل زر التحميل (سكريبت كامل مع div) -->
-        <div class="ad-space" style="min-height: 100px;">
-             <script async="async" data-cfasync="false" src="//pl27548677.revenuecpmgate.com/dd616bebb010b900d99e73fe7b12eb90/invoke.js"></script>
-             <div id="container-dd616bebb010b900d99e73fe7b12eb90"></div>
-        </div>
-        
-        <!-- إعلان نصي أو رابط تابع -->
-        <div class="ad-space" style="min-height: 60px; border: none; background-color: transparent;">
-            <a href="https://www.revenuecpmgate.com/hhmkuhystv?key=8b753c781f6905261bba48bde927e4a4" target="_blank" style="color:var(--primary-color); text-decoration: none; font-weight: bold; font-size: 1.1em;">
-                <i class="fas fa-hand-point-left"></i> اكتشف عروضنا الحصرية الأخرى!
-            </a>
-        </div>
+<div class="app-container">
+    <div class="header">
+        <h1>BALLON<span>TV</span></h1>
+        <p style="font-size: 12px; margin: 5px 0 0;">نظام إدارة جدول المباريات</p>
     </div>
 
-    <footer id="contact-section">
-        <p>للدعم أو الاستفسار، تواصل معنا عبر: <a href="mailto:contact@ballontv.com">contact@ballontv.com</a></p>
-        <p>أو عبر تلغرام: <a href="https://t.me/Ballonlivecontact" target="_blank">Ballonlivecontact</a></p>
-        <p>&copy; 2025 BallonTV. جميع الحقوق محفوظة.</p>
-    </footer>
+    <!-- مكان عرض المباريات المضافة -->
+    <div id="matches-list">
+        <!-- المباريات ستظهر هنا -->
+    </div>
+
+    <!-- لوحة إضافة مباراة جديدة -->
+    <div class="admin-box">
+        <h3 style="margin-top:0; color:#b51200; text-align:center;">إضافة مباراة جديدة</h3>
+        <input type="text" id="hTeam" placeholder="اسم الفريق الأول">
+        <input type="text" id="hLogo" placeholder="رابط شعار الفريق الأول">
+        <input type="text" id="aTeam" placeholder="اسم الفريق الثاني">
+        <input type="text" id="aLogo" placeholder="رابط شعار الفريق الثاني">
+        <input type="text" id="league" placeholder="اسم البطولة">
+        <input type="datetime-local" id="mTime">
+        <input type="text" id="mLink" placeholder="رابط البث المباشر">
+        <button onclick="addNewMatch()">توليد البطاقة ونشرها</button>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <p style="font-size: 12px; text-align: center;">كود الـ HTML الناتج (للموقع):</p>
+        <textarea id="outputCode" style="height: 100px;" readonly placeholder="انسخ الكود من هنا لتضعه في موقعك أيضاً..."></textarea>
+    </div>
+</div>
+
+<script>
+function addNewMatch() {
+    const hTeam = document.getElementById('hTeam').value;
+    const hLogo = document.getElementById('hLogo').value || "https://via.placeholder.com/50";
+    const aTeam = document.getElementById('aTeam').value;
+    const aLogo = document.getElementById('aLogo').value || "https://via.placeholder.com/50";
+    const league = document.getElementById('league').value;
+    const mTime = document.getElementById('mTime').value;
+    const mLink = document.getElementById('mLink').value || "#";
+
+    if(!hTeam || !aTeam || !mTime) { alert("يرجى ملء البيانات الأساسية"); return; }
+
+    const dateObj = new Date(mTime);
+    const timeStr = dateObj.toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
+
+    const matchHtml = `
+    <div class="match-container">
+        <div style="font-size:11px; color:#666; text-align:center; margin-bottom:5px;">${league}</div>
+        <div class="match-main">
+            <div class="team">
+                <img src="${hLogo}">
+                <div class="team-name">${hTeam}</div>
+            </div>
+            <div class="match-center">
+                <span class="match-time">${timeStr}</span>
+                <span class="match-status">انتظار</span>
+            </div>
+            <div class="team">
+                <img src="${aLogo}">
+                <div class="team-name">${aTeam}</div>
+            </div>
+        </div>
+        <a href="${mLink}" style="display:block; text-align:center; margin-top:10px; color:#b51200; text-decoration:none; font-weight:bold; font-size:13px;">مشاهدة البث المباشر ←</a>
+    </div>`;
+
+    document.getElementById('matches-list').innerHTML += matchHtml;
+    document.getElementById('outputCode').value += matchHtml;
+    
+    // مسح الخانات بعد الإضافة
+    document.getElementById('hTeam').value = "";
+    document.getElementById('aTeam').value = "";
+}
+</script>
 
 </body>
 </html>
