@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BALLON TV - البث المباشر</title>
+    <title>BALLON TV - ليالي الأبطال</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --primary: #ff0000; 
+            --primary: #0042d3; /* لون دوري الأبطال */
+            --live-red: #ff0000;
             --gold: #ffd700;
-            --bg-black: #020202;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
+            --bg-black: #01040a;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         body { 
             background: var(--bg-black);
-            background-image: radial-gradient(at 0% 0%, rgba(255, 0, 0, 0.12) 0, transparent 50%);
+            background-image: radial-gradient(at 50% 0%, #001f66 0, transparent 70%);
             color: white; font-family: 'Tajawal', sans-serif; 
             margin: 0; padding: 0; user-select: none;
         }
@@ -27,17 +28,18 @@
             background: linear-gradient(90deg, #b51200, #ff0000);
             color: white; text-align: center; padding: 10px; font-size: 0.85rem;
             font-weight: bold; text-decoration: none; display: block;
-            border-bottom: 2px solid var(--gold);
+            border-bottom: 2px solid var(--gold); position: relative; z-index: 1001;
         }
 
         .header-pro { 
             position: sticky; top: 0; z-index: 1000; 
-            background: rgba(2, 2, 2, 0.95); backdrop-filter: blur(25px);
+            background: rgba(1, 4, 10, 0.95); backdrop-filter: blur(25px);
             border-bottom: 1px solid var(--border); padding: 12px 20px;
         }
 
         .header-flex { display: flex; justify-content: space-between; align-items: center; }
-        .logo-main { font-weight: 900; font-size: 1.6rem; color: var(--primary); text-decoration: none; text-shadow: 0 0 10px rgba(255,0,0,0.5); }
+        .logo-main { font-weight: 900; font-size: 1.6rem; color: #fff; text-decoration: none; }
+        .logo-main span { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
         
         .digital-clock {
             font-family: 'Orbitron', sans-serif;
@@ -47,43 +49,55 @@
 
         .main-container { padding: 10px 15px 120px 15px; max-width: 650px; margin: auto; }
 
+        .date-strip { 
+            background: var(--glass); padding: 12px; border-radius: 15px; 
+            text-align: center; font-weight: 900; border: 1px solid var(--border);
+            color: #00f2ff; margin: 20px 0; font-size: 0.9rem;
+            border-right: 5px solid var(--primary);
+        }
+
+        .league-banner {
+            background: linear-gradient(90deg, rgba(0, 66, 211, 0.2), transparent);
+            padding: 15px 20px; border-radius: 18px; margin: 30px 0 15px 0;
+            border-right: 5px solid var(--primary); display: flex; align-items: center; gap: 12px;
+        }
+
         /* بطاقة المباراة */
         .match-card {
             background: var(--glass); border: 1px solid var(--border);
-            border-radius: 28px; padding: 25px 15px; margin-bottom: 15px;
+            border-radius: 25px; padding: 20px 15px; margin-bottom: 15px;
             display: block; position: relative; transition: 0.3s; cursor: pointer;
-            text-decoration: none;
+            text-decoration: none; overflow: hidden;
         }
-        .match-card:hover { border-color: var(--primary); background: rgba(255,0,0,0.05); transform: translateY(-3px); }
+        .match-card:hover { border-color: var(--primary); background: rgba(0, 66, 211, 0.1); transform: scale(1.02); }
 
         .match-flex { display: flex; justify-content: space-between; align-items: center; }
         .team-unit { width: 33%; text-align: center; }
-        .team-unit img { width: 55px; height: 55px; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
-        .team-name { font-size: 0.9rem; font-weight: 800; color: #eee; margin-top: 10px; }
+        .team-unit img { width: 50px; height: 50px; object-fit: contain; }
+        .team-name { font-size: 0.85rem; font-weight: 800; color: #eee; margin-top: 8px; }
 
         .time-center { width: 34%; text-align: center; }
-        .kickoff { font-size: 1.6rem; font-weight: 900; color: #fff; display: block; }
+        .kickoff { font-size: 1.5rem; font-weight: 900; color: #fff; display: block; }
         
         .countdown { 
-            font-family: 'Orbitron', sans-serif; font-size: 0.7rem; 
-            padding: 5px 12px; border-radius: 50px; margin-top: 10px; display: inline-block;
+            font-family: 'Orbitron', sans-serif; font-size: 0.65rem; 
+            padding: 4px 10px; border-radius: 50px; margin-top: 8px; display: inline-block;
         }
         .waiting { background: #111; color: var(--gold); border: 1px solid rgba(255, 215, 0, 0.2); }
-        .live { background: var(--primary); color: white; animation: pulse 1s infinite; }
+        .live { background: var(--live-red); color: white; animation: blink 1s infinite; }
 
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        /* زر المشاهدة */
-        .watch-btn {
-            background: var(--primary); color: white; text-align: center;
-            padding: 12px; border-radius: 15px; margin-top: 15px;
-            font-weight: 900; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;
-            box-shadow: 0 4px 15px rgba(255,0,0,0.2);
+        .channel-badge {
+            position: absolute; top: 0; left: 20px; background: #000;
+            color: var(--gold); font-size: 0.6rem; padding: 4px 12px; border-radius: 0 0 10px 10px;
+            font-weight: bold; border: 1px solid var(--border); border-top: none;
         }
 
+        /* شريط سفلي */
         .dock-bar {
             position: fixed; bottom: 15px; left: 15px; right: 15px; height: 75px;
-            background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(20px); border-radius: 25px;
+            background: rgba(1, 4, 10, 0.95); backdrop-filter: blur(20px); border-radius: 25px;
             display: flex; justify-content: space-around; align-items: center; border: 1px solid var(--border); z-index: 1000;
         }
         .dock-item { color: #555; text-decoration: none; font-size: 0.7rem; text-align: center; font-weight: bold; }
@@ -93,101 +107,148 @@
 </head>
 <body onclick="handlePopUnder()">
 
-    <!-- رابط الربح الأول (70066) -->
+    <!-- رابط الربح الأول -->
     <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=70066" target="_blank" class="ad-top-bar">
-        ⚠️ تنبيه: قم بتحديث المشغل الآن لمشاهدة مباريات الليلة بدون تقطيع (HD)
+        🏆 تحديث جودة الـ 4K: اضغط هنا لتفعيل ميزة المشاهدة بدون تقطيع الليلة
     </a>
 
     <div class="header-pro">
         <div class="header-flex">
-            <a href="#" class="logo-main">BALLON TV</a>
+            <a href="#" class="logo-main">BALLON <span>TV</span></a>
             <div class="digital-clock" id="live-clock">00:00:00</div>
         </div>
     </div>
 
     <div class="main-container">
         
-        <div style="background: rgba(0, 242, 255, 0.05); padding: 12px; border-radius: 15px; text-align: center; margin-bottom: 20px; border: 1px solid rgba(0, 242, 255, 0.2);">
-            <span style="color: #00f2ff; font-weight: bold; font-size: 0.85rem;">📅 جدول مباريات اليوم: 27 يناير 2026</span>
+        <div class="date-strip">مباريات الأربعاء 28-01-2026 (توقيت مكة/المغرب)</div>
+
+        <div class="league-banner">
+            <i class="fa-solid fa-star" style="color: var(--gold);"></i>
+            <span style="font-weight: 900;">دوري أبطال أوروبا - دور المجموعات 🏆</span>
         </div>
 
-        <!-- المباراة الأولى: بريمن ضد هوفنهايم (الرابط 1) -->
+        <!-- مباراة 1 -->
         <div class="match-card" onclick="openMatchStream('https://c.kooraxx.com/albaplayer/pemium-1/')">
-            <div style="position: absolute; top: 0; left: 20px; background: #222; color: var(--gold); font-size: 0.65rem; padding: 5px 12px; border-radius: 0 0 10px 10px; font-weight: bold; border: 1px solid var(--border); border-top: none;">بي ان سبورت 2</div>
-            <div style="text-align: center; font-size: 0.75rem; color: #aaa; margin-bottom: 12px; font-weight: bold;">الدوري الألماني 🏆</div>
+            <div class="channel-badge">BEIN SPORTS 1</div>
             <div class="match-flex">
-                <div class="team-unit">
-                    <img src="https://api.sofascore.app/api/v1/team/2673/image">
-                    <div class="team-name">بريمن</div>
-                </div>
-                <div class="time-center">
-                    <span class="kickoff">22:30</span>
-                    <span class="countdown waiting" data-time="2026-01-27T22:30:00">--:--:--</span>
-                </div>
-                <div class="team-unit">
-                    <img src="https://api.sofascore.app/api/v1/team/2675/image">
-                    <div class="team-name">هوفنهايم</div>
-                </div>
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/3006/image"><div class="team-name">بنفيكا</div></div>
+                <div class="time-center"><span class="kickoff">23:00</span><span class="countdown waiting" data-time="2026-01-28T23:00:00">--:--:--</span></div>
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/2829/image"><div class="team-name">ر. مدريد</div></div>
             </div>
-            <div class="watch-btn"><i class="fa-solid fa-play"></i> مشاهدة البث المباشر (السيرفر 1)</div>
         </div>
 
-        <!-- المباراة الثانية: فيورنتينا ضد كومو (الرابط 2) -->
+        <!-- مباراة 2 -->
         <div class="match-card" onclick="openMatchStream('https://c.kooraxx.com/albaplayer/pemium-2/')">
-            <div style="position: absolute; top: 0; left: 20px; background: #222; color: var(--gold); font-size: 0.65rem; padding: 5px 12px; border-radius: 0 0 10px 10px; font-weight: bold; border: 1px solid var(--border); border-top: none;">أبوظبي الرياضية 3</div>
-            <div style="text-align: center; font-size: 0.75rem; color: #aaa; margin-bottom: 12px; font-weight: bold;">كأس إيطاليا 🇮🇹</div>
+            <div class="channel-badge">BEIN SPORTS 2</div>
             <div class="match-flex">
-                <div class="team-unit">
-                    <img src="https://api.sofascore.app/api/v1/team/2695/image">
-                    <div class="team-name">فيورنتينا</div>
-                </div>
-                <div class="time-center">
-                    <span class="kickoff">23:00</span>
-                    <span class="countdown waiting" data-time="2026-01-27T23:00:00">--:--:--</span>
-                </div>
-                <div class="team-unit">
-                    <img src="https://api.sofascore.app/api/v1/team/2712/image">
-                    <div class="team-name">كومو</div>
-                </div>
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/2817/image"><div class="team-name">برشلونة</div></div>
+                <div class="time-center"><span class="kickoff">23:00</span><span class="countdown waiting" data-time="2026-01-28T23:00:00">--:--:--</span></div>
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/2611/image"><div class="team-name">كوبنهاغن</div></div>
             </div>
-            <div class="watch-btn"><i class="fa-solid fa-play"></i> مشاهدة البث المباشر (السيرفر 2)</div>
+        </div>
+
+        <!-- مباراة 3 -->
+        <div class="match-card" onclick="openMatchStream('https://c.kooraxx.com/albaplayer/pemium-3/')">
+            <div class="channel-badge">BEIN SPORTS 3</div>
+            <div class="match-flex">
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/17/image"><div class="team-name">مان سيتي</div></div>
+                <div class="time-center"><span class="kickoff">23:00</span><span class="countdown waiting" data-time="2026-01-28T23:00:00">--:--:--</span></div>
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/3061/image"><div class="team-name">غلطة سراي</div></div>
+            </div>
+        </div>
+
+        <!-- مباراة 4 -->
+        <div class="match-card" onclick="openMatchStream('https://c.kooraxx.com/albaplayer/pemium-4/')">
+            <div class="channel-badge">BEIN SPORTS 4</div>
+            <div class="match-flex">
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/2959/image"><div class="team-name">آيندهوفن</div></div>
+                <div class="time-center"><span class="kickoff">23:00</span><span class="countdown waiting" data-time="2026-01-28T23:00:00">--:--:--</span></div>
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/2672/image"><div class="team-name">بايرن ميونخ</div></div>
+            </div>
+        </div>
+
+        <!-- مباراة 5 -->
+        <div class="match-card" onclick="openMatchStream('https://c.kooraxx.com/albaplayer/pemium-5/')">
+            <div class="channel-badge">BEIN SPORTS 5</div>
+            <div class="match-flex">
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/1644/image"><div class="team-name">باريس</div></div>
+                <div class="time-center"><span class="kickoff">23:00</span><span class="countdown waiting" data-time="2026-01-28T23:00:00">--:--:--</span></div>
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/39/image"><div class="team-name">نيوكاسل</div></div>
+            </div>
+        </div>
+
+        <!-- مباراة 6 -->
+        <div class="match-card" onclick="openMatchStream('https://c.kooraxx.com/albaplayer/pemium-6/')">
+            <div class="channel-badge">BEIN SPORTS 6</div>
+            <div class="match-flex">
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/2714/image"><div class="team-name">نابولي</div></div>
+                <div class="time-center"><span class="kickoff">23:00</span><span class="countdown waiting" data-time="2026-01-28T23:00:00">--:--:--</span></div>
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/38/image"><div class="team-name">تشيلسي</div></div>
+            </div>
+        </div>
+
+        <!-- مباراة 7 -->
+        <div class="match-card" onclick="openMatchStream('https://c.kooraxx.com/albaplayer/pemium-7/')">
+            <div class="channel-badge">BEIN SPORTS 7</div>
+            <div class="match-flex">
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/31/image"><div class="team-name">ليفربول</div></div>
+                <div class="time-center"><span class="kickoff">23:00</span><span class="countdown waiting" data-time="2026-01-28T23:00:00">--:--:--</span></div>
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/5543/image"><div class="team-name">كارباخ</div></div>
+            </div>
+        </div>
+
+        <!-- مباراة 8 -->
+        <div class="match-card" onclick="openMatchStream('https://c.kooraxx.com/albaplayer/pemium-8/')">
+            <div class="channel-badge">BEIN SPORTS 8</div>
+            <div class="match-flex">
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/2673/image"><div class="team-name">دورتموند</div></div>
+                <div class="time-center"><span class="kickoff">23:00</span><span class="countdown waiting" data-time="2026-01-28T23:00:00">--:--:--</span></div>
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/2697/image"><div class="team-name">إنتر ميلان</div></div>
+            </div>
+        </div>
+
+        <!-- مباراة 9 -->
+        <div class="match-card" onclick="openMatchStream('https://c.kooraxx.com/albaplayer/pemium-9/')">
+            <div class="channel-badge">BEIN SPORTS 9</div>
+            <div class="match-flex">
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/1617/image"><div class="team-name">موناكو</div></div>
+                <div class="time-center"><span class="kickoff">23:00</span><span class="countdown waiting" data-time="2026-01-28T23:00:00">--:--:--</span></div>
+                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/2687/image"><div class="team-name">يوفنتوس</div></div>
+            </div>
         </div>
 
     </div>
 
+    <!-- ناف بار سفلي ربحي -->
     <div class="dock-bar">
-        <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=62779" class="dock-item"><i class="fa-solid fa-house"></i>الرئيسية</a>
-        <a href="#" class="dock-item active"><i class="fa-solid fa-play"></i>المباريات</a>
-        <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=62779" class="dock-item"><i class="fa-solid fa-trophy"></i>VIP</a>
+        <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=62779" class="dock-item active"><i class="fa-solid fa-house"></i>الرئيسية</a>
+        <a href="#" class="dock-item"><i class="fa-solid fa-trophy"></i>المباريات</a>
+        <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=62779" class="dock-item"><i class="fa-solid fa-crown"></i>VIP</a>
         <a href="javascript:location.reload()" class="dock-item"><i class="fa-solid fa-rotate"></i>تحديث</a>
     </div>
 
     <script>
-        // إعدادات الروابط الربحية
-        const AD_FOR_STREAM = "https://singingfiles.com/show.php?l=0&u=2493439&id=70066";
-        const AD_POP_UNDER = "https://singingfiles.com/show.php?l=0&u=2493439&id=62779";
+        const AD_LINK_1 = "https://singingfiles.com/show.php?l=0&u=2493439&id=70066";
+        const AD_LINK_2 = "https://singingfiles.com/show.php?l=0&u=2493439&id=62779";
 
-        // وظيفة فتح البث + الإعلان (استراتيجية الربح المزدوج)
+        // استراتيجية الربح المزدوج
         function openMatchStream(streamUrl) {
-            // 1. فتح رابط الربح في نافذة جديدة (Tab جديد)
-            window.open(AD_FOR_STREAM, '_blank');
-            
-            // 2. تحويل الصفحة الحالية إلى رابط البث بعد تأخير بسيط
+            window.open(AD_LINK_1, '_blank');
             setTimeout(() => {
                 window.location.href = streamUrl;
-            }, 200);
+            }, 300);
         }
 
-        // Pop-under عند أول تفاعل مع الصفحة
+        // Pop-under عند أول لمسة للموقع
         let popDone = false;
         function handlePopUnder() {
             if (!popDone) {
-                window.open(AD_POP_UNDER, '_blank');
+                window.open(AD_LINK_2, '_blank');
                 popDone = true;
             }
         }
 
-        // تحديث الساعة والعدادات التنازلية
         function updateUI() {
             const now = new Date();
             document.getElementById('live-clock').innerText = now.toLocaleTimeString('en-GB');
@@ -207,7 +268,7 @@
                     el.className = "countdown live";
                 } else {
                     el.innerText = "انتهت المباراة";
-                    el.className = "countdown ended";
+                    el.className = "countdown";
                 }
             });
         }
