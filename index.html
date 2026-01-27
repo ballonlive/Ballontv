@@ -3,33 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BALLON TV - الجدول الشامل</title>
+    <title>BALLON TV - البث المباشر</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { 
             --primary: #ff0000; 
-            --neon-blue: #00f2ff;
             --gold: #ffd700;
             --bg-black: #020202;
             --glass: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.08);
-            --neon-glow: 0 0 15px rgba(255, 0, 0, 0.3);
         }
 
         body { 
             background: var(--bg-black);
-            background-image: radial-gradient(at 0% 0%, rgba(255, 0, 0, 0.12) 0, transparent 50%),
-                              radial-gradient(at 100% 100%, rgba(0, 242, 255, 0.08) 0, transparent 50%);
+            background-image: radial-gradient(at 0% 0%, rgba(255, 0, 0, 0.12) 0, transparent 50%);
             color: white; font-family: 'Tajawal', sans-serif; 
-            margin: 0; padding: 0; user-select: none; overflow-x: hidden;
+            margin: 0; padding: 0; user-select: none;
         }
 
         /* إعلان علوي استراتيجي */
         .ad-top-bar {
             background: linear-gradient(90deg, #b51200, #ff0000);
-            color: white; text-align: center; padding: 8px; font-size: 0.8rem;
+            color: white; text-align: center; padding: 10px; font-size: 0.85rem;
             font-weight: bold; text-decoration: none; display: block;
+            border-bottom: 2px solid var(--gold);
         }
 
         .header-pro { 
@@ -39,92 +37,65 @@
         }
 
         .header-flex { display: flex; justify-content: space-between; align-items: center; }
-        .logo-main { font-weight: 900; font-size: 1.6rem; color: var(--primary); text-shadow: var(--neon-glow); text-decoration: none; }
+        .logo-main { font-weight: 900; font-size: 1.6rem; color: var(--primary); text-decoration: none; text-shadow: 0 0 10px rgba(255,0,0,0.5); }
         
         .digital-clock {
             font-family: 'Orbitron', sans-serif;
             background: rgba(255, 255, 255, 0.05);
-            padding: 6px 15px; border-radius: 12px;
-            color: #fff; font-size: 1rem; border: 1px solid var(--border);
-            letter-spacing: 1px; box-shadow: inset 0 0 10px rgba(0, 242, 255, 0.1);
+            padding: 6px 15px; border-radius: 12px; color: #fff; border: 1px solid var(--border);
         }
 
         .main-container { padding: 10px 15px 120px 15px; max-width: 650px; margin: auto; }
 
-        /* بانر الربح الجديد */
-        .profit-banner {
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid var(--gold);
-            border-radius: 15px; padding: 15px; margin: 15px 0;
-            display: flex; align-items: center; justify-content: space-between;
-            text-decoration: none; color: white;
-        }
-        .profit-banner i { color: var(--gold); font-size: 1.5rem; }
-        .profit-banner .text { flex: 1; margin: 0 15px; font-size: 0.85rem; }
-        .profit-btn { background: var(--gold); color: #000; padding: 5px 10px; border-radius: 8px; font-weight: 900; font-size: 0.7rem; }
-
-        .date-strip { 
-            background: var(--glass); padding: 12px; border-radius: 15px; 
-            text-align: center; font-weight: 900; border: 1px solid var(--border);
-            color: var(--neon-blue); margin: 20px 0; font-size: 0.9rem;
-            border-right: 5px solid var(--primary);
-        }
-
-        .league-banner {
-            background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent);
-            padding: 14px 18px; border-radius: 18px; margin: 35px 0 10px 0;
-            border-right: 5px solid var(--primary); display: flex; align-items: center; gap: 12px;
-        }
-        .league-banner span { font-weight: 900; font-size: 1rem; color: #fff; }
-
+        /* بطاقة المباراة */
         .match-card {
             background: var(--glass); border: 1px solid var(--border);
-            border-radius: 28px; padding: 25px 15px; margin-bottom: 12px;
-            text-decoration: none; display: block; position: relative;
-            transition: 0.3s; overflow: hidden;
+            border-radius: 28px; padding: 25px 15px; margin-bottom: 15px;
+            display: block; position: relative; transition: 0.3s; cursor: pointer;
+            text-decoration: none;
         }
-        .match-card:hover { border-color: var(--primary); background: rgba(255,0,0,0.05); }
+        .match-card:hover { border-color: var(--primary); background: rgba(255,0,0,0.05); transform: translateY(-3px); }
 
-        .match-flex { display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 5; }
+        .match-flex { display: flex; justify-content: space-between; align-items: center; }
         .team-unit { width: 33%; text-align: center; }
-        .team-unit img { width: 52px; height: 52px; object-fit: contain; }
-        .team-name { font-size: 0.85rem; font-weight: 800; color: #eee; margin-top: 10px; }
+        .team-unit img { width: 55px; height: 55px; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
+        .team-name { font-size: 0.9rem; font-weight: 800; color: #eee; margin-top: 10px; }
 
         .time-center { width: 34%; text-align: center; }
-        .kickoff { font-size: 1.5rem; font-weight: 900; color: #fff; display: block; }
+        .kickoff { font-size: 1.6rem; font-weight: 900; color: #fff; display: block; }
         
         .countdown { 
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.65rem; padding: 5px 12px; border-radius: 50px; 
-            margin-top: 10px; display: inline-block; font-weight: 700;
+            font-family: 'Orbitron', sans-serif; font-size: 0.7rem; 
+            padding: 5px 12px; border-radius: 50px; margin-top: 10px; display: inline-block;
         }
         .waiting { background: #111; color: var(--gold); border: 1px solid rgba(255, 215, 0, 0.2); }
-        .live { background: var(--primary); color: white; animation: pulse-live 1s infinite; }
+        .live { background: var(--primary); color: white; animation: pulse 1s infinite; }
 
-        .channel-badge {
-            position: absolute; top: 0; left: 30px; background: #222;
-            color: #ccc; font-size: 0.6rem; padding: 4px 14px; border-radius: 0 0 12px 12px;
-            font-weight: 900; border: 1px solid var(--border);
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        /* زر المشاهدة */
+        .watch-btn {
+            background: var(--primary); color: white; text-align: center;
+            padding: 12px; border-radius: 15px; margin-top: 15px;
+            font-weight: 900; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 4px 15px rgba(255,0,0,0.2);
         }
-
-        @keyframes pulse-live { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
         .dock-bar {
             position: fixed; bottom: 15px; left: 15px; right: 15px; height: 75px;
-            background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(25px);
-            border-radius: 25px; display: flex; justify-content: space-around;
-            align-items: center; border: 1px solid var(--border); z-index: 2000;
+            background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(20px); border-radius: 25px;
+            display: flex; justify-content: space-around; align-items: center; border: 1px solid var(--border); z-index: 1000;
         }
-        .dock-item { color: #555; text-decoration: none; font-size: 0.7rem; text-align: center; font-weight: 800; }
-        .dock-item i { font-size: 1.4rem; margin-bottom: 6px; display: block; }
+        .dock-item { color: #555; text-decoration: none; font-size: 0.7rem; text-align: center; font-weight: bold; }
+        .dock-item i { font-size: 1.4rem; display: block; margin-bottom: 4px; }
         .dock-item.active { color: var(--primary); }
     </style>
 </head>
-<body onclick="handlePop()">
+<body onclick="handlePopUnder()">
 
-    <!-- رابط الربح الأول: يظهر كتحذير علوي -->
+    <!-- رابط الربح الأول (70066) -->
     <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=70066" target="_blank" class="ad-top-bar">
-        ⚠️ تنبيه: قم بتحديث مشغل الفيديو لتجنب تقطيع البث المباشر
+        ⚠️ تنبيه: قم بتحديث المشغل الآن لمشاهدة مباريات الليلة بدون تقطيع (HD)
     </a>
 
     <div class="header-pro">
@@ -136,105 +107,103 @@
 
     <div class="main-container">
         
-        <!-- رابط الربح الثاني: يظهر كعرض VIP -->
-        <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=62779" target="_blank" class="profit-banner">
-            <i class="fa-solid fa-circle-check"></i>
-            <div class="text">
-                <b>سيرفر VIP متاح الآن</b><br>
-                بدون إعلانات وبجودة 4K لجميع المباريات
-            </div>
-            <div class="profit-btn">تفعيل الآن</div>
-        </a>
+        <div style="background: rgba(0, 242, 255, 0.05); padding: 12px; border-radius: 15px; text-align: center; margin-bottom: 20px; border: 1px solid rgba(0, 242, 255, 0.2);">
+            <span style="color: #00f2ff; font-weight: bold; font-size: 0.85rem;">📅 جدول مباريات اليوم: 27 يناير 2026</span>
+        </div>
 
-        <div class="date-strip">مباريات الأحد 25-01-2026 (توقيت المغرب GMT)</div>
-
-        <!-- تم تغيير جميع الروابط لتوجه إلى عرض الربح الخاص بك -->
-        <div class="league-banner"><i class="fa-solid fa-globe-africa"></i><span>البطولات الإفريقية 🌍</span></div>
-
-        <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=70066" target="_blank" class="match-card">
-            <div class="channel-badge">الوان 4</div>
+        <!-- المباراة الأولى: بريمن ضد هوفنهايم (الرابط 1) -->
+        <div class="match-card" onclick="openMatchStream('https://c.kooraxx.com/albaplayer/pemium-1/')">
+            <div style="position: absolute; top: 0; left: 20px; background: #222; color: var(--gold); font-size: 0.65rem; padding: 5px 12px; border-radius: 0 0 10px 10px; font-weight: bold; border: 1px solid var(--border); border-top: none;">بي ان سبورت 2</div>
+            <div style="text-align: center; font-size: 0.75rem; color: #aaa; margin-bottom: 12px; font-weight: bold;">الدوري الألماني 🏆</div>
             <div class="match-flex">
-                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/36625/image"><div class="team-name">لوپوبو</div></div>
-                <div class="time-center"><span class="kickoff">14:00</span><span class="countdown waiting" data-time="2026-01-25T14:00:00">--:--:--</span></div>
-                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/4684/image"><div class="team-name">مولودية الجزائر</div></div>
+                <div class="team-unit">
+                    <img src="https://api.sofascore.app/api/v1/team/2673/image">
+                    <div class="team-name">بريمن</div>
+                </div>
+                <div class="time-center">
+                    <span class="kickoff">22:30</span>
+                    <span class="countdown waiting" data-time="2026-01-27T22:30:00">--:--:--</span>
+                </div>
+                <div class="team-unit">
+                    <img src="https://api.sofascore.app/api/v1/team/2675/image">
+                    <div class="team-name">هوفنهايم</div>
+                </div>
             </div>
-        </a>
+            <div class="watch-btn"><i class="fa-solid fa-play"></i> مشاهدة البث المباشر (السيرفر 1)</div>
+        </div>
 
-        <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=70066" target="_blank" class="match-card">
-            <div class="channel-badge">الوان 4</div>
+        <!-- المباراة الثانية: فيورنتينا ضد كومو (الرابط 2) -->
+        <div class="match-card" onclick="openMatchStream('https://c.kooraxx.com/albaplayer/pemium-2/')">
+            <div style="position: absolute; top: 0; left: 20px; background: #222; color: var(--gold); font-size: 0.65rem; padding: 5px 12px; border-radius: 0 0 10px 10px; font-weight: bold; border: 1px solid var(--border); border-top: none;">أبوظبي الرياضية 3</div>
+            <div style="text-align: center; font-size: 0.75rem; color: #aaa; margin-bottom: 12px; font-weight: bold;">كأس إيطاليا 🇮🇹</div>
             <div class="match-flex">
-                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/3101/image"><div class="team-name">الزمالك</div></div>
-                <div class="time-center"><span class="kickoff">20:00</span><span class="countdown waiting" data-time="2026-01-25T20:00:00">--:--:--</span></div>
-                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/6449/image"><div class="team-name">المصري</div></div>
+                <div class="team-unit">
+                    <img src="https://api.sofascore.app/api/v1/team/2695/image">
+                    <div class="team-name">فيورنتينا</div>
+                </div>
+                <div class="time-center">
+                    <span class="kickoff">23:00</span>
+                    <span class="countdown waiting" data-time="2026-01-27T23:00:00">--:--:--</span>
+                </div>
+                <div class="team-unit">
+                    <img src="https://api.sofascore.app/api/v1/team/2712/image">
+                    <div class="team-name">كومو</div>
+                </div>
             </div>
-        </a>
-
-        <div class="league-banner"><i class="fa-solid fa-crown"></i><span>الدوري الإنجليزي الممتاز 🏆</span></div>
-
-        <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=70066" target="_blank" class="match-card">
-            <div class="channel-badge">الوان 1</div>
-            <div class="match-flex">
-                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/42/image"><div class="team-name">أرسنال</div></div>
-                <div class="time-center"><span class="kickoff">17:30</span><span class="countdown waiting" data-time="2026-01-25T17:30:00">--:--:--</span></div>
-                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/35/image"><div class="team-name">مان يونايتد</div></div>
-            </div>
-        </a>
-
-        <!-- الدوري الإسباني -->
-        <div class="league-banner"><i class="fa-solid fa-flag"></i><span>الدوري الإسباني 🇪🇸</span></div>
-
-        <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=70066" target="_blank" class="match-card">
-            <div class="channel-badge">الوان 2</div>
-            <div class="match-flex">
-                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/2817/image"><div class="team-name">برشلونة</div></div>
-                <div class="time-center"><span class="kickoff">16:15</span><span class="countdown waiting" data-time="2026-01-25T16:15:00">--:--:--</span></div>
-                <div class="team-unit"><img src="https://api.sofascore.app/api/v1/team/2853/image"><div class="team-name">أوفييدو</div></div>
-            </div>
-        </a>
+            <div class="watch-btn"><i class="fa-solid fa-play"></i> مشاهدة البث المباشر (السيرفر 2)</div>
+        </div>
 
     </div>
 
-    <!-- ناف بار سفلي -->
     <div class="dock-bar">
         <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=62779" class="dock-item"><i class="fa-solid fa-house"></i>الرئيسية</a>
-        <a href="#" class="dock-item active"><i class="fa-solid fa-trophy"></i>المباريات</a>
-        <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=62779" class="dock-item"><i class="fa-solid fa-headset"></i>الدعم</a>
+        <a href="#" class="dock-item active"><i class="fa-solid fa-play"></i>المباريات</a>
+        <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=62779" class="dock-item"><i class="fa-solid fa-trophy"></i>VIP</a>
         <a href="javascript:location.reload()" class="dock-item"><i class="fa-solid fa-rotate"></i>تحديث</a>
     </div>
 
     <script>
-        // إستراتيجية الـ Pop-under الربحية
-        let hasPopped = false;
-        function handlePop() {
-            if (!hasPopped) {
-                window.open("https://singingfiles.com/show.php?l=0&u=2493439&id=62779", "_blank");
-                hasPopped = true;
+        // إعدادات الروابط الربحية
+        const AD_FOR_STREAM = "https://singingfiles.com/show.php?l=0&u=2493439&id=70066";
+        const AD_POP_UNDER = "https://singingfiles.com/show.php?l=0&u=2493439&id=62779";
+
+        // وظيفة فتح البث + الإعلان (استراتيجية الربح المزدوج)
+        function openMatchStream(streamUrl) {
+            // 1. فتح رابط الربح في نافذة جديدة (Tab جديد)
+            window.open(AD_FOR_STREAM, '_blank');
+            
+            // 2. تحويل الصفحة الحالية إلى رابط البث بعد تأخير بسيط
+            setTimeout(() => {
+                window.location.href = streamUrl;
+            }, 200);
+        }
+
+        // Pop-under عند أول تفاعل مع الصفحة
+        let popDone = false;
+        function handlePopUnder() {
+            if (!popDone) {
+                window.open(AD_POP_UNDER, '_blank');
+                popDone = true;
             }
         }
 
-        function updateLiveClock() {
+        // تحديث الساعة والعدادات التنازلية
+        function updateUI() {
             const now = new Date();
-            const h = String(now.getHours()).padStart(2, '0');
-            const m = String(now.getMinutes()).padStart(2, '0');
-            const s = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('live-clock').innerText = `${h}:${m}:${s}`;
-        }
-        setInterval(updateLiveClock, 1000);
+            document.getElementById('live-clock').innerText = now.toLocaleTimeString('en-GB');
 
-        function updateAllCountdowns() {
-            const now = new Date().getTime();
             document.querySelectorAll('.countdown').forEach(el => {
                 const kickoff = new Date(el.getAttribute('data-time')).getTime();
-                const diff = kickoff - now;
+                const diff = kickoff - now.getTime();
 
                 if (diff > 0) {
-                    const h = Math.floor(diff / (1000 * 60 * 60));
-                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    const s = Math.floor((diff % (1000 * 60)) / 1000);
+                    const h = Math.floor(diff / 3600000);
+                    const m = Math.floor((diff % 3600000) / 60000);
+                    const s = Math.floor((diff % 60000) / 1000);
                     el.innerText = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
                     el.className = "countdown waiting";
-                } else if (diff <= 0 && diff > -7200000) {
-                    el.innerText = "مباشر الآن";
+                } else if (diff > -7200000) {
+                    el.innerText = "بث مباشر الآن";
                     el.className = "countdown live";
                 } else {
                     el.innerText = "انتهت المباراة";
@@ -242,9 +211,8 @@
                 }
             });
         }
-        setInterval(updateAllCountdowns, 1000);
-        updateLiveClock();
-        updateAllCountdowns();
+        setInterval(updateUI, 1000);
+        updateUI();
     </script>
 </body>
 </html>
