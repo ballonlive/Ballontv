@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المشغل الاحترافي | B-STREAM PRO</title>
+    <title>B-STREAM PRO | المباشر</title>
     
-    <!-- CSS: تصميم فخم ومتناسق مع دوري الأبطال -->
+    <!-- الخطوط والمكتبات -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+
     <style>
         :root {
             --main-color: #ff0055;
@@ -17,143 +19,115 @@
         body {
             background-color: var(--bg-dark);
             background-image: radial-gradient(at 50% 0%, #001f66 0, transparent 70%);
-            color: white;
-            font-family: 'Cairo', sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            color: white; font-family: 'Cairo', sans-serif;
+            margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+        }
+
+        /* تنبيه المحتوى المختلط */
+        .http-notice {
+            background: #ffae00; color: #000; width: 100%; text-align: center;
+            padding: 8px; font-size: 12px; font-weight: bold; border-bottom: 2px solid #000;
         }
 
         .player-wrapper {
-            width: 95%;
-            max-width: 1000px;
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            border: 1px solid #2d2d2d;
-            position: relative;
+            width: 95%; max-width: 1000px; background: var(--card-bg);
+            border-radius: 20px; padding: 20px; margin-top: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid #2d2d2d;
         }
 
         .header h1 {
-            text-align: center;
-            font-size: 1.5rem;
-            margin-top: 0;
+            text-align: center; font-size: 1.5rem; margin-top: 0;
             background: linear-gradient(90deg, #fff, var(--main-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 900;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900;
         }
 
-        /* حاوية مشغل Clappr */
         #player {
-            width: 100%;
-            aspect-ratio: 16/9;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #000;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            width: 100%; aspect-ratio: 16/9; border-radius: 12px;
+            overflow: hidden; background: #000; border: 1px solid #222;
         }
 
-        /* أزرار السيرفرات */
         .server-list {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
+            display: flex; gap: 8px; margin-top: 15px; justify-content: center; flex-wrap: wrap;
         }
 
         .server-btn {
-            background: #1a1a1c;
-            border: 1px solid #333;
-            color: #ccc;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
+            background: #1a1a1c; border: 1px solid #333; color: #ccc;
+            padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s;
+            font-size: 0.8rem; flex-grow: 1; max-width: 200px;
         }
 
         .server-btn.active {
-            border-color: var(--main-color);
-            color: var(--main-color);
+            border-color: var(--main-color); color: var(--main-color);
             background: rgba(255, 0, 85, 0.1);
         }
 
-        /* زر الربح VIP */
         .vip-ad-btn {
-            display: block;
-            text-align: center;
-            background: linear-gradient(90deg, #ffd700, #ffae00);
-            color: #000;
-            text-decoration: none;
-            font-weight: 900;
-            padding: 12px;
-            border-radius: 10px;
-            margin-top: 20px;
-            animation: pulse 1.5s infinite;
+            display: block; text-align: center; background: linear-gradient(90deg, #ffd700, #ffae00);
+            color: #000; text-decoration: none; font-weight: 900; padding: 12px;
+            border-radius: 10px; margin-top: 20px; animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
-            50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
             100% { transform: scale(1); }
         }
 
-        /* منع التحديد */
-        * { -webkit-user-select: none; user-select: none; }
+        .back-home { margin-top: 20px; color: #888; text-decoration: none; font-size: 0.85rem; font-weight: bold; }
     </style>
 </head>
-<body oncontextmenu="return false;" onclick="handlePopUnder()">
+<body onclick="handlePopUnder()">
 
-<div class="player-wrapper">
-    <div class="header">
-        <h1>B-STREAM PRO PLAYER</h1>
+    <!-- تنبيه لمستخدمي GitHub Pages -->
+    <div class="http-notice">
+        ⚠️ إذا لم يظهر الفيديو: اضغط على "القفل" بجانب الرابط ← إعدادات الموقع ← تفعيل "المحتوى غير الآمن" (Insecure Content).
     </div>
 
-    <!-- المشغل العالمي -->
-    <div id="player"></div>
+    <div class="player-wrapper">
+        <div class="header">
+            <h1>B-STREAM PRO PLAYER</h1>
+        </div>
 
-    <!-- زر الربح (تفعيل VIP) -->
-    <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=70066" target="_blank" class="vip-ad-btn">
-        🏆 تفعيل سيرفر الـ VIP (بدون تقطيع وبجودة 4K)
-    </a>
+        <!-- مشغل Clappr -->
+        <div id="player"></div>
 
-    <!-- قائمة السيرفرات -->
-    <div class="server-list">
-        <button class="server-btn active" onclick="changeServer(0, this)">Bein Sports 1 4K</button>
-        <button class="server-btn" onclick="changeServer(1, this)">Alwan Sport HD</button>
+        <!-- قائمة السيرفرات بالروابط المباشرة -->
+        <div class="server-list">
+            <button class="server-btn active" onclick="changeServer(0, this)">Bein Global 🌍</button>
+            <button class="server-btn" onclick="changeServer(1, this)">Bein 1 4K 💎</button>
+            <button class="server-btn" onclick="changeServer(2, this)">Alwan Sport 1</button>
+            <button class="server-btn" onclick="changeServer(3, this)">Alwan Sport 2</button>
+        </div>
+
+        <!-- رابط الربح -->
+        <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=70066" target="_blank" class="vip-ad-btn">
+            💎 تفعيل جودة 4K ومنع التقطيع (سيرفر VIP)
+        </a>
     </div>
-</div>
 
-<!-- مكتبة Clappr -->
-<script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+    <a href="index.html" class="back-home">⬅ العودة لجدول المباريات</a>
 
 <script>
-    // روابط القنوات مشفرة Base64
+    // روابط القنوات المباشرة بدون تشفير
     const _sources = [
-        "aHR0cDovLzEzNS4xMjUuMTA5LjczOjkwMDAvQmVpbiUyMFNwb3J0cyUyMDElMjA0SyUyMFFBXy5tM3U4", // Bein 1 4K
-        "aHR0cDovLzEzNS4xMjUuMTA5LjczOjkwMDAvQWx3YW4lMjBTcG9ydCUyMDElMjBIRCUyMFZJUCUyMEFyYl8ubTN1OA==" // Alwan 1
+        "http://135.125.109.73:9000/beinsportglobal_.m3u8",
+        "http://135.125.109.73:9000/Bein%20Sports%201%204K%20QA_.m3u8",
+        "http://135.125.109.73:9000/Alwan%20Sport%201%20HD%20VIP%20Arb_.m3u8",
+        "http://135.125.109.73:9000/Alwan%20Sport%202%20HD%20VIP%20Arb_.m3u8"
     ];
 
-    let currentServer = 0;
     let player;
 
     function initPlayer(url) {
-        // مسح المشغل القديم إذا وجد
         if (player) { player.destroy(); }
 
-        // إنشاء مشغل Clappr جديد
         player = new Clappr.Player({
             source: url,
             parentId: "#player",
             width: '100%',
             height: '100%',
             autoPlay: true,
-            mimeType: "application/x-mpegURL", // لدعم روابط m3u8
+            mimeType: "application/x-mpegURL",
             playback: {
                 hlsjsConfig: {
                     xhrSetup: function(xhr, url) {
@@ -165,24 +139,23 @@
     }
 
     function changeServer(index, btn) {
-        // تحديث حالة الأزرار
+        // تحديث حالة الزر
         document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         
-        // تغيير السورس
-        const decodedUrl = atob(_sources[index]);
-        initPlayer(decodedUrl);
+        // تشغيل الرابط المباشر
+        initPlayer(_sources[index]);
         
-        // استراتيجية الربح: فتح إعلان عند تغيير السيرفر
+        // استراتيجية الربح عند التبديل
         window.open("https://singingfiles.com/show.php?l=0&u=2493439&id=70066", "_blank");
     }
 
-    // تشغيل السورس الأول عند التحميل
+    // تشغيل السيرفر الأول تلقائياً
     document.addEventListener('DOMContentLoaded', () => {
-        initPlayer(atob(_sources[0]));
+        initPlayer(_sources[0]);
     });
 
-    /* --- استراتيجية الربح (Pop-under) --- */
+    /* --- استراتيجية الربح Pop-under --- */
     let popDone = false;
     function handlePopUnder() {
         if (!popDone) {
@@ -190,13 +163,6 @@
             popDone = true;
         }
     }
-
-    /* --- حماية الكود --- */
-    document.onkeydown = function(e) {
-        if (event.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
-            return false;
-        }
-    };
 </script>
 
 </body>
