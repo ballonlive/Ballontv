@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المشغل الاحترافي | PRO PLAYER</title>
+    <title>المشغل الاحترافي | B-STREAM PRO</title>
     
-    <!-- CSS: مكتبة الستايل للمشغل وأيقونات جذابة -->
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <!-- CSS: تصميم فخم ومتناسق مع دوري الأبطال -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --main-color: #ff0055;
-            --bg-dark: #0a0a0b;
-            --card-bg: #161618;
+            --bg-dark: #01040a;
+            --card-bg: #0a0a0b;
         }
 
         body {
             background-color: var(--bg-dark);
+            background-image: radial-gradient(at 50% 0%, #001f66 0, transparent 70%);
             color: white;
             font-family: 'Cairo', sans-serif;
             margin: 0;
@@ -24,42 +24,40 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
         }
 
         .player-wrapper {
             width: 95%;
-            max-width: 1100px;
+            max-width: 1000px;
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 15px;
+            padding: 20px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
             border: 1px solid #2d2d2d;
+            position: relative;
         }
 
-        /* عنوان احترافي */
-        .header {
-            text-align: center;
-            margin-bottom: 15px;
-        }
         .header h1 {
+            text-align: center;
             font-size: 1.5rem;
-            margin: 0;
+            margin-top: 0;
             background: linear-gradient(90deg, #fff, var(--main-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-weight: 900;
         }
 
-        /* حاوية الفيديو */
-        .video-container {
+        /* حاوية مشغل Clappr */
+        #player {
+            width: 100%;
+            aspect-ratio: 16/9;
             border-radius: 12px;
             overflow: hidden;
             background: #000;
-            aspect-ratio: 16/9;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
         }
 
-        /* أزرار التنقل بين السيرفرات */
+        /* أزرار السيرفرات */
         .server-list {
             display: flex;
             gap: 10px;
@@ -69,142 +67,136 @@
         }
 
         .server-btn {
-            background: #252527;
-            border: none;
+            background: #1a1a1c;
+            border: 1px solid #333;
             color: #ccc;
-            padding: 12px 25px;
+            padding: 10px 20px;
             border-radius: 10px;
             cursor: pointer;
             font-weight: bold;
-            transition: 0.3s all ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid transparent;
-        }
-
-        .server-btn:hover {
-            background: #323235;
-            color: #fff;
+            transition: 0.3s;
         }
 
         .server-btn.active {
-            background: rgba(255, 0, 85, 0.1);
-            color: var(--main-color);
             border-color: var(--main-color);
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
+            color: var(--main-color);
+            background: rgba(255, 0, 85, 0.1);
         }
 
-        /* حماية: منع النسخ والتحديد */
-        * {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+        /* زر الربح VIP */
+        .vip-ad-btn {
+            display: block;
+            text-align: center;
+            background: linear-gradient(90deg, #ffd700, #ffae00);
+            color: #000;
+            text-decoration: none;
+            font-weight: 900;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 20px;
+            animation: pulse 1.5s infinite;
         }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+            50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
+            100% { transform: scale(1); }
+        }
+
+        /* منع التحديد */
+        * { -webkit-user-select: none; user-select: none; }
     </style>
 </head>
-<body oncontextmenu="return false;"> <!-- منع كليك يمين -->
+<body oncontextmenu="return false;" onclick="handlePopUnder()">
 
 <div class="player-wrapper">
     <div class="header">
         <h1>B-STREAM PRO PLAYER</h1>
     </div>
 
-    <div class="video-container">
-        <video id="player" playsinline controls></video>
-    </div>
+    <!-- المشغل العالمي -->
+    <div id="player"></div>
 
+    <!-- زر الربح (تفعيل VIP) -->
+    <a href="https://singingfiles.com/show.php?l=0&u=2493439&id=70066" target="_blank" class="vip-ad-btn">
+        🏆 تفعيل سيرفر الـ VIP (بدون تقطيع وبجودة 4K)
+    </a>
+
+    <!-- قائمة السيرفرات -->
     <div class="server-list">
-        <button class="server-btn active" onclick="changeServer(0, this)">
-            <span>السيرفر 1: Bein Sports 4K</span>
-        </button>
-        <button class="server-btn" onclick="changeServer(1, this)">
-            <span>السيرفر 2: Alwan Sport HD</span>
-        </button>
+        <button class="server-btn active" onclick="changeServer(0, this)">Bein Sports 1 4K</button>
+        <button class="server-btn" onclick="changeServer(1, this)">Alwan Sport HD</button>
     </div>
 </div>
 
-<!-- المكتبات البرمجية -->
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+<!-- مكتبة Clappr -->
+<script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
 
 <script>
-    // 1. روابط القنوات مشفرة بـ Base64 لزيادة الأمان ومنع الكاشطات التلقائية
-    const _0x4f22 = [
+    // روابط القنوات مشفرة Base64
+    const _sources = [
         "aHR0cDovLzEzNS4xMjUuMTA5LjczOjkwMDAvQmVpbiUyMFNwb3J0cyUyMDElMjA0SyUyMFFBXy5tM3U4", // Bein 1 4K
         "aHR0cDovLzEzNS4xMjUuMTA5LjczOjkwMDAvQWx3YW4lMjBTcG9ydCUyMDElMjBIRCUyMFZJUCUyMEFyYl8ubTN1OA==" // Alwan 1
     ];
 
-    const video = document.getElementById('player');
-    const defaultOptions = {};
+    let currentServer = 0;
+    let player;
 
-    let hls = new Hls();
-    let player = new Plyr(video, {
-        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
-        settings: ['quality', 'speed']
-    });
+    function initPlayer(url) {
+        // مسح المشغل القديم إذا وجد
+        if (player) { player.destroy(); }
 
-    function loadSource(index) {
-        // فك تشفير الرابط عند الاستدعاء فقط
-        const source = atob(_0x4f22[index]);
-
-        if (!Hls.isSupported()) {
-            video.src = source;
-        } else {
-            hls.destroy();
-            hls = new Hls();
-            hls.loadSource(source);
-            hls.attachMedia(video);
-            window.hls = hls;
-        }
+        // إنشاء مشغل Clappr جديد
+        player = new Clappr.Player({
+            source: url,
+            parentId: "#player",
+            width: '100%',
+            height: '100%',
+            autoPlay: true,
+            mimeType: "application/x-mpegURL", // لدعم روابط m3u8
+            playback: {
+                hlsjsConfig: {
+                    xhrSetup: function(xhr, url) {
+                        xhr.withCredentials = false;
+                    }
+                }
+            }
+        });
     }
 
     function changeServer(index, btn) {
-        // تحديث الأزرار
+        // تحديث حالة الأزرار
         document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         
-        // تحميل السيرفر الجديد
-        loadSource(index);
-        player.play();
+        // تغيير السورس
+        const decodedUrl = atob(_sources[index]);
+        initPlayer(decodedUrl);
+        
+        // استراتيجية الربح: فتح إعلان عند تغيير السيرفر
+        window.open("https://singingfiles.com/show.php?l=0&u=2493439&id=70066", "_blank");
     }
 
-    // تشغيل السيرفر الأول تلقائياً
+    // تشغيل السورس الأول عند التحميل
     document.addEventListener('DOMContentLoaded', () => {
-        loadSource(0);
+        initPlayer(atob(_sources[0]));
     });
 
-    /* --- إجراءات حماية متقدمة --- */
+    /* --- استراتيجية الربح (Pop-under) --- */
+    let popDone = false;
+    function handlePopUnder() {
+        if (!popDone) {
+            window.open("https://singingfiles.com/show.php?l=0&u=2493439&id=62779", "_blank");
+            popDone = true;
+        }
+    }
 
-    // 1. منع اختصارات لوحة المفاتيح لفحص الصفحة
+    /* --- حماية الكود --- */
     document.onkeydown = function(e) {
-        if (event.keyCode == 123) return false; // F12
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
-        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        if (event.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
+            return false;
+        }
     };
-
-    // 2. تشويش عند محاولة فتح Debugger
-    setInterval(function() {
-        (function() {
-            (function a() {
-                try {
-                    (function b(i) {
-                        if (('' + (i / i)).length !== 1 || i % 20 === 0) {
-                            (function() {}).constructor('debugger')();
-                        } else {
-                            debugger;
-                        }
-                        b(++i);
-                    })(0);
-                } catch (e) {
-                    setTimeout(a, 5000);
-                }
-            })();
-        })();
-    }, 5000);
 </script>
 
 </body>
